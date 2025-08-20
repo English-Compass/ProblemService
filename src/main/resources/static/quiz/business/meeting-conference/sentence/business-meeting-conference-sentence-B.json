@@ -1,0 +1,102 @@
+[
+    {
+        "question": "We are running out of time, so let's *wrap up*.",
+        "options": [
+            "finish",
+            "start",
+            "delay"
+        ],
+        "answer": "finish",
+        "explanation": "'Wrap up'은 마무리하자는 의미입니다."
+    },
+    {
+        "question": "I'll *get back to you* on that.",
+        "options": [
+            "respond to you later",
+            "forget about it",
+            "agree with you"
+        ],
+        "answer": "respond to you later",
+        "explanation": "'Get back to you'는 나중에 답변하겠다는 의미입니다."
+    },
+    {
+        "question": "Let's *touch base* next week.",
+        "options": [
+            "check in with each other",
+            "avoid each other",
+            "compete"
+        ],
+        "answer": "check in with each other",
+        "explanation": "'Touch base'는 서로 연락하자는 의미입니다."
+    },
+    {
+        "question": "We need to *iron out* the details.",
+        "options": [
+            "resolve",
+            "complicate",
+            "ignore"
+        ],
+        "answer": "resolve",
+        "explanation": "'Iron out'은 세부사항을 해결한다는 의미입니다."
+    },
+    {
+        "question": "Please *keep me posted* on the progress.",
+        "options": [
+            "inform me regularly",
+            "leave me alone",
+            "hide from me"
+        ],
+        "answer": "inform me regularly",
+        "explanation": "'Keep me posted'는 정기적으로 알려달라는 의미입니다."
+    },
+    {
+        "question": "Let's *put this on hold* for now.",
+        "options": [
+            "postpone",
+            "accelerate",
+            "complete"
+        ],
+        "answer": "postpone",
+        "explanation": "'Put on hold'는 보류하자는 의미입니다."
+    },
+    {
+        "question": "We should *think it through* carefully.",
+        "options": [
+            "consider thoroughly",
+            "decide quickly",
+            "ignore completely"
+        ],
+        "answer": "consider thoroughly",
+        "explanation": "'Think it through'는 신중히 고려하자는 의미입니다."
+    },
+    {
+        "question": "Can you *break down* the costs?",
+        "options": [
+            "analyze in detail",
+            "combine together",
+            "hide completely"
+        ],
+        "answer": "analyze in detail",
+        "explanation": "'Break down'은 자세히 분석하라는 의미입니다."
+    },
+    {
+        "question": "Let's *nail down* the specifics.",
+        "options": [
+            "finalize",
+            "avoid",
+            "postpone"
+        ],
+        "answer": "finalize",
+        "explanation": "'Nail down'은 구체적으로 확정하자는 의미입니다."
+    },
+    {
+        "question": "We need to *step up* our efforts.",
+        "options": [
+            "increase",
+            "decrease",
+            "stop"
+        ],
+        "answer": "increase",
+        "explanation": "'Step up'은 노력을 증가시키자는 의미입니다."
+    }
+]

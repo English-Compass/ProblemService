@@ -1,0 +1,102 @@
+[
+    {
+        "question": "Let's *table this discussion* for now.",
+        "options": [
+            "postpone the discussion",
+            "end the discussion",
+            "start the discussion"
+        ],
+        "answer": "postpone the discussion",
+        "explanation": "'Table the discussion'은 논의를 보류하자는 의미입니다."
+    },
+    {
+        "question": "We need to *think outside the box* for a solution.",
+        "options": [
+            "think creatively",
+            "think carefully",
+            "think logically"
+        ],
+        "answer": "think creatively",
+        "explanation": "'Think outside the box'는 창의적으로 생각하자는 의미입니다."
+    },
+    {
+        "question": "This initiative will *break new ground*.",
+        "options": [
+            "pioneer something innovative",
+            "repeat old methods",
+            "abandon the project"
+        ],
+        "answer": "pioneer something innovative",
+        "explanation": "'Break new ground'는 새로운 분야를 개척한다는 의미입니다."
+    },
+    {
+        "question": "We must *leverage our core competencies*.",
+        "options": [
+            "utilize our main strengths",
+            "ignore our abilities",
+            "hide our skills"
+        ],
+        "answer": "utilize our main strengths",
+        "explanation": "'Leverage core competencies'는 핵심 역량을 활용한다는 의미입니다."
+    },
+    {
+        "question": "Let's *drill down* into the metrics.",
+        "options": [
+            "examine in great detail",
+            "ignore completely",
+            "summarize briefly"
+        ],
+        "answer": "examine in great detail",
+        "explanation": "'Drill down'은 세부적으로 검토한다는 의미입니다."
+    },
+    {
+        "question": "We need to *synergize our efforts* across departments.",
+        "options": [
+            "coordinate collaboratively",
+            "work independently",
+            "compete internally"
+        ],
+        "answer": "coordinate collaboratively",
+        "explanation": "'Synergize efforts'는 협력적으로 조정한다는 의미입니다."
+    },
+    {
+        "question": "This strategy will *differentiate us* in the market.",
+        "options": [
+            "make us unique",
+            "make us similar",
+            "make us invisible"
+        ],
+        "answer": "make us unique",
+        "explanation": "'Differentiate'는 차별화한다는 의미입니다."
+    },
+    {
+        "question": "Let's *operationalize* these concepts.",
+        "options": [
+            "implement practically",
+            "theorize abstractly",
+            "ignore completely"
+        ],
+        "answer": "implement practically",
+        "explanation": "'Operationalize'는 실제로 구현한다는 의미입니다."
+    },
+    {
+        "question": "We should *benchmark* against industry leaders.",
+        "options": [
+            "compare with",
+            "ignore",
+            "compete against"
+        ],
+        "answer": "compare with",
+        "explanation": "'Benchmark'는 업계 리더와 비교한다는 의미입니다."
+    },
+    {
+        "question": "This will *streamline* our processes.",
+        "options": [
+            "make more efficient",
+            "make more complex",
+            "eliminate completely"
+        ],
+        "answer": "make more efficient",
+        "explanation": "'Streamline'은 프로세스를 효율화한다는 의미입니다."
+    }
+]

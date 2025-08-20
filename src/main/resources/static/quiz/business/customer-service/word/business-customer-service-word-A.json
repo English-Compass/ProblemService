@@ -1,0 +1,22 @@
+[
+    {
+        "question": "How can I ____ you today?",
+        "options": [
+            "help",
+            "do",
+            "make"
+        ],
+        "answer": "help",
+        "explanation": "고객에게 무엇을 도와드릴지 물을 때 'help'를 사용합니다."
+    },
+    {
+        "question": "I'm sorry for the ____.",
+        "options": [
+            "inconvenience",
+            "problem",
+            "issue"
+        ],
+        "answer": "inconvenience",
+        "explanation": "고객에게 불편을 드린 점에 대해 사과할 때 정중한 표현인 'inconvenience'를 사용합니다."
+    }
+]

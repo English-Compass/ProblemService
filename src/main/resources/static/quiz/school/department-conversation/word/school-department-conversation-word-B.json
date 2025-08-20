@@ -1,0 +1,102 @@
+[
+    {
+        "question": "This is a word question for school/department-conversation at B level. (0)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (1)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (2)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (3)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (4)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (5)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (6)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (7)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (8)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    },
+    {
+        "question": "This is a word question for school/department-conversation at B level. (9)",
+        "options": [
+            "Option A",
+            "Option B",
+            "Option C"
+        ],
+        "answer": "Option A",
+        "explanation": "This is a fallback explanation."
+    }
+]

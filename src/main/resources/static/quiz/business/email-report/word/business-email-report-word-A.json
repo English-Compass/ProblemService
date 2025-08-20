@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Please find the ____ document.",
+        "options": [
+            "attached",
+            "included",
+            "added"
+        ],
+        "answer": "attached",
+        "explanation": "이메일에 파일을 첨부했을 때 'attached'라는 단어를 사용합니다."
+    },
+    {
+        "question": "I am writing to ____ about the project.",
+        "options": [
+            "inquire",
+            "ask",
+            "tell"
+        ],
+        "answer": "inquire",
+        "explanation": "'Inquire'는 공식적인 문의를 할 때 사용하는 격식 있는 표현입니다."
+    }
+]

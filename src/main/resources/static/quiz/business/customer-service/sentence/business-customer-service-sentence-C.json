@@ -1,0 +1,22 @@
+[
+    {
+        "question": "We will do our *utmost* to resolve this issue.",
+        "options": [
+            "best",
+            "part",
+            "bit"
+        ],
+        "answer": "best",
+        "explanation": "'Utmost'는 최선을 다하겠다는 의미입니다."
+    },
+    {
+        "question": "We need to *compensate* the customer for the error.",
+        "options": [
+            "pay back",
+            "apologize to",
+            "thank"
+        ],
+        "answer": "pay back",
+        "explanation": "'Compensate'는 보상한다는 의미입니다."
+    }
+]

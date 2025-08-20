@@ -1,0 +1,22 @@
+[
+    {
+        "question": "I look forward to *hearing from you* soon.",
+        "options": [
+            "receiving your reply",
+            "meeting you",
+            "calling you"
+        ],
+        "answer": "receiving your reply",
+        "explanation": "'Hearing from you'는 답장을 기다린다는 의미입니다."
+    },
+    {
+        "question": "Best *regards*,",
+        "options": [
+            "sincerely",
+            "thank you",
+            "goodbye"
+        ],
+        "answer": "sincerely",
+        "explanation": "'Regards'는 이메일 끝에 붙이는 격식 있는 인사말입니다."
+    }
+]

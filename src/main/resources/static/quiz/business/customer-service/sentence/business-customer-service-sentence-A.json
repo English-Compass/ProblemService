@@ -1,0 +1,22 @@
+[
+    {
+        "question": "I'll *put you through* to the manager.",
+        "options": [
+            "connect you with",
+            "go with you to",
+            "call for you"
+        ],
+        "answer": "connect you with",
+        "explanation": "'Put you through'는 전화를 연결해 주겠다는 의미입니다."
+    },
+    {
+        "question": "Is there *anything else* I can help you with?",
+        "options": [
+            "do you need more help",
+            "is that all",
+            "can I go now"
+        ],
+        "answer": "do you need more help",
+        "explanation": "'Anything else'는 추가적인 도움이 필요한지 묻는 표현입니다."
+    }
+]

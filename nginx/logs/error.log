@@ -1,0 +1,8 @@
+2025/08/17 15:37:08 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:09 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:09 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:10 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:12 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:13 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:17 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22
+2025/08/17 15:37:24 [emerg] 1#1: host not found in upstream "app:8080" in /etc/nginx/nginx.conf:22

@@ -1,0 +1,102 @@
+[
+    {
+        "question": "We need to ____ on the key decisions.",
+        "options": [
+            "follow up",
+            "fall behind",
+            "drop out"
+        ],
+        "answer": "follow up",
+        "explanation": "'Follow up'은 후속 조치를 취한다는 의미입니다."
+    },
+    {
+        "question": "Let's try to ____ the deadline.",
+        "options": [
+            "meet",
+            "see",
+            "go"
+        ],
+        "answer": "meet",
+        "explanation": "마감일을 맞추다는 의미로 'meet the deadline'을 사용합니다."
+    },
+    {
+        "question": "The project requires careful ____.",
+        "options": [
+            "planning",
+            "cooking",
+            "sleeping"
+        ],
+        "answer": "planning",
+        "explanation": "프로젝트에는 신중한 계획이 필요합니다."
+    },
+    {
+        "question": "We should ____ the budget first.",
+        "options": [
+            "review",
+            "ignore",
+            "forget"
+        ],
+        "answer": "review",
+        "explanation": "예산을 검토해야 할 때 'review'를 사용합니다."
+    },
+    {
+        "question": "The team needs to ____ effectively.",
+        "options": [
+            "collaborate",
+            "compete",
+            "complain"
+        ],
+        "answer": "collaborate",
+        "explanation": "효과적인 협력을 위해 'collaborate'를 사용합니다."
+    },
+    {
+        "question": "Let's ____ the presentation format.",
+        "options": [
+            "standardize",
+            "randomize",
+            "memorize"
+        ],
+        "answer": "standardize",
+        "explanation": "발표 형식을 표준화할 때 'standardize'를 사용합니다."
+    },
+    {
+        "question": "We must ____ our objectives clearly.",
+        "options": [
+            "define",
+            "ignore",
+            "forget"
+        ],
+        "answer": "define",
+        "explanation": "목표를 명확히 정의할 때 'define'를 사용합니다."
+    },
+    {
+        "question": "The manager will ____ the final decision.",
+        "options": [
+            "authorize",
+            "prevent",
+            "delay"
+        ],
+        "answer": "authorize",
+        "explanation": "최종 결정을 승인할 때 'authorize'를 사용합니다."
+    },
+    {
+        "question": "Please ____ the meeting minutes.",
+        "options": [
+            "distribute",
+            "hide",
+            "destroy"
+        ],
+        "answer": "distribute",
+        "explanation": "회의록을 배포할 때 'distribute'를 사용합니다."
+    },
+    {
+        "question": "We need to ____ our strategy.",
+        "options": [
+            "adjust",
+            "abandon",
+            "ignore"
+        ],
+        "answer": "adjust",
+        "explanation": "전략을 조정할 때 'adjust'를 사용합니다."
+    }
+]

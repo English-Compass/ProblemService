@@ -1,0 +1,22 @@
+[
+    {
+        "question": "We are committed to ____ our customers' expectations.",
+        "options": [
+            "exceeding",
+            "meeting",
+            "matching"
+        ],
+        "answer": "exceeding",
+        "explanation": "'Exceeding'은 고객의 기대를 뛰어넘는 서비스를 제공하겠다는 의미입니다."
+    },
+    {
+        "question": "Thank you for your ____.",
+        "options": [
+            "patience",
+            "time",
+            "effort"
+        ],
+        "answer": "patience",
+        "explanation": "고객의 인내심에 감사할 때 'patience'를 사용합니다."
+    }
+]

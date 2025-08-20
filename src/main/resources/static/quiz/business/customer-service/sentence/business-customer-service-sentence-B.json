@@ -1,0 +1,22 @@
+[
+    {
+        "question": "We will *look into* this matter right away.",
+        "options": [
+            "investigate",
+            "ignore",
+            "delay"
+        ],
+        "answer": "investigate",
+        "explanation": "'Look into'는 조사하겠다는 의미입니다."
+    },
+    {
+        "question": "I'm afraid that's *against our policy*.",
+        "options": [
+            "not allowed by our rules",
+            "a good idea",
+            "possible"
+        ],
+        "answer": "not allowed by our rules",
+        "explanation": "'Against our policy'는 규정에 어긋난다는 의미입니다."
+    }
+]

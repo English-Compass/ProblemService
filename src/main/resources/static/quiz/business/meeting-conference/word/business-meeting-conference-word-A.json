@@ -1,0 +1,102 @@
+[
+    {
+        "question": "Can we ____ a time for the meeting?",
+        "options": [
+            "set",
+            "put",
+            "do"
+        ],
+        "answer": "set",
+        "explanation": "시간을 정할 때 'set a time'이라는 표현을 사용합니다."
+    },
+    {
+        "question": "Please send me the ____ before the meeting.",
+        "options": [
+            "agenda",
+            "menu",
+            "map"
+        ],
+        "answer": "agenda",
+        "explanation": "회의 전에 논의할 주제 목록인 'agenda'를 요청하는 것이 자연스럽습니다."
+    },
+    {
+        "question": "The meeting will ____ at 2 PM.",
+        "options": [
+            "start",
+            "stop",
+            "pause"
+        ],
+        "answer": "start",
+        "explanation": "회의가 시작될 때 'start'를 사용합니다."
+    },
+    {
+        "question": "Please ____ the presentation.",
+        "options": [
+            "prepare",
+            "eat",
+            "buy"
+        ],
+        "answer": "prepare",
+        "explanation": "발표를 준비할 때 'prepare'를 사용합니다."
+    },
+    {
+        "question": "We need to ____ the schedule.",
+        "options": [
+            "check",
+            "cook",
+            "clean"
+        ],
+        "answer": "check",
+        "explanation": "일정을 확인할 때 'check'를 사용합니다."
+    },
+    {
+        "question": "Let's ____ the main points.",
+        "options": [
+            "discuss",
+            "dance",
+            "drive"
+        ],
+        "answer": "discuss",
+        "explanation": "요점을 논의할 때 'discuss'를 사용합니다."
+    },
+    {
+        "question": "The ____ is very important.",
+        "options": [
+            "meeting",
+            "movie",
+            "music"
+        ],
+        "answer": "meeting",
+        "explanation": "회의가 중요할 때 'meeting'을 사용합니다."
+    },
+    {
+        "question": "Please ____ on time.",
+        "options": [
+            "arrive",
+            "sleep",
+            "eat"
+        ],
+        "answer": "arrive",
+        "explanation": "시간에 맞춰 도착할 때 'arrive'를 사용합니다."
+    },
+    {
+        "question": "We will ____ the decision tomorrow.",
+        "options": [
+            "make",
+            "take",
+            "give"
+        ],
+        "answer": "make",
+        "explanation": "결정을 내릴 때 'make a decision'을 사용합니다."
+    },
+    {
+        "question": "The ____ room is ready.",
+        "options": [
+            "conference",
+            "kitchen",
+            "bedroom"
+        ],
+        "answer": "conference",
+        "explanation": "회의실을 말할 때 'conference room'을 사용합니다."
+    }
+]

@@ -1,0 +1,102 @@
+[
+    {
+        "question": "The purpose of this meeting is to ____ a consensus.",
+        "options": [
+            "reach",
+            "make",
+            "find"
+        ],
+        "answer": "reach",
+        "explanation": "'Reach a consensus'는 합의에 도달한다는 의미입니다."
+    },
+    {
+        "question": "We need to consider the long-term ____ of this decision.",
+        "options": [
+            "implications",
+            "applications",
+            "complications"
+        ],
+        "answer": "implications",
+        "explanation": "'Implications'는 결정이 가져올 장기적인 영향을 의미합니다."
+    },
+    {
+        "question": "The proposal requires ____ analysis.",
+        "options": [
+            "comprehensive",
+            "simple",
+            "quick"
+        ],
+        "answer": "comprehensive",
+        "explanation": "제안서에는 포괄적인 분석이 필요합니다."
+    },
+    {
+        "question": "We must ____ all stakeholders in this process.",
+        "options": [
+            "engage",
+            "exclude",
+            "ignore"
+        ],
+        "answer": "engage",
+        "explanation": "모든 이해관계자를 참여시킬 때 'engage'를 사용합니다."
+    },
+    {
+        "question": "The initiative aims to ____ operational efficiency.",
+        "options": [
+            "optimize",
+            "minimize",
+            "eliminate"
+        ],
+        "answer": "optimize",
+        "explanation": "운영 효율성을 최적화할 때 'optimize'를 사용합니다."
+    },
+    {
+        "question": "Let's ____ the strategic objectives.",
+        "options": [
+            "articulate",
+            "obscure",
+            "confuse"
+        ],
+        "answer": "articulate",
+        "explanation": "전략적 목표를 명확히 표현할 때 'articulate'를 사용합니다."
+    },
+    {
+        "question": "The framework will ____ sustainable growth.",
+        "options": [
+            "facilitate",
+            "hinder",
+            "prevent"
+        ],
+        "answer": "facilitate",
+        "explanation": "지속 가능한 성장을 촉진할 때 'facilitate'를 사용합니다."
+    },
+    {
+        "question": "We need to ____ market dynamics carefully.",
+        "options": [
+            "evaluate",
+            "ignore",
+            "guess"
+        ],
+        "answer": "evaluate",
+        "explanation": "시장 역학을 신중히 평가할 때 'evaluate'를 사용합니다."
+    },
+    {
+        "question": "The methodology should be ____.",
+        "options": [
+            "rigorous",
+            "casual",
+            "random"
+        ],
+        "answer": "rigorous",
+        "explanation": "방법론은 엄밀해야 합니다."
+    },
+    {
+        "question": "Let's ____ the competitive landscape.",
+        "options": [
+            "assess",
+            "ignore",
+            "avoid"
+        ],
+        "answer": "assess",
+        "explanation": "경쟁 환경을 평가할 때 'assess'를 사용합니다."
+    }
+]

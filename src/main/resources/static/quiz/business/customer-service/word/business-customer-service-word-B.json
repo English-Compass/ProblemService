@@ -1,0 +1,22 @@
+[
+    {
+        "question": "We will ____ the issue as soon as possible.",
+        "options": [
+            "investigate",
+            "ignore",
+            "forget"
+        ],
+        "answer": "investigate",
+        "explanation": "'Investigate'는 문제를 조사하겠다는 의미입니다."
+    },
+    {
+        "question": "We offer a full ____ if you are not satisfied.",
+        "options": [
+            "refund",
+            "discount",
+            "exchange"
+        ],
+        "answer": "refund",
+        "explanation": "'Refund'는 환불을 의미합니다."
+    }
+]

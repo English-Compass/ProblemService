@@ -1,0 +1,102 @@
+[
+    {
+        "question": "Let's *go over* the main points.",
+        "options": [
+            "review",
+            "skip",
+            "discuss"
+        ],
+        "answer": "review",
+        "explanation": "'Go over'는 검토하자는 의미입니다."
+    },
+    {
+        "question": "Can you *take notes* during the meeting?",
+        "options": [
+            "write down what is said",
+            "speak in the meeting",
+            "leave the meeting"
+        ],
+        "answer": "write down what is said",
+        "explanation": "'Take notes'는 회의 내용을 필기하라는 의미입니다."
+    },
+    {
+        "question": "Please *speak up* if you have questions.",
+        "options": [
+            "talk louder",
+            "be quiet",
+            "leave"
+        ],
+        "answer": "talk louder",
+        "explanation": "'Speak up'은 더 크게 말하라는 의미입니다."
+    },
+    {
+        "question": "Let's *move on* to the next topic.",
+        "options": [
+            "continue to",
+            "return to",
+            "stop at"
+        ],
+        "answer": "continue to",
+        "explanation": "'Move on'은 다음으로 넘어가자는 의미입니다."
+    },
+    {
+        "question": "Can you *fill me in* on the details?",
+        "options": [
+            "tell me about",
+            "leave me out",
+            "forget about"
+        ],
+        "answer": "tell me about",
+        "explanation": "'Fill me in'은 정보를 알려달라는 의미입니다."
+    },
+    {
+        "question": "We need to *work out* the problems.",
+        "options": [
+            "solve",
+            "create",
+            "ignore"
+        ],
+        "answer": "solve",
+        "explanation": "'Work out'은 문제를 해결한다는 의미입니다."
+    },
+    {
+        "question": "Please *hold on* for a moment.",
+        "options": [
+            "wait",
+            "continue",
+            "leave"
+        ],
+        "answer": "wait",
+        "explanation": "'Hold on'은 잠시 기다리라는 의미입니다."
+    },
+    {
+        "question": "Let's *wrap up* the meeting.",
+        "options": [
+            "finish",
+            "start",
+            "continue"
+        ],
+        "answer": "finish",
+        "explanation": "'Wrap up'은 마무리하자는 의미입니다."
+    },
+    {
+        "question": "Can you *bring up* that issue?",
+        "options": [
+            "mention",
+            "forget",
+            "hide"
+        ],
+        "answer": "mention",
+        "explanation": "'Bring up'은 이슈를 언급하라는 의미입니다."
+    },
+    {
+        "question": "We should *look into* this matter.",
+        "options": [
+            "investigate",
+            "ignore",
+            "forget"
+        ],
+        "answer": "investigate",
+        "explanation": "'Look into'는 조사하자는 의미입니다."
+    }
+]

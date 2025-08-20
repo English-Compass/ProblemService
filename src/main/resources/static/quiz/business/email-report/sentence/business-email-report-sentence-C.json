@@ -1,0 +1,22 @@
+[
+    {
+        "question": "This is a *gentle reminder* about the deadline.",
+        "options": [
+            "polite way to remind you",
+            "strict warning",
+            "final notice"
+        ],
+        "answer": "polite way to remind you",
+        "explanation": "'Gentle reminder'는 정중하게 마감일을 상기시키는 표현입니다."
+    },
+    {
+        "question": "The data is *preliminary* and subject to change.",
+        "options": [
+            "not final",
+            "accurate",
+            "confidential"
+        ],
+        "answer": "not final",
+        "explanation": "'Preliminary'는 데이터가 아직 확정되지 않았다는 의미입니다."
+    }
+]

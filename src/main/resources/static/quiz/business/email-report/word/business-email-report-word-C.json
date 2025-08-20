@@ -1,0 +1,22 @@
+[
+    {
+        "question": "The report ____ the key findings of our research.",
+        "options": [
+            "summarizes",
+            "tells",
+            "gives"
+        ],
+        "answer": "summarizes",
+        "explanation": "'Summarizes'는 보고서가 연구의 핵심 결과를 요약한다는 의미입니다."
+    },
+    {
+        "question": "We need to ____ the data before making a decision.",
+        "options": [
+            "analyze",
+            "see",
+            "look"
+        ],
+        "answer": "analyze",
+        "explanation": "'Analyze'는 데이터를 분석한다는 의미입니다."
+    }
+]

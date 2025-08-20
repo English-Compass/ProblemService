@@ -1,0 +1,22 @@
+[
+    {
+        "question": "For *your reference*, I have attached the previous report.",
+        "options": [
+            "to help you understand",
+            "for you to read",
+            "because you asked"
+        ],
+        "answer": "to help you understand",
+        "explanation": "'For your reference'는 참고용으로 제공한다는 의미입니다."
+    },
+    {
+        "question": "Please do not *hesitate* to contact me.",
+        "options": [
+            "feel free to",
+            "be afraid to",
+            "forget to"
+        ],
+        "answer": "feel free to",
+        "explanation": "'Do not hesitate to'는 언제든지 편하게 연락하라는 의미입니다."
+    }
+]
