@@ -209,7 +209,9 @@ public class LearningSessionController {
      */
     @GetMapping("/{sessionId}/questions")
     public ResponseEntity<List<SessionQuestion>> getSessionQuestions(@PathVariable String sessionId) {
+        // 1. 세션 ID로 해당 학습 세션에 포함된 모든 문제들을 순서대로 조회
         List<SessionQuestion> sessionQuestions = sessionQuestionService.getSessionQuestions(sessionId);
+        // 2. HTTP 200 OK 상태와 함께 세션-문제 목록 반환
         return ResponseEntity.ok(sessionQuestions);
     }
 
@@ -224,11 +226,15 @@ public class LearningSessionController {
     public ResponseEntity<Void> addQuestionToSession(
             @PathVariable String sessionId,
             @RequestBody Map<String, String> questionData) {
+        // 1. 요청 데이터에서 문제 ID 추출
         String questionId = questionData.get("questionId");
+        // 2. 문제 ID 유효성 검증 (필수 필드 체크)
         if (questionId == null || questionId.trim().isEmpty()) {
             throw new IllegalArgumentException("questionId field is required");
         }
+        // 3. 기존 학습 세션에 새로운 문제 추가
         learningSessionService.addQuestionToSession(sessionId, questionId);
+        // 4. HTTP 201 Created 상태 반환 (문제 추가 성공)
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -243,7 +249,9 @@ public class LearningSessionController {
     public ResponseEntity<Long> getSessionCountByUserIdAndStatus(
             @PathVariable String userId,
             @PathVariable SessionStatus status) {
+        // 1. 사용자 ID와 세션 상태로 필터링하여 해당 세션들의 개수 조회
         Long count = learningSessionService.getSessionCountByUserIdAndStatus(userId, status);
+        // 2. HTTP 200 OK 상태와 함께 세션 개수 반환
         return ResponseEntity.ok(count);
     }
 
@@ -255,7 +263,9 @@ public class LearningSessionController {
      */
     @GetMapping("/user/{userId}/average-progress")
     public ResponseEntity<Double> getAverageProgressByUserId(@PathVariable String userId) {
+        // 1. 사용자 ID로 해당 사용자의 완료된 세션들의 평균 진행률 계산
         Double averageProgress = learningSessionService.getAverageProgressByUserId(userId);
+        // 2. HTTP 200 OK 상태와 함께 평균 진행률 반환 (null인 경우 0.0으로 처리)
         return ResponseEntity.ok(averageProgress != null ? averageProgress : 0.0);
     }
 
@@ -272,7 +282,9 @@ public class LearningSessionController {
             @PathVariable String userId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        // 1. 사용자 ID와 시작/종료 날짜 범위로 해당 기간 내 학습 세션들 조회
         List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByDateRange(userId, startDate, endDate);
+        // 2. HTTP 200 OK 상태와 함께 지정된 기간 내 세션 목록 반환
         return ResponseEntity.ok(sessions);
     }
 
@@ -285,7 +297,9 @@ public class LearningSessionController {
      */
     @PostMapping("/practice")
     public ResponseEntity<LearningSessionResponseDto> createPracticeSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
+        // 1. 검증된 데이터로 연습용 학습 세션 생성
         LearningSessionResponseDto createdSession = learningSessionService.createPracticeSession(createDto);
+        // 2. HTTP 201 Created 상태와 함께 생성된 연습 세션 정보 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
     }
 
@@ -297,6 +311,7 @@ public class LearningSessionController {
      */
     @PostMapping("/review")
     public ResponseEntity<LearningSessionResponseDto> createReviewSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
+        // 1. 복습 세션 생성 기능 미구현 상태
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
@@ -308,6 +323,7 @@ public class LearningSessionController {
      */
     @PostMapping("/wrong-answer")
     public ResponseEntity<LearningSessionResponseDto> createWrongAnswerSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
+        // 1. 오답 세션 생성 기능 미구현 상태
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 }
