@@ -96,7 +96,9 @@ public class LearningSessionController {
     public ResponseEntity<LearningSessionResponseDto> updateLearningSession(
             @PathVariable String sessionId,
             @Valid @RequestBody LearningSessionUpdateDto updateDto) {
+        // 1. 세션 ID와 검증된 업데이트 데이터로 기존 학습 세션 정보 수정
         LearningSessionResponseDto updatedSession = learningSessionService.updateLearningSession(sessionId, updateDto);
+        // 2. HTTP 200 OK 상태와 함께 업데이트된 세션 정보 반환
         return ResponseEntity.ok(updatedSession);
     }
 
@@ -108,7 +110,9 @@ public class LearningSessionController {
      */
     @DeleteMapping("/{sessionId}")
     public ResponseEntity<Void> deleteLearningSession(@PathVariable String sessionId) {
+        // 1. 세션 ID로 해당 학습 세션을 데이터베이스에서 삭제
         learningSessionService.deleteLearningSession(sessionId);
+        // 2. HTTP 204 No Content 상태 반환 (삭제 성공, 반환할 내용 없음)
         return ResponseEntity.noContent().build();
     }
 
@@ -123,7 +127,9 @@ public class LearningSessionController {
     public ResponseEntity<List<LearningSessionResponseDto>> getLearningSessionsByUserIdAndStatus(
             @PathVariable String userId,
             @PathVariable SessionStatus status) {
+        // 1. 사용자 ID와 세션 상태로 필터링하여 해당하는 학습 세션들 조회
         List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndStatus(userId, status);
+        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 세션 목록 반환
         return ResponseEntity.ok(sessions);
     }
 
@@ -138,7 +144,9 @@ public class LearningSessionController {
     public ResponseEntity<List<LearningSessionResponseDto>> getLearningSessionsByUserIdAndType(
             @PathVariable String userId,
             @PathVariable SessionType sessionType) {
+        // 1. 사용자 ID와 세션 유형으로 필터링하여 해당하는 학습 세션들 조회
         List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndType(userId, sessionType);
+        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 세션 목록 반환
         return ResponseEntity.ok(sessions);
     }
 
