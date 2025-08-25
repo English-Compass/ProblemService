@@ -23,7 +23,6 @@ public class QuestionAnswerResponseDto {
     private LocalDateTime answeredAt;
     private Integer solveCount;
     
-    // Question details for response
     private String questionText;
     private String optionA;
     private String optionB;

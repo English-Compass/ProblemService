@@ -27,7 +27,6 @@ public class QuestionResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
-    // Fields for backward compatibility with static JSON files
     private String level;
     private String option1;
     private String option2;
