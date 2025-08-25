@@ -311,8 +311,10 @@ public class LearningSessionController {
      */
     @PostMapping("/review")
     public ResponseEntity<LearningSessionResponseDto> createReviewSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 복습 세션 생성 기능 미구현 상태
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        // 1. 검증된 데이터로 복습용 학습 세션 생성
+        LearningSessionResponseDto createdSession = learningSessionService.createReviewSession(createDto);
+        // 2. HTTP 201 Created 상태와 함께 생성된 복습 세션 정보 반환
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
     }
 
     /**
@@ -323,7 +325,9 @@ public class LearningSessionController {
      */
     @PostMapping("/wrong-answer")
     public ResponseEntity<LearningSessionResponseDto> createWrongAnswerSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 오답 세션 생성 기능 미구현 상태
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        // 1. 검증된 데이터로 오답노트용 학습 세션 생성
+        LearningSessionResponseDto createdSession = learningSessionService.createWrongAnswerSession(createDto);
+        // 2. HTTP 201 Created 상태와 함께 생성된 오답노트 세션 정보 반환
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
     }
 }

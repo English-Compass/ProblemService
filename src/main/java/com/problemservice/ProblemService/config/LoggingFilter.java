@@ -4,7 +4,6 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -18,7 +17,6 @@ import java.nio.charset.StandardCharsets;
  * 출력: 로깅된 HTTP 요청/응답 정보
  */
 @Slf4j
-@Component
 public class LoggingFilter implements Filter {
 
     /**

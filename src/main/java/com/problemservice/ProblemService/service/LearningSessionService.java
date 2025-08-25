@@ -359,6 +359,68 @@ public class LearningSessionService {
         return selectedQuestions;
     }
 
+    /**
+     * 복습 세션을 생성합니다
+     * 단계: 1) 세션 ID 생성 2) 복습 세션 엔티티 생성 3) 복습용 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
+     * 입력: 복습 세션 생성 DTO
+     * 출력: 생성된 복습 세션의 응답 DTO
+     */
+    @Transactional
+    public LearningSessionResponseDto createReviewSession(LearningSessionCreateDto createDto) {
+        // TODO: 복습 세션 생성 로직 구현
+        // 1. 사용자가 이전에 학습한 문제들 중 복습이 필요한 문제 선택
+        // 2. 복습 우선순위 알고리즘 적용 (학습 시점, 정답률 등 고려)
+        // 3. 복습 세션 생성 및 문제 할당
+        return null;
+    }
+
+    /**
+     * 오답노트 세션을 생성합니다  
+     * 단계: 1) 세션 ID 생성 2) 오답 세션 엔티티 생성 3) 틀린 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
+     * 입력: 오답노트 세션 생성 DTO
+     * 출력: 생성된 오답노트 세션의 응답 DTO
+     */
+    @Transactional
+    public LearningSessionResponseDto createWrongAnswerSession(LearningSessionCreateDto createDto) {
+        // TODO: 오답노트 세션 생성 로직 구현
+        // 1. 사용자가 이전에 틀린 문제들 조회
+        // 2. 틀린 횟수, 마지막 오답 시점 등을 고려한 우선순위 결정
+        // 3. 오답노트 세션 생성 및 문제 할당
+        return null;
+    }
+
+    /**
+     * 복습용 문제를 선택하는 메서드
+     * 단계: 1) 사용자 학습 기록 조회 2) 복습 우선순위 계산 3) 복습 대상 문제 선별
+     * 입력: 사용자 ID, 카테고리 목록, 문제 개수
+     * 출력: 복습용으로 선택된 문제 목록
+     * 조건: 학습한지 일정 기간이 지난 문제, 정답률이 낮은 문제 우선 선택
+     */
+    private List<Question> selectQuestionsForReview(String userId, List<String> categories, int questionCount) {
+        // TODO: 복습 문제 선택 로직 구현
+        // 1. 사용자의 이전 학습 세션에서 정답을 맞힌 문제들 조회
+        // 2. 학습 시점, 난이도, 정답률 등을 고려한 복습 우선순위 계산
+        // 3. 망각곡선 이론을 적용한 복습 타이밍 고려
+        // 4. 카테고리별 균형있는 문제 선택
+        return new ArrayList<>();
+    }
+
+    /**
+     * 오답노트용 문제를 선택하는 메서드
+     * 단계: 1) 사용자 오답 기록 조회 2) 오답 우선순위 계산 3) 오답 대상 문제 선별  
+     * 입력: 사용자 ID, 카테고리 목록, 문제 개수
+     * 출력: 오답노트용으로 선택된 문제 목록
+     * 조건: 틀린 횟수가 많은 문제, 최근에 틀린 문제 우선 선택
+     */
+    private List<Question> selectQuestionsForWrongAnswer(String userId, List<String> categories, int questionCount) {
+        // TODO: 오답노트 문제 선택 로직 구현  
+        // 1. 사용자가 틀린 문제들의 기록 조회 (QuestionAnswer 엔티티 활용)
+        // 2. 틀린 횟수, 마지막 오답 시점, 문제 난이도 등을 고려한 우선순위 계산
+        // 3. 반복해서 틀리는 문제에 더 높은 가중치 부여
+        // 4. 카테고리별 균형있는 문제 선택
+        return new ArrayList<>();
+    }
+
     private void publishSessionCompletedEvent(LearningSession session) {
         SessionCompletedEventDto event = SessionCompletedEventDto.builder()
                 .sessionId(session.getSessionId())
