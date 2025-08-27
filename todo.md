@@ -1,53 +1,54 @@
-1) 문제 생성 & 풀이 & 할당 서비스
- - 생성 : 미리 여러 종류, 난이도 문제 생성 (주기적, 배치), 풀이 횟수가 일정 횟수를 넘은 문제 expire 및 새 문제 생성
- - 첫 풀이 문제 할당 : 학습자가 선택한 난이도에 대해 3개 유형별 문제를 골고루 할당
- - 할당 및 풀이 : 사용자 학습 수행 시 문제 데이터 응답 및 풀이 결과 수신
- - 복습 문제 할당 : 오답문제 수 결정, 취약 영역 문제 편성
+1. 주요 분석 결과 데이터
+CompleteLearningAnalysis (전체 학습 완료 분석)
+sessionId: 학습 세션 ID
+userId: 사용자 ID
+totalDuration: 총 학습 시간 (초)
+averageTimePerQuestion: 문제당 평균 응답 시간 (초)
+wrongQuestionIds: 오답 문제 ID 목록
+weakQuestionTypes: 취약한 문제 유형 목록
+questionTypePerformances: 문제 유형별 상세 성과
+overallLearningPattern: 전체 학습 패턴
+consistencyScore: 학습 일관성 점수 (0-100)
+recommendedReviewQuestions: 복습 추천 문제 ID 목록
+learningSuggestion: 개인화된 학습 제안 메시지
+focusAreas: 집중 학습 영역
+estimatedReviewTime: 예상 복습 시간 (분)
+2. 학습 패턴 분류
+개별 학습 패턴 (determineLearningPattern)
+FAST_LEARNER: 빠른 학습자 (평균 시간 < 20초)
+MODERATE_LEARNER: 보통 속도 학습자 (평균 시간 20-40초)
+CAREFUL_LEARNER: 신중한 학습자 (평균 시간 40-60초)
+SLOW_LEARNER: 느린 학습자 (평균 시간 60초+)
+전체 학습 패턴 (determineOverallLearningPattern)
+EXCELLENT: 우수한 학습자 (정답률 80%+, 빠른 속도)
+ACCURATE_BUT_SLOW: 정확하지만 느린 학습자 (정답률 80%+, 느린 속도)
+GOOD: 좋은 학습자 (정답률 60%+, 적당한 속도)
+GOOD_BUT_SLOW: 좋지만 느린 학습자 (정답률 60%+, 느린 속도)
+AVERAGE: 평균적인 학습자 (정답률 40%+)
+NEEDS_IMPROVEMENT: 개선이 필요한 학습자 (정답률 < 40%)
+NO_DATA: 데이터 없음
+3. 문제 유형별 성과 데이터
+QuestionTypePerformance
+questionType: 문제 유형 (FILL_IN_THE_BLANK, SYNONYM_SELECTION, PRONUNCIATION_RECOGNITION)
+totalQuestions: 총 문제 수
+correctAnswers: 정답 수
+accuracy: 정답률
+isWeakArea: 취약 영역 여부 (정답률 < 70%)
+averageTime: 평균 응답 시간
+difficulty: 난이도
+4. 학습 진행 분석 데이터
+LearningProgressAnalysis
+sessionId: 세션 ID
+userId: 사용자 ID
+questionId: 문제 ID
+isCorrect: 정답 여부
+timeSpent: 걸린 시간
+currentQuestionNumber: 현재 문제 번호
+totalQuestions: 총 문제 수
+correctAnswers: 정답 수
+wrongAnswers: 오답 수
+progressPercentage: 진행률
+averageTimePerQuestion: 평균 시간
+learningPattern: 학습 패턴
 
-[question]
-- id
-- question_type (빈칸 추론, 동의어 찾기, 주관식 문제)
-- category (여행, 비즈니스, 일상, 학습)
-- difficulty_level (A-B-C)
-- question_sentence (빈칸 표시, 밑줄 표시, 표시 없음)
-   "I am very __________!"
-   "I am very _powerful_!"
-   "I have 3 legs and 4 arms, who am I?"
-- answer_options (빈칸 정답, 동의어 정답, 정답 없음)
-- answer_written (주관식 정답)
-- explanation
-
-[question_answer]
-- id
-- user_id
-- timestamp
-- session_type (main, repeat, incorrect)
-- solve_count
-- answer_submitted
-- is_correct
-
-[learing_session]
-- id
-- user_id
-- session_status (created, learning, completed)
-- created_at
-- updated_at
-- completed_at
-- session_question_id
-- correct_answers
-
-[session_question]
-- id
-- session_id
-- question_id
-- question_order
-
-2) Learning Analysis 서비스
- - 전체 사용자 결과 통계 : 문제 풀이 결과에 대해서 전체 통계 수행
- - 사용자별 결과 통계
-    1) SQL 집계 쿼리 (group by) 개발
-    2) 집계 결과에 대한 View 작성 (매번 연산이 절약됨)
- - 사용자가 학습 완료한 문제를 분석 : 사용자 단위로만 SQL 쿼리 수행
- - 통계 분석 수행 결과 데이터 제공 : 전체 사용자의 문제 풀이 통계가 사용자 인사이트에 비교 제시 필요
-
-DB 스키마 및 더미데이터 협의 및 공유해서 개발!
+이 형식을 바탕으로 문제 할당 로직 작성 및 수정

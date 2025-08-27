@@ -56,4 +56,25 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
      * 출력: 카테고리 목록 중 하나에 속하고 해당 난이도인 문제 목록
      */
     List<Question> findByMajorCategoryInAndDifficultyLevel(List<String> majorCategories, Integer difficultyLevel);
+    
+    /**
+     * 문제 ID 목록과 카테고리로 조회
+     * 입력: 문제 ID 목록과 주요 카테고리 목록
+     * 출력: ID 목록에 있고 카테고리 목록 중 하나에 속하는 문제 목록
+     */
+    List<Question> findByQuestionIdInAndMajorCategoryIn(List<String> questionIds, List<String> majorCategories);
+    
+    /**
+     * 여러 주요 카테고리로 조회
+     * 입력: 주요 카테고리 목록
+     * 출력: 카테고리 목록 중 하나에 속하는 모든 문제 목록
+     */
+    List<Question> findByMajorCategoryIn(List<String> majorCategories);
+    
+    /**
+     * 주요 카테고리와 문제 유형으로 조회
+     * 입력: 주요 카테고리 목록과 문제 유형
+     * 출력: 카테고리 목록 중 하나에 속하고 해당 유형인 문제 목록
+     */
+    List<Question> findByMajorCategoryInAndQuestionType(List<String> majorCategories, String questionType);
 }

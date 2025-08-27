@@ -275,7 +275,3 @@ FROM learning_sessions ls
 JOIN question_answer qa ON ls.session_id = qa.session_id
 JOIN question q ON qa.question_id = q.question_id
 GROUP BY ls.user_id, q.difficulty_level;
-
--- =====================================================
--- DDL 스크립트 완료
--- =====================================================

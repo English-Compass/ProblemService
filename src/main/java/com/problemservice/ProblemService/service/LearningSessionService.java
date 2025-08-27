@@ -9,6 +9,7 @@ import com.problemservice.ProblemService.model.entity.LearningSession.SessionSta
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
+import com.problemservice.ProblemService.model.enums.Difficulty;
 import com.problemservice.ProblemService.repository.LearningSessionRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +44,8 @@ public class LearningSessionService {
     private final EventPublisherService eventPublisherService;
     // 세션-문제 연관관계 관리를 위한 서비스
     private final SessionQuestionService sessionQuestionService;
+    // 최적화된 문제 할당을 위한 서비스
+    private final QuestionAssignmentService questionAssignmentService;
 
     /**
      * 새로운 학습 세션 생성
@@ -274,13 +280,26 @@ public class LearningSessionService {
                 .startedAt(LocalDateTime.now())
                 .build();
 
-        Integer userLevel = extractUserLevel(createDto.getUserId());
+        // 사용자 난이도 설정 추출 (기본값: A)
+        Difficulty userDifficulty = extractUserDifficulty(createDto);
         
+        // 최적화된 문제 할당 서비스를 통한 문제 선택
         List<String> selectedCategories = createDto.getCategories();
-        List<Question> availableQuestions = getUnsolvedQuestionsByUserAndCategories(
-                createDto.getUserId(), selectedCategories, userLevel);
+        List<Question> selectedQuestions = questionAssignmentService.selectOptimalQuestions(
+                createDto.getUserId(), 
+                selectedCategories, 
+                10, // 기본 문제 수
+                SessionType.PRACTICE,
+                userDifficulty
+        );
         
-        List<Question> selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+        // 선택된 문제가 없으면 기존 로직으로 폴백
+        if (selectedQuestions.isEmpty()) {
+            Integer userLevel = extractUserLevel(createDto.getUserId());
+            List<Question> availableQuestions = getUnsolvedQuestionsByUserAndCategories(
+                    createDto.getUserId(), selectedCategories, userLevel);
+            selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+        }
         
         session.setTotalQuestions(selectedQuestions.size());
         LearningSession savedSession = learningSessionRepository.save(session);
@@ -297,6 +316,18 @@ public class LearningSessionService {
 
     private Integer extractUserLevel(String userId) {
         return 1;
+    }
+    
+    /**
+     * 사용자 난이도 설정 추출
+     * TODO: 사용자 테이블에서 실제 난이도 설정을 조회하도록 구현
+     * @param createDto 세션 생성 DTO
+     * @return 사용자 선호 난이도 (기본값: A)
+     */
+    private Difficulty extractUserDifficulty(LearningSessionCreateDto createDto) {
+        // TODO: 데이터베이스에서 사용자의 난이도 설정을 조회
+        // 현재는 기본값으로 A(초급) 반환
+        return Difficulty.A;
     }
 
     /**
@@ -361,32 +392,104 @@ public class LearningSessionService {
 
     /**
      * 복습 세션을 생성합니다
-     * 단계: 1) 세션 ID 생성 2) 복습 세션 엔티티 생성 3) 복습용 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
+     * Kafka 이벤트로 받은 분석 데이터의 추천 복습 문제를 활용하여 최적화된 복습 세션 생성
+     * 단계: 1) 세션 ID 생성 2) 복습 세션 엔티티 생성 3) 분석 기반 복습 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
      * 입력: 복습 세션 생성 DTO
      * 출력: 생성된 복습 세션의 응답 DTO
      */
     @Transactional
     public LearningSessionResponseDto createReviewSession(LearningSessionCreateDto createDto) {
-        // TODO: 복습 세션 생성 로직 구현
-        // 1. 사용자가 이전에 학습한 문제들 중 복습이 필요한 문제 선택
-        // 2. 복습 우선순위 알고리즘 적용 (학습 시점, 정답률 등 고려)
-        // 3. 복습 세션 생성 및 문제 할당
-        return null;
+        String sessionId = UUID.randomUUID().toString();
+        
+        LearningSession session = LearningSession.builder()
+                .sessionId(sessionId)
+                .userId(createDto.getUserId())
+                .sessionType(SessionType.REVIEW)
+                .sessionMetadata(createDto.getSessionMetadata())
+                .status(SessionStatus.STARTED)
+                .startedAt(LocalDateTime.now())
+                .build();
+
+        // 사용자 난이도 설정 추출
+        Difficulty userDifficulty = extractUserDifficulty(createDto);
+        
+        // 분석 데이터 기반 복습 문제 선택
+        List<String> selectedCategories = createDto.getCategories();
+        List<Question> selectedQuestions = questionAssignmentService.selectOptimalQuestions(
+                createDto.getUserId(), 
+                selectedCategories, 
+                15, // 복습 세션 기본 문제 수
+                SessionType.REVIEW,
+                userDifficulty
+        );
+        
+        // 선택된 문제가 없으면 기존 로직으로 폴백
+        if (selectedQuestions.isEmpty()) {
+            selectedQuestions = selectQuestionsForReview(createDto.getUserId(), selectedCategories, 15);
+        }
+        
+        session.setTotalQuestions(selectedQuestions.size());
+        LearningSession savedSession = learningSessionRepository.save(session);
+        
+        if (!selectedQuestions.isEmpty()) {
+            List<String> questionIds = selectedQuestions.stream()
+                    .map(Question::getQuestionId)
+                    .collect(Collectors.toList());
+            sessionQuestionService.createSessionQuestions(sessionId, questionIds);
+        }
+
+        return convertToResponseDto(savedSession);
     }
 
     /**
      * 오답노트 세션을 생성합니다  
-     * 단계: 1) 세션 ID 생성 2) 오답 세션 엔티티 생성 3) 틀린 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
+     * Kafka 이벤트로 받은 분석 데이터의 오답 문제를 활용하여 최적화된 오답노트 세션 생성
+     * 단계: 1) 세션 ID 생성 2) 오답 세션 엔티티 생성 3) 분석 기반 오답 문제 선택 4) 세션-문제 연결 5) 응답 DTO 변환
      * 입력: 오답노트 세션 생성 DTO
      * 출력: 생성된 오답노트 세션의 응답 DTO
      */
     @Transactional
     public LearningSessionResponseDto createWrongAnswerSession(LearningSessionCreateDto createDto) {
-        // TODO: 오답노트 세션 생성 로직 구현
-        // 1. 사용자가 이전에 틀린 문제들 조회
-        // 2. 틀린 횟수, 마지막 오답 시점 등을 고려한 우선순위 결정
-        // 3. 오답노트 세션 생성 및 문제 할당
-        return null;
+        String sessionId = UUID.randomUUID().toString();
+        
+        LearningSession session = LearningSession.builder()
+                .sessionId(sessionId)
+                .userId(createDto.getUserId())
+                .sessionType(SessionType.WRONG_ANSWER)
+                .sessionMetadata(createDto.getSessionMetadata())
+                .status(SessionStatus.STARTED)
+                .startedAt(LocalDateTime.now())
+                .build();
+
+        // 사용자 난이도 설정 추출
+        Difficulty userDifficulty = extractUserDifficulty(createDto);
+        
+        // 분석 데이터 기반 오답 문제 선택
+        List<String> selectedCategories = createDto.getCategories();
+        List<Question> selectedQuestions = questionAssignmentService.selectOptimalQuestions(
+                createDto.getUserId(), 
+                selectedCategories, 
+                12, // 오답노트 세션 기본 문제 수
+                SessionType.WRONG_ANSWER,
+                userDifficulty
+        );
+        
+        // 선택된 문제가 없으면 기존 로직으로 폴백
+        if (selectedQuestions.isEmpty()) {
+            selectedQuestions = selectQuestionsForWrongAnswer(createDto.getUserId(), selectedCategories, 12);
+        }
+        
+        session.setTotalQuestions(selectedQuestions.size());
+        LearningSession savedSession = learningSessionRepository.save(session);
+        
+        if (!selectedQuestions.isEmpty()) {
+            List<String> questionIds = selectedQuestions.stream()
+                    .map(Question::getQuestionId)
+                    .collect(Collectors.toList());
+            sessionQuestionService.createSessionQuestions(sessionId, questionIds);
+        }
+
+        return convertToResponseDto(savedSession);
     }
 
     /**
