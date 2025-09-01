@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (0)",
+        "question": "I need to buy some _____ for dinner.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "groceries",
+            "books",
+            "clothes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "groceries",
+        "explanation": "'Groceries'는 식료품을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (1)",
+        "question": "The _____ is too long.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "price",
+            "food",
+            "queue"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "queue",
+        "explanation": "'Queue'는 줄을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (2)",
+        "question": "Can I pay by _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "time",
+            "card",
+            "song"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "card",
+        "explanation": "'Card'는 카드를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (3)",
+        "question": "This apple is very _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "old",
+            "fresh"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fresh",
+        "explanation": "'Fresh'는 신선한을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (4)",
+        "question": "Where is the _____ section?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "quick",
+            "dairy",
+            "happy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "dairy",
+        "explanation": "'Dairy'는 유제품을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (5)",
+        "question": "I need to buy some _____ for dinner.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "groceries",
+            "clothes",
+            "books"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "groceries",
+        "explanation": "'Groceries'는 식료품을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (6)",
+        "question": "The _____ is too long.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "queue",
+            "price",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "queue",
+        "explanation": "'Queue'는 줄을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (7)",
+        "question": "Can I pay by _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "time",
+            "card",
+            "song"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "card",
+        "explanation": "'Card'는 카드를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (8)",
+        "question": "This apple is very _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "old",
+            "expensive",
+            "fresh"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fresh",
+        "explanation": "'Fresh'는 신선한을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at A level. (9)",
+        "question": "Where is the _____ section?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "happy",
+            "quick",
+            "dairy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "dairy",
+        "explanation": "'Dairy'는 유제품을 의미합니다."
     }
 ]

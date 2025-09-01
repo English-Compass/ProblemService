@@ -289,6 +289,23 @@ public class QuestionGenerationService {
     }
     
     /**
+     * 답안을 A, B, C에서 1, 2, 3으로 변환
+     * 프론트엔드에는 A, B, C로 표시하지만 데이터베이스에는 1, 2, 3으로 저장
+     */
+    private String convertAnswerToNumber(String letterAnswer) {
+        switch (letterAnswer.toUpperCase()) {
+            case "A":
+                return "1";
+            case "B":
+                return "2";
+            case "C":
+                return "3";
+            default:
+                throw new IllegalArgumentException("유효하지 않은 답안 형식: " + letterAnswer + " (A, B, C만 허용)");
+        }
+    }
+    
+    /**
      * 생성된 문제를 데이터베이스에 저장
      * @param generatedQuestion 생성된 문제 DTO
      * @return 저장된 문제 엔티티
@@ -305,7 +322,7 @@ public class QuestionGenerationService {
             .optionA(generatedQuestion.getOptionA())
             .optionB(generatedQuestion.getOptionB())
             .optionC(generatedQuestion.getOptionC())
-            .correctAnswer(generatedQuestion.getCorrectAnswer())
+            .correctAnswer(convertAnswerToNumber(generatedQuestion.getCorrectAnswer()))
             .majorCategory(generatedQuestion.getMajorCategory())
             .minorCategory(generatedQuestion.getMinorCategory() != null ? 
                 generatedQuestion.getMinorCategory() : generatedQuestion.getMajorCategory())

@@ -1,7 +1,6 @@
 package com.problemservice.ProblemService.service;
 
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysis;
-import com.problemservice.ProblemService.model.dto.DifficultyStrategy;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.enums.Difficulty;
@@ -75,8 +74,11 @@ public class QuestionAssignmentService {
         UserLearningProfile profile = userProfiles.get(userId);
         
         if (profile == null) {
-            // 프로필이 없으면 사용자 설정 기반으로만 선택
+            // 프로필이 없으면 사용자 설정 기반으로만 선택 (연습 세션의 경우 풀지 않은 문제만)
             log.debug("No learning profile found for user: {}, using default strategy", userId);
+            if (sessionType == SessionType.PRACTICE) {
+                return selectDefaultPracticeQuestions(userId, categories, questionCount, userPreferredDifficulty);
+            }
             return selectDefaultQuestions(categories, questionCount, userPreferredDifficulty);
         }
         
@@ -94,65 +96,51 @@ public class QuestionAssignmentService {
     }
     
     /**
-     * 연습 세션용 문제 선택 (분석 데이터 + 사용자 선호도 조합)
+     * 연습 세션용 문제 선택 (사용자가 풀지 않은 문제만, 사용자 선택 난이도와 카테고리만 사용)
      */
     private List<Question> selectPracticeQuestions(UserLearningProfile profile, List<String> categories, 
                                                   int questionCount, Difficulty userPreferredDifficulty) {
         
-        DifficultyStrategy strategy = determineDifficultyStrategy(profile, userPreferredDifficulty);
-        List<Question> selectedQuestions = new ArrayList<>();
+        String userId = profile.getUserId();
+        Integer difficultyLevel = userPreferredDifficulty.getLevel();
         
-        // 1. 취약 영역 우선 할당 (40%)
-        if (!profile.getWeakQuestionTypes().isEmpty()) {
-            int weakAreaCount = (int) (questionCount * 0.4);
-            selectedQuestions.addAll(selectWeakAreaQuestions(profile.getWeakQuestionTypes(), 
-                categories, weakAreaCount, strategy));
-        }
+        // 사용자가 아직 풀지 않은 문제들만 선택 (사용자 선택 카테고리와 난이도만)
+        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
+            userId, categories, difficultyLevel);
         
-        // 2. 나머지는 난이도 전략에 따라 선택
-        int remainingCount = questionCount - selectedQuestions.size();
-        if (remainingCount > 0) {
-            selectedQuestions.addAll(selectQuestionsByDifficultyStrategy(categories, remainingCount, strategy));
-        }
-        
-        return selectedQuestions;
+        // 요청된 개수만큼 반환 (랜덤 순서로)
+        Collections.shuffle(unsolvedQuestions);
+        return unsolvedQuestions.stream()
+            .limit(questionCount)
+            .collect(Collectors.toList());
     }
     
     /**
-     * 복습 세션용 문제 선택 (추천 복습 문제 활용)
+     * 복습 세션용 문제 선택 (취약 유형 우선, 사용자 선택 난이도만 사용)
      */
     private List<Question> selectReviewQuestions(UserLearningProfile profile, List<String> categories, 
                                                 int questionCount, Difficulty userPreferredDifficulty) {
         
         List<Question> reviewQuestions = new ArrayList<>();
         
-        // 1. 추천 복습 문제를 60% 비율로 포함
-        if (!profile.getRecommendedReviewQuestionIds().isEmpty()) {
-            int recommendedCount = Math.min((int)(questionCount * 0.6), profile.getRecommendedReviewQuestionIds().size());
-            List<Question> recommended = questionRepository.findByQuestionIdInAndMajorCategoryIn(
-                new ArrayList<>(profile.getRecommendedReviewQuestionIds()), categories);
-            
-            reviewQuestions.addAll(recommended.stream().limit(recommendedCount).collect(Collectors.toList()));
+        // 1. 취약 유형 문제를 60% 비율로 포함
+        if (!profile.getWeakQuestionTypes().isEmpty()) {
+            int weakCount = (int)(questionCount * 0.6);
+            reviewQuestions.addAll(selectWeakAreaQuestions(profile.getWeakQuestionTypes(), 
+                categories, weakCount, userPreferredDifficulty));
         }
         
-        // 2. 집중 학습 영역의 문제로 나머지 채우기
+        // 2. 나머지는 사용자 선택 난이도로만 선택
         int remainingCount = questionCount - reviewQuestions.size();
-        if (remainingCount > 0 && !profile.getFocusAreas().isEmpty()) {
-            List<String> focusCategories = categories.stream()
-                .filter(profile.getFocusAreas()::contains)
-                .collect(Collectors.toList());
-            
-            if (!focusCategories.isEmpty()) {
-                List<Question> focusQuestions = questionRepository.findByMajorCategoryIn(focusCategories);
-                reviewQuestions.addAll(focusQuestions.stream().limit(remainingCount).collect(Collectors.toList()));
-            }
+        if (remainingCount > 0) {
+            reviewQuestions.addAll(selectQuestionsByUserDifficulty(categories, remainingCount, userPreferredDifficulty));
         }
         
         return reviewQuestions;
     }
     
     /**
-     * 오답노트 세션용 문제 선택 (오답 문제 + 취약 유형)
+     * 오답노트 세션용 문제 선택 (오답 문제 + 취약 유형, 사용자 선택 난이도만 사용)
      */
     private List<Question> selectWrongAnswerQuestions(UserLearningProfile profile, List<String> categories, 
                                                      int questionCount, Difficulty userPreferredDifficulty) {
@@ -168,62 +156,28 @@ public class QuestionAssignmentService {
             wrongAnswerQuestions.addAll(wrongQuestions.stream().limit(wrongCount).collect(Collectors.toList()));
         }
         
-        // 2. 취약 유형의 쉬운 문제로 나머지 채우기 (30%)
+        // 2. 취약 유형 문제로 나머지 채우기 (30%)
         int remainingCount = questionCount - wrongAnswerQuestions.size();
         if (remainingCount > 0 && !profile.getWeakQuestionTypes().isEmpty()) {
             wrongAnswerQuestions.addAll(selectWeakAreaQuestions(profile.getWeakQuestionTypes(), 
-                categories, remainingCount, DifficultyStrategy.of(0.8, 0.2, 0.0))); // 쉬운 문제 위주
+                categories, remainingCount, userPreferredDifficulty));
         }
         
         return wrongAnswerQuestions;
     }
     
     /**
-     * 사용자 설정과 분석 데이터를 결합한 난이도 전략 결정
-     */
-    private DifficultyStrategy determineDifficultyStrategy(UserLearningProfile profile, Difficulty userPreferredDifficulty) {
-        LearningPattern pattern = profile.getLearningPattern();
-        
-        switch (userPreferredDifficulty) {
-            case A: // 초급자 설정
-                if (pattern == LearningPattern.EXCELLENT) {
-                    return DifficultyStrategy.of(0.6, 0.3, 0.1); // 점진적 향상
-                } else if (pattern == LearningPattern.NEEDS_IMPROVEMENT) {
-                    return DifficultyStrategy.of(0.8, 0.2, 0.0); // 기초 집중
-                }
-                return DifficultyStrategy.of(0.7, 0.3, 0.0);
-                
-            case B: // 중급자 설정
-                if (pattern == LearningPattern.EXCELLENT) {
-                    return DifficultyStrategy.of(0.2, 0.5, 0.3); // 도전 증가
-                } else if (pattern == LearningPattern.NEEDS_IMPROVEMENT) {
-                    return DifficultyStrategy.of(0.5, 0.5, 0.0); // 기초 보강 후 중급
-                }
-                return DifficultyStrategy.of(0.3, 0.5, 0.2);
-                
-            case C: // 고급자 설정
-                if (pattern == LearningPattern.EXCELLENT) {
-                    return DifficultyStrategy.of(0.1, 0.3, 0.6); // 최고 난이도 집중
-                } else if (pattern == LearningPattern.NEEDS_IMPROVEMENT) {
-                    return DifficultyStrategy.of(0.4, 0.4, 0.2); // 단계적 접근
-                }
-                return DifficultyStrategy.of(0.2, 0.4, 0.4);
-                
-            default:
-                return DifficultyStrategy.of(0.4, 0.4, 0.2);
-        }
-    }
-    
-    /**
-     * 취약 영역 문제 선택
+     * 취약 영역 문제 선택 (사용자 선택 난이도만 사용)
      */
     private List<Question> selectWeakAreaQuestions(Set<QuestionType> weakTypes, List<String> categories, 
-                                                  int count, DifficultyStrategy strategy) {
+                                                  int count, Difficulty userPreferredDifficulty) {
         List<Question> weakQuestions = new ArrayList<>();
+        Integer difficultyLevel = userPreferredDifficulty.getLevel();
         
         for (QuestionType weakType : weakTypes) {
             String questionTypeStr = weakType.name().toLowerCase();
-            List<Question> typeQuestions = questionRepository.findByMajorCategoryInAndQuestionType(categories, questionTypeStr);
+            List<Question> typeQuestions = questionRepository.findByMajorCategoryInAndQuestionTypeAndDifficultyLevel(
+                categories, questionTypeStr, difficultyLevel);
             
             int questionsPerType = count / weakTypes.size();
             weakQuestions.addAll(typeQuestions.stream().limit(questionsPerType).collect(Collectors.toList()));
@@ -233,47 +187,37 @@ public class QuestionAssignmentService {
     }
     
     /**
-     * 난이도 전략에 따른 문제 선택
+     * 사용자 선택 난이도에 따른 문제 선택
      */
-    private List<Question> selectQuestionsByDifficultyStrategy(List<String> categories, int count, DifficultyStrategy strategy) {
-        List<Question> selectedQuestions = new ArrayList<>();
+    private List<Question> selectQuestionsByUserDifficulty(List<String> categories, int count, Difficulty userPreferredDifficulty) {
+        Integer difficultyLevel = userPreferredDifficulty.getLevel();
+        List<Question> questions = questionRepository.findByMajorCategoryInAndDifficultyLevel(categories, difficultyLevel);
         
-        // A 난이도 문제 선택
-        int easyCount = (int) (count * strategy.getEasyRatio());
-        if (easyCount > 0) {
-            List<Question> easyQuestions = questionRepository.findByMajorCategoryInAndDifficultyLevel(categories, 1);
-            selectedQuestions.addAll(easyQuestions.stream().limit(easyCount).collect(Collectors.toList()));
-        }
-        
-        // B 난이도 문제 선택
-        int mediumCount = (int) (count * strategy.getMediumRatio());
-        if (mediumCount > 0) {
-            List<Question> mediumQuestions = questionRepository.findByMajorCategoryInAndDifficultyLevel(categories, 2);
-            selectedQuestions.addAll(mediumQuestions.stream().limit(mediumCount).collect(Collectors.toList()));
-        }
-        
-        // C 난이도 문제 선택
-        int hardCount = count - selectedQuestions.size(); // 나머지
-        if (hardCount > 0) {
-            List<Question> hardQuestions = questionRepository.findByMajorCategoryInAndDifficultyLevel(categories, 3);
-            selectedQuestions.addAll(hardQuestions.stream().limit(hardCount).collect(Collectors.toList()));
-        }
-        
-        return selectedQuestions;
+        return questions.stream()
+            .limit(count)
+            .collect(Collectors.toList());
     }
     
     /**
-     * 기본 문제 선택 (프로필이 없는 경우)
+     * 기본 연습 세션용 문제 선택 (프로필이 없는 경우, 풀지 않은 문제만)
+     */
+    private List<Question> selectDefaultPracticeQuestions(String userId, List<String> categories, int questionCount, Difficulty userPreferredDifficulty) {
+        Integer difficultyLevel = userPreferredDifficulty.getLevel();
+        
+        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
+            userId, categories, difficultyLevel);
+        
+        Collections.shuffle(unsolvedQuestions);
+        return unsolvedQuestions.stream()
+            .limit(questionCount)
+            .collect(Collectors.toList());
+    }
+    
+    /**
+     * 기본 문제 선택 (프로필이 없는 경우, 사용자 선택 난이도만 사용)
      */
     private List<Question> selectDefaultQuestions(List<String> categories, int questionCount, Difficulty userPreferredDifficulty) {
-        DifficultyStrategy defaultStrategy = DifficultyStrategy.builder()
-            .primaryDifficulty(userPreferredDifficulty)
-            .easyRatio(0.4)
-            .mediumRatio(0.4)
-            .hardRatio(0.2)
-            .build();
-        
-        return selectQuestionsByDifficultyStrategy(categories, questionCount, defaultStrategy);
+        return selectQuestionsByUserDifficulty(categories, questionCount, userPreferredDifficulty);
     }
     
     /**

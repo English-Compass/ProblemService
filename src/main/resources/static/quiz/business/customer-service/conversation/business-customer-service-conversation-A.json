@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Customer: 'I have a problem with my order.'",
+        "options": [
+            "I'm sorry to hear that. Let me help you with your order right away.",
+            "That's not my problem to solve.",
+            "All orders are final and cannot be changed."
+        ],
+        "answer": "I'm sorry to hear that. Let me help you with your order right away.",
+        "explanation": "고객의 문제에 공감하고 즉시 도움을 제공하는 것이 좋은 고객 서비스입니다."
+    },
+    {
+        "question": "Customer: 'Can you give me a discount on this item?'",
+        "options": [
+            "Let me check what discounts are available for you.",
+            "We don't offer any discounts here.",
+            "Why do you think you deserve a discount?"
+        ],
+        "answer": "Let me check what discounts are available for you.",
+        "explanation": "고객의 할인 요청에 대해 적극적으로 확인해보겠다는 자세가 중요합니다."
+    }
+]

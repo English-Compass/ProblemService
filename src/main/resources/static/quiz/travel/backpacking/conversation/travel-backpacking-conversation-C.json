@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Conservation officer: 'This protected ecosystem requires minimal impact camping techniques. Your group size and planned route may affect wildlife migration patterns.'",
+        "options": [
+            "We absolutely respect the conservation priorities here. We're prepared to split into smaller groups, adjust our timing to avoid sensitive periods, and use only established campsites. Could you provide guidance on the least disruptive route alternatives and current wildlife activity patterns?",
+            "We'll be very careful not to disturb anything while we're here.",
+            "We've already planned our entire route and made all our reservations."
+        ],
+        "answer": "We absolutely respect the conservation priorities here. We're prepared to split into smaller groups, adjust our timing to avoid sensitive periods, and use only established campsites. Could you provide guidance on the least disruptive route alternatives and current wildlife activity patterns?",
+        "explanation": "보호구역 관리자의 환경적 우려에 대해 보존 우선순위를 존중한다는 명확한 입장을 표하고, 구체적인 완화 조치들을 제시하며, 전문적인 가이던스를 요청하는 것이 책임감 있는 생태 백패커의 대응입니다."
+    },
+    {
+        "question": "Cultural anthropologist: 'Your presence in this indigenous territory represents cross-cultural contact that can have lasting impacts. How do you approach travel in culturally sensitive areas?'",
+        "options": [
+            "Thank you for raising this crucial consideration. I approach such travel with deep humility, always seeking permission through appropriate community channels, contributing economically in ways the community prefers, and educating myself about cultural protocols beforehand. I'm committed to being a respectful guest rather than just a visitor.",
+            "I always try to be respectful of local customs and traditions.",
+            "Tourism generally helps local economies, so it's beneficial for everyone."
+        ],
+        "answer": "Thank you for raising this crucial consideration. I approach such travel with deep humility, always seeking permission through appropriate community channels, contributing economically in ways the community prefers, and educating myself about cultural protocols beforehand. I'm committed to being a respectful guest rather than just a visitor.",
+        "explanation": "문화인류학자의 민감한 문화적 접촉에 대한 지적에 감사하며, 겸손한 자세, 적절한 허가 절차, 지역사회 선호 방식의 경제적 기여, 사전 문화 교육, 손님으로서의 자세 등 포괄적이고 존중하는 접근 방식을 제시하는 것이 문화적으로 의식 있는 여행자의 대응입니다."
+    }
+]

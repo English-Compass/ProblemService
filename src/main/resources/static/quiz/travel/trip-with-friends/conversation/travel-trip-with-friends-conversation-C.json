@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Travel insurance agent: 'Given your group's planned adventure activities, I recommend comprehensive policies that include medical evacuation and activity-specific coverage.'",
+        "options": [
+            "Thank you for the detailed recommendation. Travel safety is definitely a priority for our group. Let me propose we each research the coverage options you've outlined, and then discuss how to ensure everyone has appropriate protection within their budget.",
+            "We'll each just handle our own insurance decisions individually.",
+            "Insurance seems pretty expensive for what's supposed to be a short trip."
+        ],
+        "answer": "Thank you for the detailed recommendation. Travel safety is definitely a priority for our group. Let me propose we each research the coverage options you've outlined, and then discuss how to ensure everyone has appropriate protection within their budget.",
+        "explanation": "보험 에이전트의 전문적 조언에 감사하며 그룹 안전을 우선시한다는 입장을 명확히 하고, 개인별 예산 상황을 존중하면서도 적절한 보장을 위한 협력적 해결책을 제시하는 것이 성숙한 그룹 여행 조율자의 대응입니다."
+    },
+    {
+        "question": "Cultural expert: 'Your diverse group represents interesting cross-cultural dynamics. How do you navigate different travel styles and decision-making processes while maintaining group cohesion?'",
+        "options": [
+            "That's a very perceptive observation about group dynamics. We've found that open communication about expectations, rotating leadership for different activities based on individual interests and expertise, and building in flexibility for both group and individual experiences helps us honor everyone's travel personality while creating shared meaningful memories.",
+            "We just try to get along and have fun together.",
+            "Everyone learns to adapt when you're traveling in a group."
+        ],
+        "answer": "That's a very perceptive observation about group dynamics. We've found that open communication about expectations, rotating leadership for different activities based on individual interests and expertise, and building in flexibility for both group and individual experiences helps us honor everyone's travel personality while creating shared meaningful memories.",
+        "explanation": "문화 전문가의 그룹 역학에 대한 통찰력 있는 관찰에 대해 인정하며, 기대치 소통, 순환 리더십, 개인과 그룹 경험의 균형 등 구체적이고 성숙한 그룹 관리 전략을 설명하여 다문화적 여행 경험에 대한 깊이 있는 성찰을 보여주는 것이 사회적 통찰력 있는 대응입니다."
+    }
+]

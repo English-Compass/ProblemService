@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (0)",
+        "question": "I need to check my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lunch",
+            "references",
+            "phone"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "references",
+        "explanation": "'References'는 참고문헌을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (1)",
+        "question": "The _____ requires 2000 words.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "movie",
+            "song",
+            "paper"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "paper",
+        "explanation": "'Paper'는 논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (2)",
+        "question": "I'm working on my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "thesis",
+            "lunch",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thesis",
+        "explanation": "'Thesis'는 논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (3)",
+        "question": "The _____ was very challenging.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "movie",
+            "lunch",
+            "exam"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "exam",
+        "explanation": "'Exam'은 시험을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (4)",
+        "question": "I need more _____ for my research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep",
+            "food",
+            "data"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "data",
+        "explanation": "'Data'는 데이터를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (5)",
+        "question": "I need to check my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "phone",
+            "references",
+            "lunch"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "references",
+        "explanation": "'References'는 참고문헌을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (6)",
+        "question": "The _____ requires 2000 words.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "song",
+            "paper",
+            "movie"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "paper",
+        "explanation": "'Paper'는 논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (7)",
+        "question": "I'm working on my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "vacation",
+            "lunch",
+            "thesis"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thesis",
+        "explanation": "'Thesis'는 논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (8)",
+        "question": "The _____ was very challenging.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lunch",
+            "movie",
+            "exam"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "exam",
+        "explanation": "'Exam'은 시험을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at B level. (9)",
+        "question": "I need more _____ for my research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "data",
+            "sleep",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "data",
+        "explanation": "'Data'는 데이터를 의미합니다."
     }
 ]

@@ -19,7 +19,15 @@ import java.time.LocalDateTime;
  * 출력: 데이터베이스에 저장된 영속화된 문제 엔티티
  */
 @Entity
-@Table(name = "question")
+@Table(name = "question",
+    indexes = {
+        @Index(name = "idx_major_category", columnList = "major_category"),
+        @Index(name = "idx_minor_category", columnList = "minor_category"),
+        @Index(name = "idx_difficulty_level", columnList = "difficulty_level"),
+        @Index(name = "idx_question_type", columnList = "question_type"),
+        @Index(name = "idx_category_difficulty", columnList = "major_category, difficulty_level"),
+        @Index(name = "idx_created_at", columnList = "created_at")
+    })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +40,7 @@ public class Question {
     private String questionId;
 
     // 주요 문제 텍스트 내용 - 긴 문제를 위해 TEXT로 저장
-    @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "question_text", nullable = false, length = 2000)
     @NotBlank
     private String questionText;
 
@@ -72,7 +80,7 @@ public class Question {
     private String questionType;
 
     // 정답에 대한 선택적 상세 설명
-    @Column(name = "explanation", columnDefinition = "TEXT")
+    @Column(name = "explanation", length = 2000)
     private String explanation;
 
     // 난이도 등급: 1 (초급/A), 2 (중급/B), 3 (고급/C)

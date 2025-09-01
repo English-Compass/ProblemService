@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Hotel concierge: 'What types of activities would your family be most interested in during your stay?'",
+        "options": [
+            "We have two young children, so we're looking for family-friendly activities like interactive museums or parks. What would you recommend for kids their age?",
+            "We want to do fun things, but nothing too expensive.",
+            "We'll probably just figure out what to do as we go."
+        ],
+        "answer": "We have two young children, so we're looking for family-friendly activities like interactive museums or parks. What would you recommend for kids their age?",
+        "explanation": "가족 구성을 알려주고 구체적인 관심사를 제시하여 맞춤 추천을 받는 것이 좋습니다."
+    },
+    {
+        "question": "Restaurant host: 'Do you need a high chair or booster seat for your little one?'",
+        "options": [
+            "Yes, a high chair would be very helpful. Thank you for offering.",
+            "We don't really need any special accommodations.",
+            "Do you have those kinds of things available here?"
+        ],
+        "answer": "Yes, a high chair would be very helpful. Thank you for offering.",
+        "explanation": "아이를 위한 배려에 감사를 표하고 필요함을 명확히 알리는 것이 적절합니다."
+    }
+]

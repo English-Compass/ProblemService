@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (0)",
+        "question": "The resort offers *supervised* kids' activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "unsupervised",
+            "monitored"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "monitored",
+        "explanation": "'Supervised'는 관리되는을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (1)",
+        "question": "We need *adjoining* rooms for the family.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "connecting",
+            "expensive",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "connecting",
+        "explanation": "'Adjoining'은 인접한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (2)",
+        "question": "The tour *accommodates* families with young children.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "excludes",
+            "provides for",
+            "charges extra for"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "provides for",
+        "explanation": "'Accommodates'는 수용하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (3)",
+        "question": "We prefer *all-inclusive* packages.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive only",
+            "everything included",
+            "nothing included"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "everything included",
+        "explanation": "'All-inclusive'는 모든 것이 포함된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (4)",
+        "question": "The attraction has *height restrictions*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no limits",
+            "size limits",
+            "age limits"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "size limits",
+        "explanation": "'Height restrictions'는 키 제한을 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (5)",
+        "question": "The resort offers *supervised* kids' activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "unsupervised",
+            "monitored",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "monitored",
+        "explanation": "'Supervised'는 관리되는을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (6)",
+        "question": "We need *adjoining* rooms for the family.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separate",
+            "expensive",
+            "connecting"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "connecting",
+        "explanation": "'Adjoining'은 인접한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (7)",
+        "question": "The tour *accommodates* families with young children.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "provides for",
+            "excludes",
+            "charges extra for"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "provides for",
+        "explanation": "'Accommodates'는 수용하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (8)",
+        "question": "We prefer *all-inclusive* packages.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "nothing included",
+            "expensive only",
+            "everything included"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "everything included",
+        "explanation": "'All-inclusive'는 모든 것이 포함된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at B level. (9)",
+        "question": "The attraction has *height restrictions*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no limits",
+            "age limits",
+            "size limits"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "size limits",
+        "explanation": "'Height restrictions'는 키 제한을 의미입니다."
     }
 ]

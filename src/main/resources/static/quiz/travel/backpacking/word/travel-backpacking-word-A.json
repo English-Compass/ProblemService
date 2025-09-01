@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/backpacking at A level. (0)",
+        "question": "I need a new _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "car",
+            "backpack",
+            "house"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "backpack",
+        "explanation": "'Backpack'은 배낭을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (1)",
+        "question": "The _____ is very cheap.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "hostel",
+            "mansion"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hostel",
+        "explanation": "'Hostel'은 호스텔을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (2)",
+        "question": "I'm going on a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "trip",
+            "meeting",
+            "diet"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "trip",
+        "explanation": "'Trip'은 여행을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (3)",
+        "question": "Where can I catch a _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "bus",
+            "cold",
+            "fish"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bus",
+        "explanation": "'Bus'는 버스를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (4)",
+        "question": "I need comfortable _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shoes",
+            "houses",
+            "cars"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shoes",
+        "explanation": "'Shoes'는 신발을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (5)",
+        "question": "I need a new _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "house",
+            "car",
+            "backpack"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "backpack",
+        "explanation": "'Backpack'은 배낭을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (6)",
+        "question": "The _____ is very cheap.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hostel",
+            "restaurant",
+            "mansion"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hostel",
+        "explanation": "'Hostel'은 호스텔을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (7)",
+        "question": "I'm going on a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "meeting",
+            "trip",
+            "diet"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "trip",
+        "explanation": "'Trip'은 여행을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (8)",
+        "question": "Where can I catch a _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cold",
+            "bus",
+            "fish"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bus",
+        "explanation": "'Bus'는 버스를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at A level. (9)",
+        "question": "I need comfortable _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "houses",
+            "cars",
+            "shoes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shoes",
+        "explanation": "'Shoes'는 신발을 의미합니다."
     }
 ]

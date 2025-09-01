@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Professor: 'Your research proposal needs more depth in the methodology section. Can you revise and resubmit by next Friday?'",
+        "options": [
+            "Thank you for the specific feedback. I'll strengthen the methodology section with additional detail on data collection and analysis methods, and I'll have the revision ready by Friday.",
+            "I thought the methodology section was detailed enough already.",
+            "Next Friday seems like a very short deadline for major revisions."
+        ],
+        "answer": "Thank you for the specific feedback. I'll strengthen the methodology section with additional detail on data collection and analysis methods, and I'll have the revision ready by Friday.",
+        "explanation": "교수의 피드백에 감사를 표하고 구체적인 개선 계획을 제시하며 마감일 준수를 약속하는 것이 학술적으로 적절합니다."
+    },
+    {
+        "question": "Study group member: 'I'm struggling with the statistical analysis part of our project. Could you walk me through your approach?'",
+        "options": [
+            "Absolutely. Let me explain my step-by-step approach and share the resources that helped me understand these statistical concepts better.",
+            "The statistical analysis isn't really that complicated once you get it.",
+            "You should probably ask the professor instead of me."
+        ],
+        "answer": "Absolutely. Let me explain my step-by-step approach and share the resources that helped me understand these statistical concepts better.",
+        "explanation": "스터디 그룹에서 어려워하는 동료에게 단계별 설명과 유용한 자료를 제공하겠다는 협력적인 자세가 좋습니다."
+    }
+]

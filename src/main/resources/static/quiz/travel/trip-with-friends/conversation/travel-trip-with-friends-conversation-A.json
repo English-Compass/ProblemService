@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Friend: 'What should we do for dinner tonight?'",
+        "options": [
+            "How about we try that local restaurant we saw earlier? Or we could explore the night market if you prefer.",
+            "I don't really care what we do tonight.",
+            "You can decide since I picked yesterday."
+        ],
+        "answer": "How about we try that local restaurant we saw earlier? Or we could explore the night market if you prefer.",
+        "explanation": "구체적인 제안을 하면서 선택권을 제공하는 것이 좋은 여행 동반자의 자세입니다."
+    },
+    {
+        "question": "Hotel staff: 'Your group has reserved two rooms. Here are all your room keys.'",
+        "options": [
+            "Thank you very much. Could you tell us about the hotel amenities and what time breakfast is served?",
+            "Thanks for the keys. That's all we need.",
+            "Where exactly are these rooms located in the building?"
+        ],
+        "answer": "Thank you very much. Could you tell us about the hotel amenities and what time breakfast is served?",
+        "explanation": "감사 인사와 함께 유용한 정보를 문의하는 것이 적절합니다."
+    }
+]

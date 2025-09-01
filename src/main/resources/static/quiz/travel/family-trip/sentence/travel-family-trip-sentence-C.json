@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (0)",
+        "question": "The vacation *encompasses* educational experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoids",
+            "includes",
+            "excludes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Encompasses'는 포함하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (1)",
+        "question": "We seek *culturally enriching* activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "boring",
+            "educational"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "educational",
+        "explanation": "'Culturally enriching'은 문화적으로 풍요로운을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (2)",
+        "question": "The itinerary *balances* fun and learning.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "combines equally",
+            "separates",
+            "ignores"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combines equally",
+        "explanation": "'Balances'는 균형을 맞추다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (3)",
+        "question": "We need *accessible* facilities for grandparents.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "difficult",
+            "suitable for elderly",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable for elderly",
+        "explanation": "'Accessible'는 접근 가능한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (4)",
+        "question": "The resort *specializes* in family vacations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoids",
+            "charges extra for",
+            "focuses on"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "focuses on",
+        "explanation": "'Specializes'는 전문화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (5)",
+        "question": "The vacation *encompasses* educational experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "excludes",
+            "avoids",
+            "includes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Encompasses'는 포함하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (6)",
+        "question": "We seek *culturally enriching* activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "boring",
+            "expensive",
+            "educational"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "educational",
+        "explanation": "'Culturally enriching'은 문화적으로 풍요로운을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (7)",
+        "question": "The itinerary *balances* fun and learning.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "combines equally",
+            "separates",
+            "ignores"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combines equally",
+        "explanation": "'Balances'는 균형을 맞추다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (8)",
+        "question": "We need *accessible* facilities for grandparents.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "difficult",
+            "expensive",
+            "suitable for elderly"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable for elderly",
+        "explanation": "'Accessible'는 접근 가능한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at C level. (9)",
+        "question": "The resort *specializes* in family vacations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoids",
+            "charges extra for",
+            "focuses on"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "focuses on",
+        "explanation": "'Specializes'는 전문화하다는 의미입니다."
     }
 ]

@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Department head: 'We're considering changes to our curriculum. As a student representative, what feedback do you have about the current program structure?'",
+        "options": [
+            "Thank you for including student perspectives in this important decision. I think the core courses provide a solid foundation, but students would benefit from more practical application opportunities and interdisciplinary electives.",
+            "The curriculum seems fine as it is right now.",
+            "Students always have complaints about something in the program."
+        ],
+        "answer": "Thank you for including student perspectives in this important decision. I think the core courses provide a solid foundation, but students would benefit from more practical application opportunities and interdisciplinary electives.",
+        "explanation": "학생 의견 수렴에 감사를 표하고 현 커리큘럼의 장점을 인정하면서 건설적인 개선 제안을 하는 것이 적절합니다."
+    },
+    {
+        "question": "Faculty member: 'I notice you're interested in our research lab. What specific aspects of our work align with your academic and career goals?'",
+        "options": [
+            "I'm particularly drawn to your work on cognitive behavioral interventions. This aligns perfectly with my goal to pursue clinical psychology and would provide valuable research experience in evidence-based therapeutic approaches.",
+            "Your research lab seems interesting to me.",
+            "I just want to get some research experience somewhere."
+        ],
+        "answer": "I'm particularly drawn to your work on cognitive behavioral interventions. This aligns perfectly with my goal to pursue clinical psychology and would provide valuable research experience in evidence-based therapeutic approaches.",
+        "explanation": "특정 연구 분야에 대한 관심과 그것이 자신의 학업 및 진로 목표와 어떻게 연결되는지 구체적으로 설명하는 것이 좋습니다."
+    }
+]

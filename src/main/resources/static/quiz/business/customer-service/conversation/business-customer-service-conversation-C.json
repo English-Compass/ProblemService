@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Corporate client: 'We're considering terminating our partnership due to recent service disruptions.'",
+        "options": [
+            "I completely understand your concerns. Let me schedule an urgent meeting with our senior team to address these issues comprehensively.",
+            "Contract termination requires 30 days written notice as per our agreement.",
+            "Service disruptions are temporary and will resolve themselves soon."
+        ],
+        "answer": "I completely understand your concerns. Let me schedule an urgent meeting with our senior team to address these issues comprehensively.",
+        "explanation": "기업 고객의 계약 해지 고려에 대해 우려를 완전히 이해한다는 표현과 함께 고위 팀과의 긴급 미팅을 제안하는 것이 적절합니다."
+    },
+    {
+        "question": "Executive: 'I want to discuss implementing a strategic partnership program with your organization.'",
+        "options": [
+            "Absolutely. Let me connect you with our partnership development director who specializes in strategic alliances.",
+            "The manager is currently unavailable for such discussions.",
+            "I can handle all partnership discussions myself without involving others."
+        ],
+        "answer": "Absolutely. Let me connect you with our partnership development director who specializes in strategic alliances.",
+        "explanation": "전략적 파트너십과 같은 고급 비즈니스 문의는 해당 전문가에게 연결해주는 것이 가장 적절합니다."
+    }
+]

@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/attending-class at B level. (0)",
+        "question": "The lecture *covers* important topics.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignores",
+            "includes",
+            "repeats"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Covers'는 다루다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (1)",
+        "question": "I need to *participate* in discussions.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep during",
+            "avoid",
+            "take part"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "take part",
+        "explanation": "'Participate'는 참여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (2)",
+        "question": "The professor *emphasizes* key points.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignores",
+            "stresses",
+            "whispers"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stresses",
+        "explanation": "'Emphasizes'는 강조하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (3)",
+        "question": "Students must *contribute* to group work.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "complain about",
+            "add to"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "add to",
+        "explanation": "'Contribute'는 기여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (4)",
+        "question": "I need to *clarify* my understanding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "confuse",
+            "ignore",
+            "make clear"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "make clear",
+        "explanation": "'Clarify'는 명확히 하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (5)",
+        "question": "The lecture *covers* important topics.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "includes",
+            "ignores",
+            "repeats"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Covers'는 다루다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (6)",
+        "question": "I need to *participate* in discussions.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep during",
+            "take part",
+            "avoid"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "take part",
+        "explanation": "'Participate'는 참여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (7)",
+        "question": "The professor *emphasizes* key points.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "whispers",
+            "ignores",
+            "stresses"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stresses",
+        "explanation": "'Emphasizes'는 강조하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (8)",
+        "question": "Students must *contribute* to group work.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "add to",
+            "complain about"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "add to",
+        "explanation": "'Contribute'는 기여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at B level. (9)",
+        "question": "I need to *clarify* my understanding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "confuse",
+            "make clear"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "make clear",
+        "explanation": "'Clarify'는 명확히 하다는 의미입니다."
     }
 ]

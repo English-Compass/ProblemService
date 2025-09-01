@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/attending-class at C level. (0)",
+        "question": "The _____ requires active participation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "seminar",
+            "gym",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seminar",
+        "explanation": "'Seminar'는 세미나를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (1)",
+        "question": "I need to prepare for the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "presentation",
+            "vacation",
+            "party"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "presentation",
+        "explanation": "'Presentation'은 발표를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (2)",
+        "question": "The course includes _____ activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "interactive",
+            "sleeping"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "interactive",
+        "explanation": "'Interactive'는 상호작용의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (3)",
+        "question": "Students engage in _____ analysis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "musical",
+            "critical",
+            "culinary"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "critical",
+        "explanation": "'Critical'은 비판적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (4)",
+        "question": "The _____ integrates multiple disciplines.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "curriculum",
+            "restaurant",
+            "gym"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "curriculum",
+        "explanation": "'Curriculum'은 교육과정을 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (5)",
+        "question": "The _____ requires active participation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "gym",
+            "restaurant",
+            "seminar"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seminar",
+        "explanation": "'Seminar'는 세미나를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (6)",
+        "question": "I need to prepare for the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "vacation",
+            "party",
+            "presentation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "presentation",
+        "explanation": "'Presentation'은 발표를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (7)",
+        "question": "The course includes _____ activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleeping",
+            "cooking",
+            "interactive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "interactive",
+        "explanation": "'Interactive'는 상호작용의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (8)",
+        "question": "Students engage in _____ analysis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "critical",
+            "culinary",
+            "musical"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "critical",
+        "explanation": "'Critical'은 비판적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at C level. (9)",
+        "question": "The _____ integrates multiple disciplines.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "curriculum",
+            "gym",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "curriculum",
+        "explanation": "'Curriculum'은 교육과정을 의미합니다."
     }
 ]

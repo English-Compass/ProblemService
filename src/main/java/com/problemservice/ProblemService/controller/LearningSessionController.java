@@ -22,63 +22,50 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 학습 세션 관리를 위한 REST API 컨트롤러
- * 학습 세션 생성, 조회, 수정, 삭제 및 진행 상황 관리 기능을 제공
- * 입력: 세션 생성/수정 DTO, 사용자 ID, 세션 상태/유형
- * 출력: 세션 응답 DTO, 페이징된 세션 목록, 통계 데이터
+ * 학습 세션 REST API 컨트롤러
+ * 세션 CRUD, 진행 상황 관리, 통계 조회 기능 제공
  */
 @RestController
 @RequestMapping("/api/learning-sessions")
 @RequiredArgsConstructor
 public class LearningSessionController {
 
-    // 학습 세션 비즈니스 로직 서비스
     private final LearningSessionService learningSessionService;
-    // 세션-문제 연관관계 관리 서비스
     private final SessionQuestionService sessionQuestionService;
 
     /**
-     * 새로운 학습 세션을 생성합니다
-     * 
-     * @param createDto 학습 세션 생성 데이터
-     * @return 생성된 학습 세션 정보
+     * 새로운 학습 세션을 생성하고 문제를 할당
+     * @param createDto 세션 생성 요청 데이터 (사용자 ID, 세션 타입, 메타데이터 포함)
+     * @return 201 CREATED - 생성된 세션 정보와 할당된 문제 수
      */
     @PostMapping
     public ResponseEntity<LearningSessionResponseDto> createLearningSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 발리데이션이 완료된 데이터로 새로운 학습 세션 생성
         LearningSessionResponseDto createdSession = learningSessionService.createLearningSession(createDto);
-        // 2. HTTP 201 Created 상태와 함께 생성된 세션 정보 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
     }
 
     /**
-     * 세션 ID로 학습 세션을 조회합니다
-     * 
-     * @param sessionId 조회할 학습 세션의 고유 식별자
-     * @return 학습 세션 정보
+     * 특정 세션의 상세 정보를 조회
+     * @param sessionId 조회할 세션의 고유 식별자
+     * @return 200 OK - 세션 상태, 진행률, 연결된 문제 수 등 상세 정보
      */
     @GetMapping("/{sessionId}")
     public ResponseEntity<LearningSessionResponseDto> getLearningSessionById(@PathVariable String sessionId) {
-        // 1. 세션 ID로 해당 학습 세션을 데이터베이스에서 조회
         LearningSessionResponseDto session = learningSessionService.getLearningSessionById(sessionId);
-        // 2. HTTP 200 OK 상태와 함께 조회된 세션 정보 반환
         return ResponseEntity.ok(session);
     }
 
     /**
-     * 특정 사용자의 모든 학습 세션을 페이지네이션을 지원하여 조회합니다
-     * 
+     * 특정 사용자의 모든 학습 세션을 페이지 단위로 조회
      * @param userId 조회할 사용자의 고유 식별자
-     * @param pageable 페이지네이션 매개변수
-     * @return 페이지네이션된 학습 세션 목록
+     * @param pageable 페이지 설정 (페이지 번호, 크기, 정렬 순서)
+     * @return 200 OK - 페이지네이션된 세션 목록과 링크 정보
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<Page<LearningSessionResponseDto>> getAllLearningSessionsByUserId(
             @PathVariable String userId,
             Pageable pageable) {
-        // 1. 사용자 ID와 페이징 파라미터로 해당 사용자의 모든 세션 조회
         Page<LearningSessionResponseDto> sessions = learningSessionService.getAllLearningSessionsByUserId(userId, pageable);
-        // 2. HTTP 200 OK 상태와 함께 페이징된 세션 목록 반환
         return ResponseEntity.ok(sessions);
     }
 
@@ -286,11 +273,10 @@ public class LearningSessionController {
     }
 
     /**
-     * 일반 학습 세션을 생성합니다.
-     * 
-     * @param createDto 학습 세션 생성 데이터
-     * @param selectedCategory 사용자가 선택한 문제 분류
-     * @return 생성된 학습 세션 정보
+     * 사용자 맞춤형 연습 세션 생성
+     * 사용자의 난이도와 선호 카테고리를 기반으로 최적화된 문제들을 선별하여 구성
+     * @param createDto 세션 생성 요청 데이터 (카테고리, 난이도 선호도 포함)
+     * @return 201 CREATED - 생성된 연습 세션과 할당된 문제 수
      */
     @PostMapping("/practice")
     public ResponseEntity<LearningSessionResponseDto> createPracticeSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
@@ -301,10 +287,10 @@ public class LearningSessionController {
     }
 
     /**
-     * 복습 세션을 생성합니다.
-     * 
-     * @param createDto 학습 세션 생성 데이터
-     * @return 생성된 학습 세션 정보
+     * 사용자의 학습 이력 기반 복습 세션 생성
+     * 이전에 정답을 맞힌 문제들 중 복습이 필요한 문제들을 선별하여 구성
+     * @param createDto 복습 세션 생성 요청 데이터 (카테고리 목록 포함)
+     * @return 201 CREATED - 생성된 복습 세션과 할당된 문제 수
      */
     @PostMapping("/review")
     public ResponseEntity<LearningSessionResponseDto> createReviewSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
@@ -315,10 +301,10 @@ public class LearningSessionController {
     }
 
     /**
-     * 오답 세션을 생성합니다.
-     * 
-     * @param createDto 학습 세션 생성 데이터
-     * @return 생성된 학습 세션 정보
+     * 사용자의 오답 기록 기반 오답노트 세션 생성
+     * 이전에 틀린 문제들 중 틀린 횟수가 많고 최근에 틀린 문제들을 우선 선별
+     * @param createDto 오답노트 세션 생성 요청 데이터 (카테고리 목록 포함)
+     * @return 201 CREATED - 생성된 오답노트 세션과 할당된 문제 수
      */
     @PostMapping("/wrong-answer")
     public ResponseEntity<LearningSessionResponseDto> createWrongAnswerSession(@Valid @RequestBody LearningSessionCreateDto createDto) {

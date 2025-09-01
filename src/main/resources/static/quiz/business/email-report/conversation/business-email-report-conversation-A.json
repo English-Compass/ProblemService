@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Colleague: 'Did you send the weekly report to the manager yet?'",
+        "options": [
+            "Yes, I sent it this morning. You should find it in your inbox.",
+            "I completely forgot about it.",
+            "I thought reports were due next week."
+        ],
+        "answer": "Yes, I sent it this morning. You should find it in your inbox.",
+        "explanation": "보고서 발송 여부를 명확히 확인해주고 위치를 알려주는 것이 좋습니다."
+    },
+    {
+        "question": "Manager: 'Can you include the latest sales figures in tomorrow's report?'",
+        "options": [
+            "Absolutely. I'll include the most recent sales data in the next section.",
+            "I don't have access to sales information.",
+            "Sales figures are confidential and can't be shared."
+        ],
+        "answer": "Absolutely. I'll include the most recent sales data in the next section.",
+        "explanation": "상사의 요청에 적극적으로 응답하고 구체적인 실행 계획을 제시하는 것이 좋습니다."
+    }
+]

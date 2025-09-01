@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Server: 'How was everything? Was your meal satisfactory?'",
+        "options": [
+            "Everything was delicious, thank you. The service was excellent as well.",
+            "The food was okay, nothing special.",
+            "It was fine, I guess."
+        ],
+        "answer": "Everything was delicious, thank you. The service was excellent as well.",
+        "explanation": "식사에 대한 만족도를 물을 때 긍정적인 피드백과 서비스에 대한 감사 인사를 표현하는 것이 좋습니다."
+    },
+    {
+        "question": "Store clerk: 'I'm sorry, but this item is currently out of stock. Would you like me to check our inventory system?'",
+        "options": [
+            "That would be great, thank you. If it's not available, could you recommend a similar alternative?",
+            "This kind of thing always happens at this store.",
+            "Just forget about it then, I'll shop elsewhere."
+        ],
+        "answer": "That would be great, thank you. If it's not available, could you recommend a similar alternative?",
+        "explanation": "품절 상황에서 직원의 도움에 감사를 표하고 대안을 요청하는 것이 건설적입니다."
+    }
+]

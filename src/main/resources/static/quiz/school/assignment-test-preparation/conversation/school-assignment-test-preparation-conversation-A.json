@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Teacher: 'Your research assignment is due next Friday.'",
+        "options": [
+            "Thank you for the reminder. I'll make sure to submit it on time.",
+            "I completely forgot we had an assignment due.",
+            "Can I get an extension because I'm really busy?"
+        ],
+        "answer": "Thank you for the reminder. I'll make sure to submit it on time.",
+        "explanation": "과제 마감일 알림에 대해 책임감 있는 자세로 응답하고 감사 인사를 하는 것이 좋습니다."
+    },
+    {
+        "question": "Classmate: 'Would you like to study together for tomorrow's exam?'",
+        "options": [
+            "That sounds great. Let's meet at the library after classes end.",
+            "I don't think I have enough time for group studying.",
+            "I prefer to study by myself for all my exams."
+        ],
+        "answer": "That sounds great. Let's meet at the library after classes end.",
+        "explanation": "동료 학생의 공동 학습 제안에 긍정적으로 응답하고 구체적인 만날 장소를 제시하는 것이 협력적입니다."
+    }
+]

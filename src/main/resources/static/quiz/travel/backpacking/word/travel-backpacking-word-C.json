@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/backpacking at C level. (0)",
+        "question": "I prefer _____ travel.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "independent",
+            "guided"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "independent",
+        "explanation": "'Independent'는 독립적인을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (1)",
+        "question": "The _____ offers unique experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "itinerary",
+            "office",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "itinerary",
+        "explanation": "'Itinerary'는 여행 일정을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (2)",
+        "question": "I need to respect local _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shops",
+            "customs",
+            "restaurants"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "customs",
+        "explanation": "'Customs'는 관습을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (3)",
+        "question": "The trail requires proper _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "music",
+            "equipment"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "equipment",
+        "explanation": "'Equipment'는 장비를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (4)",
+        "question": "I'm documenting my _____ through photos.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "journey",
+            "lunch"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "journey",
+        "explanation": "'Journey'는 여정을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (5)",
+        "question": "I prefer _____ travel.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "independent",
+            "expensive",
+            "guided"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "independent",
+        "explanation": "'Independent'는 독립적인을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (6)",
+        "question": "The _____ offers unique experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "itinerary",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "itinerary",
+        "explanation": "'Itinerary'는 여행 일정을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (7)",
+        "question": "I need to respect local _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurants",
+            "customs",
+            "shops"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "customs",
+        "explanation": "'Customs'는 관습을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (8)",
+        "question": "The trail requires proper _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "equipment",
+            "food",
+            "music"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "equipment",
+        "explanation": "'Equipment'는 장비를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at C level. (9)",
+        "question": "I'm documenting my _____ through photos.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "lunch",
+            "journey"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "journey",
+        "explanation": "'Journey'는 여정을 의미합니다."
     }
 ]

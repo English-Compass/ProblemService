@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (0)",
+        "question": "Let's *split* the cost.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "divide",
+            "ignore",
+            "double"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "divide",
+        "explanation": "'Split'은 나누다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (1)",
+        "question": "We should *book* tickets in advance.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lose",
+            "reserve",
+            "cancel"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reserve",
+        "explanation": "'Book'은 예약하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (2)",
+        "question": "Everyone wants to *party* tonight.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep",
+            "celebrate",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "celebrate",
+        "explanation": "'Party'는 파티하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (3)",
+        "question": "Let's *explore* the nightlife.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "sleep",
+            "discover"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discover",
+        "explanation": "'Explore'는 탐험하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (4)",
+        "question": "We need to *coordinate* our schedules.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "organize together",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organize together",
+        "explanation": "'Coordinate'는 조정하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (5)",
+        "question": "Let's *split* the cost.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "divide",
+            "ignore",
+            "double"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "divide",
+        "explanation": "'Split'은 나누다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (6)",
+        "question": "We should *book* tickets in advance.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cancel",
+            "lose",
+            "reserve"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reserve",
+        "explanation": "'Book'은 예약하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (7)",
+        "question": "Everyone wants to *party* tonight.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep",
+            "celebrate",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "celebrate",
+        "explanation": "'Party'는 파티하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (8)",
+        "question": "Let's *explore* the nightlife.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "discover",
+            "sleep",
+            "avoid"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discover",
+        "explanation": "'Explore'는 탐험하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at A level. (9)",
+        "question": "We need to *coordinate* our schedules.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "organize together",
+            "ignore",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organize together",
+        "explanation": "'Coordinate'는 조정하다는 의미입니다."
     }
 ]

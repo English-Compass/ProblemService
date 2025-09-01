@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/using-hospital at A level. (0)",
+        "question": "I feel _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "happy",
+            "sick",
+            "rich"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "sick",
+        "explanation": "'Sick'은 아픈을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (1)",
+        "question": "Where is the _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "pharmacy",
+            "bank",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "pharmacy",
+        "explanation": "'Pharmacy'는 약국을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (2)",
+        "question": "I need some _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "medicine",
+            "money",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "medicine",
+        "explanation": "'Medicine'은 약을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (3)",
+        "question": "The _____ is very kind.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "nurse",
+            "student",
+            "thief"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "nurse",
+        "explanation": "'Nurse'는 간호사를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (4)",
+        "question": "I broke my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "car",
+            "phone",
+            "arm"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "arm",
+        "explanation": "'Arm'은 팔을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (5)",
+        "question": "I feel _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "rich",
+            "sick",
+            "happy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "sick",
+        "explanation": "'Sick'은 아픈을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (6)",
+        "question": "Where is the _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "bank",
+            "restaurant",
+            "pharmacy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "pharmacy",
+        "explanation": "'Pharmacy'는 약국을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (7)",
+        "question": "I need some _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "medicine",
+            "money",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "medicine",
+        "explanation": "'Medicine'은 약을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (8)",
+        "question": "The _____ is very kind.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "student",
+            "nurse",
+            "thief"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "nurse",
+        "explanation": "'Nurse'는 간호사를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at A level. (9)",
+        "question": "I broke my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "arm",
+            "car",
+            "phone"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "arm",
+        "explanation": "'Arm'은 팔을 의미합니다."
     }
 ]

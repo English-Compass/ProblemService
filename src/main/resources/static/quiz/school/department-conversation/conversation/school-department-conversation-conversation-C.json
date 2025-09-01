@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Graduate program director: 'Your doctoral application shows strong potential, but I'm concerned about theoretical coherence between your proposed research and your undergraduate focus.'",
+        "options": [
+            "Thank you for this insightful observation. While my undergraduate work focused on social psychology, I see my proposed research as extending those foundations into organizational behavior. The theoretical bridge lies in applying social identity theory to understand group dynamics in workplace settings.",
+            "I think my undergraduate and graduate interests are more related than they might appear.",
+            "I'm willing to change my research focus if that would be better."
+        ],
+        "answer": "Thank you for this insightful observation. While my undergraduate work focused on social psychology, I see my proposed research as extending those foundations into organizational behavior. The theoretical bridge lies in applying social identity theory to understand group dynamics in workplace settings.",
+        "explanation": "대학원 프로그램 디렉터의 이론적 일관성에 대한 우려에 감사하며, 학부 전공과 제안 연구 간의 이론적 연결점을 구체적인 이론을 통해 명확히 설명하는 것이 학술적으로 설득력 있는 대응입니다."
+    },
+    {
+        "question": "External examiner during defense: 'Your dissertation contributes significantly to the field, but I question whether your phenomenological approach adequately addresses the ontological assumptions underlying your interpretive framework.'",
+        "options": [
+            "Thank you for this fundamental philosophical question. My phenomenological approach is grounded in Heideggerian hermeneutics, which acknowledges that understanding is always historically situated. I embrace the ontological assumption that meaning emerges through the interpreter's engagement with lived experience, while maintaining methodological rigor through systematic bracketing of presuppositions.",
+            "Phenomenology seemed like the right methodological approach for my research topic.",
+            "I'm not entirely sure I understand all the philosophical implications you're raising."
+        ],
+        "answer": "Thank you for this fundamental philosophical question. My phenomenological approach is grounded in Heideggerian hermeneutics, which acknowledges that understanding is always historically situated. I embrace the ontological assumption that meaning emerges through the interpreter's engagement with lived experience, while maintaining methodological rigor through systematic bracketing of presuppositions.",
+        "explanation": "외부 심사위원의 존재론적 질문에 대해 감사를 표하고 하이데거의 해석학적 현상학에 기반한 철학적 입장을 명확히 하며, 의미 생성과 방법론적 엄밀성에 대한 정교한 이해를 보여주는 것이 박사 논문 심사에 적합한 학술적 대응입니다."
+    }
+]

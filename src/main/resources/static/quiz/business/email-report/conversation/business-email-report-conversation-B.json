@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Client: 'The data in your quarterly report doesn't match our internal records.'",
+        "options": [
+            "Thank you for pointing that out. Let me review the discrepancy and provide you with a corrected version by end of day.",
+            "Our data is always accurate, so your records must be wrong.",
+            "You must be misreading the information in the report."
+        ],
+        "answer": "Thank you for pointing that out. Let me review the discrepancy and provide you with a corrected version by end of day.",
+        "explanation": "데이터 불일치 지적에 감사를 표하고 검토 후 수정된 버전을 제공하겠다는 구체적인 해결책을 제시합니다."
+    },
+    {
+        "question": "Team member: 'I urgently need the financial analysis for tomorrow's board presentation.'",
+        "options": [
+            "I'll prioritize the financial analysis and have it ready first thing tomorrow morning.",
+            "That's very short notice for such an important request.",
+            "You should ask someone else who's less busy."
+        ],
+        "answer": "I'll prioritize the financial analysis and have it ready first thing tomorrow morning.",
+        "explanation": "급한 요청에 대해 우선순위를 두고 구체적인 완성 시간을 약속하는 것이 전문적인 대응입니다."
+    }
+]

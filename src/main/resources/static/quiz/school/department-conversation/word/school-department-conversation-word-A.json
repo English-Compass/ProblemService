@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/department-conversation at A level. (0)",
+        "question": "I study _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "English",
+            "sleeping",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "English",
+        "explanation": "'English'는 영어를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (1)",
+        "question": "My _____ is very helpful.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "pet",
+            "enemy",
+            "advisor"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "advisor",
+        "explanation": "'Advisor'는 지도교수를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (2)",
+        "question": "I'm in my second _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "car",
+            "house",
+            "year"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "year",
+        "explanation": "'Year'는 학년을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (3)",
+        "question": "The _____ is on the third floor.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "gym",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "office",
+        "explanation": "'Office'는 사무실을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (4)",
+        "question": "I need to choose my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clothes",
+            "lunch",
+            "major"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "major",
+        "explanation": "'Major'는 전공을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (5)",
+        "question": "I study _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "English",
+            "sleeping",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "English",
+        "explanation": "'English'는 영어를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (6)",
+        "question": "My _____ is very helpful.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "advisor",
+            "pet",
+            "enemy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "advisor",
+        "explanation": "'Advisor'는 지도교수를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (7)",
+        "question": "I'm in my second _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "year",
+            "car",
+            "house"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "year",
+        "explanation": "'Year'는 학년을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (8)",
+        "question": "The _____ is on the third floor.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "restaurant",
+            "gym"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "office",
+        "explanation": "'Office'는 사무실을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at A level. (9)",
+        "question": "I need to choose my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "major",
+            "clothes",
+            "lunch"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "major",
+        "explanation": "'Major'는 전공을 의미합니다."
     }
 ]

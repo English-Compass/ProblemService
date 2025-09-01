@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Professor: 'Can you answer the question I just wrote on the board?'",
+        "options": [
+            "I'll give it my best try. Is it asking about the main concept we discussed in yesterday's lecture?",
+            "I don't know the answer to that question.",
+            "I wasn't really paying attention to what you wrote."
+        ],
+        "answer": "I'll give it my best try. Is it asking about the main concept we discussed in yesterday's lecture?",
+        "explanation": "질문에 적극적으로 응답하려는 자세를 보이고 이해 확인을 위한 질문을 하는 것이 좋습니다."
+    },
+    {
+        "question": "Classmate: 'Did you understand what the professor just explained about this topic?'",
+        "options": [
+            "I got the main idea, but I'm not clear on some of the details. Should we ask for clarification?",
+            "No, it was really confusing and hard to follow.",
+            "I never understand anything in this particular class."
+        ],
+        "answer": "I got the main idea, but I'm not clear on some of the details. Should we ask for clarification?",
+        "explanation": "이해 정도를 솔직히 말하고 함께 명확화를 요청하자고 제안하는 것이 건설적입니다."
+    }
+]

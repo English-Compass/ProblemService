@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (0)",
+        "question": "I need to *meet* with my advisor.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "see",
+            "call"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "see",
+        "explanation": "'Meet'는 만나다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (1)",
+        "question": "What courses should I *take*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "enroll in",
+            "avoid",
+            "teach"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enroll in",
+        "explanation": "'Take'는 수강하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (2)",
+        "question": "I want to *major* in psychology.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "teach",
+            "avoid",
+            "specialize in"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "specialize in",
+        "explanation": "'Major'는 전공하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (3)",
+        "question": "Can I *change* my schedule?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "keep",
+            "modify",
+            "ignore"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "modify",
+        "explanation": "'Change'는 변경하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (4)",
+        "question": "I need help with *registration*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "enrollment",
+            "graduation",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enrollment",
+        "explanation": "'Registration'은 등록을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (5)",
+        "question": "I need to *meet* with my advisor.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "see",
+            "avoid",
+            "call"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "see",
+        "explanation": "'Meet'는 만나다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (6)",
+        "question": "What courses should I *take*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "enroll in",
+            "avoid",
+            "teach"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enroll in",
+        "explanation": "'Take'는 수강하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (7)",
+        "question": "I want to *major* in psychology.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "specialize in",
+            "teach"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "specialize in",
+        "explanation": "'Major'는 전공하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (8)",
+        "question": "Can I *change* my schedule?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "modify",
+            "keep"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "modify",
+        "explanation": "'Change'는 변경하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at A level. (9)",
+        "question": "I need help with *registration*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "graduation",
+            "enrollment",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enrollment",
+        "explanation": "'Registration'은 등록을 의미합니다."
     }
 ]

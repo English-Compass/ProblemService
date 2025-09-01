@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (0)",
+        "question": "The study requires _____ analysis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "culinary",
+            "statistical",
+            "musical"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "statistical",
+        "explanation": "'Statistical'은 통계적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (1)",
+        "question": "I must follow the _____ guidelines.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "driving",
+            "academic",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic",
+        "explanation": "'Academic'은 학술의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (2)",
+        "question": "The research shows significant _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "celebration",
+            "correlation",
+            "decoration"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "correlation",
+        "explanation": "'Correlation'은 상관관계를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (3)",
+        "question": "I need to conduct a _____ review.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "quick",
+            "musical",
+            "comprehensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "comprehensive",
+        "explanation": "'Comprehensive'는 종합적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (4)",
+        "question": "The _____ validates my hypothesis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "evidence",
+            "party",
+            "game"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "evidence",
+        "explanation": "'Evidence'는 증거를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (5)",
+        "question": "The study requires _____ analysis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "statistical",
+            "musical",
+            "culinary"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "statistical",
+        "explanation": "'Statistical'은 통계적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (6)",
+        "question": "I must follow the _____ guidelines.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "driving",
+            "academic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic",
+        "explanation": "'Academic'은 학술의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (7)",
+        "question": "The research shows significant _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "correlation",
+            "celebration",
+            "decoration"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "correlation",
+        "explanation": "'Correlation'은 상관관계를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (8)",
+        "question": "I need to conduct a _____ review.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "musical",
+            "quick",
+            "comprehensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "comprehensive",
+        "explanation": "'Comprehensive'는 종합적인을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at C level. (9)",
+        "question": "The _____ validates my hypothesis.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "party",
+            "game",
+            "evidence"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "evidence",
+        "explanation": "'Evidence'는 증거를 의미합니다."
     }
 ]

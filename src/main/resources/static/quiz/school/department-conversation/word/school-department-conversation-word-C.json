@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/department-conversation at C level. (0)",
+        "question": "I'm pursuing _____ research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "sleeping",
+            "academic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic",
+        "explanation": "'Academic'은 학술의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (1)",
+        "question": "The department offers _____ programs.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "driving",
+            "specialized"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "specialized",
+        "explanation": "'Specialized'는 전문화된을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (2)",
+        "question": "I need to complete my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lunch",
+            "vacation",
+            "dissertation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "dissertation",
+        "explanation": "'Dissertation'은 학위논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (3)",
+        "question": "The _____ committee approved my proposal.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "faculty",
+            "driving",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "faculty",
+        "explanation": "'Faculty'는 교수진을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (4)",
+        "question": "I'm interested in _____ studies.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleeping",
+            "cooking",
+            "postgraduate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "postgraduate",
+        "explanation": "'Postgraduate'는 대학원의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (5)",
+        "question": "I'm pursuing _____ research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "sleeping",
+            "academic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic",
+        "explanation": "'Academic'은 학술의를 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (6)",
+        "question": "The department offers _____ programs.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "specialized",
+            "driving"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "specialized",
+        "explanation": "'Specialized'는 전문화된을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (7)",
+        "question": "I need to complete my _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lunch",
+            "dissertation",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "dissertation",
+        "explanation": "'Dissertation'은 학위논문을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (8)",
+        "question": "The _____ committee approved my proposal.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "driving",
+            "faculty",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "faculty",
+        "explanation": "'Faculty'는 교수진을 의미합니다."
     },
     {
-        "question": "This is a word question for school/department-conversation at C level. (9)",
+        "question": "I'm interested in _____ studies.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleeping",
+            "postgraduate",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "postgraduate",
+        "explanation": "'Postgraduate'는 대학원의를 의미합니다."
     }
 ]

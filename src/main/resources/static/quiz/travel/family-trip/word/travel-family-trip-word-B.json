@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/family-trip at B level. (0)",
+        "question": "The hotel provides _____ for kids.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "homework",
+            "entertainment",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "entertainment",
+        "explanation": "'Entertainment'는 오락을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (1)",
+        "question": "We booked a _____ vacation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "package",
+            "work",
+            "business"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "package",
+        "explanation": "'Package'는 패키지를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (2)",
+        "question": "The _____ is very spacious.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "suite",
+            "closet",
+            "car"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suite",
+        "explanation": "'Suite'는 스위트룸을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (3)",
+        "question": "Kids enjoy the _____ activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "indoor",
+            "outdoor"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "outdoor",
+        "explanation": "'Outdoor'는 야외의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (4)",
+        "question": "The _____ includes breakfast.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "rate",
+            "homework"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "rate",
+        "explanation": "'Rate'는 요금을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (5)",
+        "question": "The hotel provides _____ for kids.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "entertainment",
+            "homework"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "entertainment",
+        "explanation": "'Entertainment'는 오락을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (6)",
+        "question": "We booked a _____ vacation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "package",
+            "business"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "package",
+        "explanation": "'Package'는 패키지를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (7)",
+        "question": "The _____ is very spacious.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "suite",
+            "car",
+            "closet"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suite",
+        "explanation": "'Suite'는 스위트룸을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (8)",
+        "question": "Kids enjoy the _____ activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "indoor",
+            "outdoor"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "outdoor",
+        "explanation": "'Outdoor'는 야외의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at B level. (9)",
+        "question": "The _____ includes breakfast.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "rate",
+            "homework"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "rate",
+        "explanation": "'Rate'는 요금을 의미합니다."
     }
 ]

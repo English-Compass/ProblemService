@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (0)",
+        "question": "The diagnosis was *comprehensive*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "quick",
+            "thorough",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thorough",
+        "explanation": "'Comprehensive'는 포괄적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (1)",
+        "question": "I need to *consult* with a specialist.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "seek advice from",
+            "pay"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seek advice from",
+        "explanation": "'Consult'는 상담하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (2)",
+        "question": "The medication has *side effects*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "benefits",
+            "no cost",
+            "adverse reactions"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adverse reactions",
+        "explanation": "'Side effects'는 부작용을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (3)",
+        "question": "I require *immediate* attention.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "urgent",
+            "optional",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "urgent",
+        "explanation": "'Immediate'는 즉각적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (4)",
+        "question": "The treatment is *effective*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "free",
+            "successful",
+            "painful"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "successful",
+        "explanation": "'Effective'는 효과적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (5)",
+        "question": "The diagnosis was *comprehensive*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "quick",
+            "thorough",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thorough",
+        "explanation": "'Comprehensive'는 포괄적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (6)",
+        "question": "I need to *consult* with a specialist.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "seek advice from",
+            "pay"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seek advice from",
+        "explanation": "'Consult'는 상담하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (7)",
+        "question": "The medication has *side effects*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no cost",
+            "adverse reactions",
+            "benefits"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adverse reactions",
+        "explanation": "'Side effects'는 부작용을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (8)",
+        "question": "I require *immediate* attention.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "optional",
+            "expensive",
+            "urgent"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "urgent",
+        "explanation": "'Immediate'는 즉각적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-hospital at C level. (9)",
+        "question": "The treatment is *effective*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "free",
+            "painful",
+            "successful"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "successful",
+        "explanation": "'Effective'는 효과적인을 의미합니다."
     }
 ]

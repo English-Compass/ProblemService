@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/using-hospital at B level. (0)",
+        "question": "I have an _____ infection.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "internet",
+            "electric",
+            "ear"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "ear",
+        "explanation": "'Ear'는 귀를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (1)",
+        "question": "The doctor ordered blood _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "music",
+            "tests"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tests",
+        "explanation": "'Tests'는 검사를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (2)",
+        "question": "I need to take this _____ twice daily.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "elevator",
+            "bus",
+            "medication"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "medication",
+        "explanation": "'Medication'은 약물을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (3)",
+        "question": "The _____ will call you tomorrow.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clinic",
+            "restaurant",
+            "bank"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "clinic",
+        "explanation": "'Clinic'은 병원을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (4)",
+        "question": "I'm allergic to _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "penicillin",
+            "money",
+            "happiness"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "penicillin",
+        "explanation": "'Penicillin'은 페니실린을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (5)",
+        "question": "I have an _____ infection.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ear",
+            "internet",
+            "electric"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "ear",
+        "explanation": "'Ear'는 귀를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (6)",
+        "question": "The doctor ordered blood _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "tests",
+            "food",
+            "music"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tests",
+        "explanation": "'Tests'는 검사를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (7)",
+        "question": "I need to take this _____ twice daily.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "medication",
+            "elevator",
+            "bus"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "medication",
+        "explanation": "'Medication'은 약물을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (8)",
+        "question": "The _____ will call you tomorrow.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clinic",
+            "restaurant",
+            "bank"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "clinic",
+        "explanation": "'Clinic'은 병원을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-hospital at B level. (9)",
+        "question": "I'm allergic to _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "happiness",
+            "money",
+            "penicillin"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "penicillin",
+        "explanation": "'Penicillin'은 페니실린을 의미합니다."
     }
 ]

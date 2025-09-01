@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (0)",
+        "question": "I need to write an _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "song",
+            "email",
+            "essay"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "essay",
+        "explanation": "'Essay'는 에세이를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (1)",
+        "question": "The _____ is tomorrow.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "movie",
+            "party",
+            "test"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "test",
+        "explanation": "'Test'는 시험을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (2)",
+        "question": "Where can I find _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "games",
+            "food",
+            "books"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "books",
+        "explanation": "'Books'는 책을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (3)",
+        "question": "I need to use the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "library",
+            "kitchen",
+            "gym"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "library",
+        "explanation": "'Library'는 도서관을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (4)",
+        "question": "My _____ is due next week.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "vacation",
+            "birthday",
+            "project"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "project",
+        "explanation": "'Project'는 프로젝트를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (5)",
+        "question": "I need to write an _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "email",
+            "essay",
+            "song"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "essay",
+        "explanation": "'Essay'는 에세이를 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (6)",
+        "question": "The _____ is tomorrow.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "movie",
+            "test",
+            "party"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "test",
+        "explanation": "'Test'는 시험을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (7)",
+        "question": "Where can I find _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "games",
+            "books",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "books",
+        "explanation": "'Books'는 책을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (8)",
+        "question": "I need to use the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "library",
+            "gym",
+            "kitchen"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "library",
+        "explanation": "'Library'는 도서관을 의미합니다."
     },
     {
-        "question": "This is a word question for school/assignment-test-preparation at A level. (9)",
+        "question": "My _____ is due next week.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "birthday",
+            "project",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "project",
+        "explanation": "'Project'는 프로젝트를 의미합니다."
     }
 ]

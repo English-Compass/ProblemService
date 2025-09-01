@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (0)",
+        "question": "We need *family-friendly* activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "adults only",
+            "suitable for all ages",
+            "boring"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable for all ages",
+        "explanation": "'Family-friendly'는 가족 친화적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (1)",
+        "question": "Can we get a *discount* for children?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "higher price",
+            "reduced price",
+            "no price"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reduced price",
+        "explanation": "'Discount'는 할인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (2)",
+        "question": "I need to *book* a family room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cancel",
+            "reserve",
+            "avoid"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reserve",
+        "explanation": "'Book'은 예약하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (3)",
+        "question": "The kids want to go to the *playground*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "office",
+            "play area"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "play area",
+        "explanation": "'Playground'는 놀이터를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (4)",
+        "question": "We should *plan* our itinerary carefully.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "organize",
+            "cancel",
+            "ignore"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organize",
+        "explanation": "'Plan'은 계획하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (5)",
+        "question": "We need *family-friendly* activities.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "boring",
+            "suitable for all ages",
+            "adults only"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable for all ages",
+        "explanation": "'Family-friendly'는 가족 친화적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (6)",
+        "question": "Can we get a *discount* for children?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no price",
+            "reduced price",
+            "higher price"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reduced price",
+        "explanation": "'Discount'는 할인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (7)",
+        "question": "I need to *book* a family room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "reserve",
+            "avoid",
+            "cancel"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reserve",
+        "explanation": "'Book'은 예약하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (8)",
+        "question": "The kids want to go to the *playground*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "restaurant",
+            "play area"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "play area",
+        "explanation": "'Playground'는 놀이터를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/family-trip at A level. (9)",
+        "question": "We should *plan* our itinerary carefully.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "organize",
+            "ignore",
+            "cancel"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organize",
+        "explanation": "'Plan'은 계획하다는 의미입니다."
     }
 ]

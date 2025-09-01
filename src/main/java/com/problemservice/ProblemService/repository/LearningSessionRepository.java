@@ -15,39 +15,44 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 학습 세션 엔티티에 대한 데이터 접근 레이어
- * 사용자별 세션 조회, 상태별 필터링, 통계 쿼리 기능 제공
- * 입력: 사용자 ID, 세션 상태, 세션 유형, 날짜 범위
- * 출력: 조건에 맞는 학습 세션 목록 및 통계 데이터
+ * 학습 세션 데이터 접근 레이어
+ * 세션 CRUD, 필터링, 통계 쿼리 제공
  */
 @Repository
 public interface LearningSessionRepository extends JpaRepository<LearningSession, String> {
 
     /**
-     * 특정 사용자의 모든 학습 세션 조회
-     * 입력: 사용자 ID
-     * 출력: 해당 사용자의 모든 학습 세션 목록
+     * 특정 사용자의 전체 학습 세션 목록 조회
+     * 사용자의 학습 이력 분석이나 통계 생성에 활용
+     * @param userId 대상 사용자의 식별자
+     * @return 해당 사용자의 모든 학습 세션 목록
      */
     List<LearningSession> findByUserId(String userId);
 
     /**
      * 특정 사용자의 학습 세션을 페이지 단위로 조회
-     * 입력: 사용자 ID, 페이징 정보 (페이지 번호, 크기, 정렬)
-     * 출력: 페이징 처리된 학습 세션 목록
+     * 대용량 데이터 처리를 위한 효율적인 조회 방식 제공
+     * @param userId 대상 사용자의 식별자
+     * @param pageable 페이지 설정 (페이지 수, 크기, 정렬 조건)
+     * @return 페이지네이션된 학습 세션 목록
      */
     Page<LearningSession> findByUserId(String userId, Pageable pageable);
 
     /**
-     * 사용자와 세션 상태로 필터링하여 조회
-     * 입력: 사용자 ID, 세션 상태 (STARTED, IN_PROGRESS, COMPLETED)
-     * 출력: 조건을 만족하는 학습 세션 목록
+     * 사용자의 특정 상태 학습 세션 조회
+     * 진행 중인 세션, 완료된 세션 등 상태별 필터링 조회
+     * @param userId 대상 사용자의 식별자
+     * @param status 세션 상태 (STARTED, IN_PROGRESS, COMPLETED)
+     * @return 해당 상태의 학습 세션 목록
      */
     List<LearningSession> findByUserIdAndStatus(String userId, SessionStatus status);
 
     /**
-     * 사용자와 세션 유형으로 필터링하여 조회
-     * 입력: 사용자 ID, 세션 유형 (PRACTICE, REVIEW, WRONG_ANSWER)
-     * 출력: 조건을 만족하는 학습 세션 목록
+     * 사용자의 특정 타입 학습 세션 조회
+     * 연습, 복습, 오답노트 등 세션 타입별 필터링 조회
+     * @param userId 대상 사용자의 식별자
+     * @param sessionType 세션 타입 (PRACTICE, REVIEW, WRONG_ANSWER)
+     * @return 해당 타입의 학습 세션 목록
      */
     List<LearningSession> findByUserIdAndSessionType(String userId, SessionType sessionType);
 
@@ -90,4 +95,28 @@ public interface LearningSessionRepository extends JpaRepository<LearningSession
      */
     @Query("SELECT AVG(ls.progressPercentage) FROM LearningSession ls WHERE ls.userId = :userId AND ls.status = 'COMPLETED'")
     Double getAverageProgressByUserId(@Param("userId") String userId);
+    
+    /**
+     * 사용자의 최근 완료된 세션 조회
+     */
+    @Query("SELECT ls FROM LearningSession ls WHERE ls.userId = :userId AND ls.status = 'COMPLETED' ORDER BY ls.completedAt DESC")
+    List<LearningSession> findRecentCompletedSessions(@Param("userId") String userId, Pageable pageable);
+    
+    /**
+     * 세션 유형별 통계 조회
+     */
+    @Query("SELECT ls.sessionType, COUNT(ls), AVG(ls.progressPercentage) FROM LearningSession ls WHERE ls.userId = :userId AND ls.status = 'COMPLETED' GROUP BY ls.sessionType")
+    List<Object[]> getSessionStatsByType(@Param("userId") String userId);
+    
+    /**
+     * 활성 세션 조회 (시작됨 또는 진행 중)
+     */
+    @Query("SELECT ls FROM LearningSession ls WHERE ls.userId = :userId AND ls.status IN ('STARTED', 'IN_PROGRESS') ORDER BY ls.startedAt DESC")
+    List<LearningSession> findActiveSessions(@Param("userId") String userId);
+    
+    /**
+     * 기간별 세션 완료 수 조회
+     */
+    @Query("SELECT COUNT(ls) FROM LearningSession ls WHERE ls.userId = :userId AND ls.status = 'COMPLETED' AND ls.completedAt BETWEEN :startDate AND :endDate")
+    Long countCompletedSessionsInDateRange(@Param("userId") String userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

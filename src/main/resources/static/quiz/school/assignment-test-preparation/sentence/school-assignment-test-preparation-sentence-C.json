@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (0)",
+        "question": "I need to *analyze* the data thoroughly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "delete",
+            "examine closely",
+            "ignore"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "examine closely",
+        "explanation": "'Analyze'는 분석하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (1)",
+        "question": "The thesis requires *substantial* research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "significant",
+            "minimal",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "significant",
+        "explanation": "'Substantial'은 상당한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (2)",
+        "question": "I must *synthesize* information from multiple sources.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "separate",
+            "combine"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combine",
+        "explanation": "'Synthesize'는 종합하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (3)",
+        "question": "The professor provided *constructive* feedback.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no",
+            "negative",
+            "helpful"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "helpful",
+        "explanation": "'Constructive'는 건설적인을 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (4)",
+        "question": "I need to *substantiate* my arguments.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shorten",
+            "support with evidence",
+            "remove"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "support with evidence",
+        "explanation": "'Substantiate'는 입증하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (5)",
+        "question": "I need to *analyze* the data thoroughly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "delete",
+            "ignore",
+            "examine closely"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "examine closely",
+        "explanation": "'Analyze'는 분석하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (6)",
+        "question": "The thesis requires *substantial* research.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "minimal",
+            "significant",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "significant",
+        "explanation": "'Substantial'은 상당한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (7)",
+        "question": "I must *synthesize* information from multiple sources.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "combine",
+            "ignore",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combine",
+        "explanation": "'Synthesize'는 종합하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (8)",
+        "question": "The professor provided *constructive* feedback.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "helpful",
+            "negative",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "helpful",
+        "explanation": "'Constructive'는 건설적인을 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at C level. (9)",
+        "question": "I need to *substantiate* my arguments.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shorten",
+            "remove",
+            "support with evidence"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "support with evidence",
+        "explanation": "'Substantiate'는 입증하다는 의미입니다."
     }
 ]

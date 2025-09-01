@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (0)",
+        "question": "I need to *declare* my major.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hide",
+            "change",
+            "officially choose"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "officially choose",
+        "explanation": "'Declare'는 선언하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (1)",
+        "question": "The professor has *office hours* on Tuesdays.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "vacation",
+            "available time",
+            "lunch break"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "available time",
+        "explanation": "'Office hours'는 상담 시간을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (2)",
+        "question": "I want to *drop* this course.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "teach",
+            "withdraw from",
+            "add"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "withdraw from",
+        "explanation": "'Drop'은 수강 취소하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (3)",
+        "question": "I need to fulfill the *prerequisites*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "required courses",
+            "final exams",
+            "graduation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "required courses",
+        "explanation": "'Prerequisites'는 선수과목을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (4)",
+        "question": "Can I get *credit* for this internship?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "free time",
+            "academic recognition",
+            "money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic recognition",
+        "explanation": "'Credit'은 학점을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (5)",
+        "question": "I need to *declare* my major.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "change",
+            "officially choose",
+            "hide"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "officially choose",
+        "explanation": "'Declare'는 선언하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (6)",
+        "question": "The professor has *office hours* on Tuesdays.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "vacation",
+            "lunch break",
+            "available time"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "available time",
+        "explanation": "'Office hours'는 상담 시간을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (7)",
+        "question": "I want to *drop* this course.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "teach",
+            "add",
+            "withdraw from"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "withdraw from",
+        "explanation": "'Drop'은 수강 취소하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (8)",
+        "question": "I need to fulfill the *prerequisites*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "required courses",
+            "final exams",
+            "graduation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "required courses",
+        "explanation": "'Prerequisites'는 선수과목을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at B level. (9)",
+        "question": "Can I get *credit* for this internship?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "free time",
+            "academic recognition",
+            "money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "academic recognition",
+        "explanation": "'Credit'은 학점을 의미합니다."
     }
 ]

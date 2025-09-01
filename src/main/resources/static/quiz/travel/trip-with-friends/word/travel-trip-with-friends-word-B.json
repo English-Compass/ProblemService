@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (0)",
+        "question": "The _____ was amazing.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "adventure",
+            "meeting"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adventure",
+        "explanation": "'Adventure'는 모험을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (1)",
+        "question": "We're sharing an _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "apartment",
+            "classroom"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "apartment",
+        "explanation": "'Apartment'는 아파트를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (2)",
+        "question": "The group enjoys _____ sports.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "boring",
+            "extreme"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "extreme",
+        "explanation": "'Extreme'은 익스트림의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (3)",
+        "question": "We made a _____ together.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "memory",
+            "mistake",
+            "business"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "memory",
+        "explanation": "'Memory'는 추억을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (4)",
+        "question": "The _____ brought us closer.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "experience",
+            "meeting",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "experience",
+        "explanation": "'Experience'는 경험을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (5)",
+        "question": "The _____ was amazing.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "adventure",
+            "meeting"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adventure",
+        "explanation": "'Adventure'는 모험을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (6)",
+        "question": "We're sharing an _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "classroom",
+            "office",
+            "apartment"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "apartment",
+        "explanation": "'Apartment'는 아파트를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (7)",
+        "question": "The group enjoys _____ sports.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "boring",
+            "work",
+            "extreme"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "extreme",
+        "explanation": "'Extreme'은 익스트림의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (8)",
+        "question": "We made a _____ together.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "business",
+            "mistake",
+            "memory"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "memory",
+        "explanation": "'Memory'는 추억을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at B level. (9)",
+        "question": "The _____ brought us closer.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "experience",
+            "meeting",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "experience",
+        "explanation": "'Experience'는 경험을 의미합니다."
     }
 ]

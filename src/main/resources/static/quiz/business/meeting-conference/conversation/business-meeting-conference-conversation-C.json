@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Board member: 'How do we address the strategic misalignment between our European and Asian operations discussed in today's session?'",
+        "options": [
+            "I recommend establishing a cross-regional task force with senior representatives from both operations to identify synergies and develop a unified strategic framework within the next quarter.",
+            "That's a very complex issue that will take time to resolve.",
+            "The regional offices should work together to figure it out themselves."
+        ],
+        "answer": "I recommend establishing a cross-regional task force with senior representatives from both operations to identify synergies and develop a unified strategic framework within the next quarter.",
+        "explanation": "전략적 불일치 문제에 대해 구체적이고 실행 가능한 해결책을 제시하고 명확한 타임라인을 포함하는 것이 임원급 대응입니다."
+    },
+    {
+        "question": "Stakeholder: 'Given current market volatility, shouldn't we postpone the digital transformation initiative we discussed?'",
+        "options": [
+            "While market volatility presents challenges, digital transformation will actually strengthen our resilience. I suggest we proceed with a phased approach to manage risks while capturing competitive advantages.",
+            "Market volatility definitely affects all our business initiatives.",
+            "We should probably wait for more stable economic conditions."
+        ],
+        "answer": "While market volatility presents challenges, digital transformation will actually strengthen our resilience. I suggest we proceed with a phased approach to manage risks while capturing competitive advantages.",
+        "explanation": "시장 불안정성을 인정하면서도 디지털 전환의 전략적 가치를 강조하고 위험 관리와 경쟁 우위 확보를 동시에 고려한 단계적 접근법을 제시하는 것이 전략적 대응입니다."
+    }
+]

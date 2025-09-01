@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (0)",
+        "question": "I'd like to make a *reservation* for two.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "table",
+            "booking",
+            "order"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "booking",
+        "explanation": "'Reservation'은 예약을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (1)",
+        "question": "Could you *wrap* this to go?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "package",
+            "cook",
+            "heat"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "package",
+        "explanation": "'Wrap'은 포장하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (2)",
+        "question": "Is this dish *spicy*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hot",
+            "sweet",
+            "cold"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hot",
+        "explanation": "'Spicy'는 매운맛을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (3)",
+        "question": "I'm on a *diet*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "weight loss plan",
+            "budget",
+            "vacation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "weight loss plan",
+        "explanation": "'Diet'은 다이어트를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (4)",
+        "question": "The service here is *excellent*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "outstanding",
+            "slow"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "outstanding",
+        "explanation": "'Excellent'는 훌륭한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (5)",
+        "question": "I'd like to make a *reservation* for two.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "table",
+            "booking",
+            "order"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "booking",
+        "explanation": "'Reservation'은 예약을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (6)",
+        "question": "Could you *wrap* this to go?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cook",
+            "heat",
+            "package"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "package",
+        "explanation": "'Wrap'은 포장하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (7)",
+        "question": "Is this dish *spicy*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sweet",
+            "cold",
+            "hot"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hot",
+        "explanation": "'Spicy'는 매운맛을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (8)",
+        "question": "I'm on a *diet*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "weight loss plan",
+            "vacation",
+            "budget"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "weight loss plan",
+        "explanation": "'Diet'은 다이어트를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at B level. (9)",
+        "question": "The service here is *excellent*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "outstanding",
+            "slow"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "outstanding",
+        "explanation": "'Excellent'는 훌륭한을 의미합니다."
     }
 ]

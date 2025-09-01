@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Specialist: 'Your test results indicate a complex condition requiring a multidisciplinary treatment approach. I'd like to refer you to our cardiothoracic team.'",
+        "options": [
+            "I appreciate your thorough evaluation. Could you explain what specific aspects of my condition require cardiothoracic expertise, and what should I expect from this consultation process?",
+            "That sounds really serious and concerning.",
+            "Just do whatever you think is best for me."
+        ],
+        "answer": "I appreciate your thorough evaluation. Could you explain what specific aspects of my condition require cardiothoracic expertise, and what should I expect from this consultation process?",
+        "explanation": "전문의의 진료 평가에 감사를 표하고 전문과 진료가 필요한 이유와 예상 과정에 대해 구체적으로 질문하는 것이 적절합니다."
+    },
+    {
+        "question": "Department head: 'We're considering both conservative management and surgical intervention. Each approach has distinct risk-benefit profiles that we should discuss.'",
+        "options": [
+            "I'd very much appreciate a detailed comparison of both approaches. I'm particularly interested in understanding the long-term outcomes, recovery timelines, and potential complications for each option.",
+            "You're the medical expert, so you should decide what's best.",
+            "Surgery sounds really scary to me."
+        ],
+        "answer": "I'd very much appreciate a detailed comparison of both approaches. I'm particularly interested in understanding the long-term outcomes, recovery timelines, and potential complications for each option.",
+        "explanation": "의료진의 전문적인 치료 옵션 제시에 대해 상세한 비교 분석을 요청하고 장기 결과, 회복 과정, 합병증에 대한 구체적인 정보를 구하는 것이 현명한 환자의 대응입니다."
+    }
+]

@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (0)",
+        "question": "The service is temporarily *suspended*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "extended",
+            "improved",
+            "stopped"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stopped",
+        "explanation": "'Suspended'는 중단된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (1)",
+        "question": "I need to check the *timetable*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "price",
+            "route",
+            "schedule"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "schedule",
+        "explanation": "'Timetable'은 시간표를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (2)",
+        "question": "This route is *accessible* for wheelchairs.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "suitable",
+            "expensive",
+            "unsuitable"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable",
+        "explanation": "'Accessible'는 접근 가능한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (3)",
+        "question": "The conductor will *inspect* tickets.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sell",
+            "collect",
+            "check"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "check",
+        "explanation": "'Inspect'는 검사하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (4)",
+        "question": "There's a *disruption* on the line.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "celebration",
+            "discount",
+            "interruption"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "interruption",
+        "explanation": "'Disruption'은 운행 중단을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (5)",
+        "question": "The service is temporarily *suspended*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "extended",
+            "improved",
+            "stopped"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stopped",
+        "explanation": "'Suspended'는 중단된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (6)",
+        "question": "I need to check the *timetable*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "route",
+            "price",
+            "schedule"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "schedule",
+        "explanation": "'Timetable'은 시간표를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (7)",
+        "question": "This route is *accessible* for wheelchairs.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "unsuitable",
+            "suitable"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suitable",
+        "explanation": "'Accessible'는 접근 가능한을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (8)",
+        "question": "The conductor will *inspect* tickets.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sell",
+            "check",
+            "collect"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "check",
+        "explanation": "'Inspect'는 검사하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at C level. (9)",
+        "question": "There's a *disruption* on the line.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "discount",
+            "interruption",
+            "celebration"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "interruption",
+        "explanation": "'Disruption'은 운행 중단을 의미합니다."
     }
 ]

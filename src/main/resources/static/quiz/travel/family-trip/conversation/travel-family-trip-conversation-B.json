@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Tour guide: 'This historical site has steep stairs and uneven surfaces. Will this be manageable for your elderly parents and young children?'",
+        "options": [
+            "Thank you for the heads up. My parents are fairly active, but could you suggest an alternative route or tell us about accessibility options? We want everyone to enjoy the experience safely.",
+            "They'll probably manage to get through it somehow.",
+            "We'll just take our chances and see how it goes."
+        ],
+        "answer": "Thank you for the heads up. My parents are fairly active, but could you suggest an alternative route or tell us about accessibility options? We want everyone to enjoy the experience safely.",
+        "explanation": "가족 구성원의 상황을 설명하고 대안이나 접근성 옵션을 문의하며 모두의 안전한 참여를 우선시하는 배려 깊은 가족 여행 리더의 대응입니다."
+    },
+    {
+        "question": "Local parent at playground: 'Your children are welcome to join our kids in the game. Are you comfortable with them playing together?'",
+        "options": [
+            "That's so kind of you to offer! My children would love that. I'll keep an eye on them, and please let me know if they need any guidance with your family rules.",
+            "Sure, they can play together if they want to.",
+            "I don't know if that's such a good idea right now."
+        ],
+        "answer": "That's so kind of you to offer! My children would love that. I'll keep an eye on them, and please let me know if they need any guidance with your family rules.",
+        "explanation": "다른 가족의 친근한 제안에 감사를 표하고 아이들이 즐거워할 것이라는 긍정적 반응을 보이며, 감독 의지와 상대방 가족 규칙 존중 의사를 표현하는 것이 따뜻한 가족 간 교류를 보여줍니다."
+    }
+]

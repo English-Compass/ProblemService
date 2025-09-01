@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Server: 'What would you like to drink with your meal?'",
+        "options": [
+            "I'll have a glass of water with lemon, please.",
+            "I don't drink anything with meals.",
+            "Just bring me whatever you have."
+        ],
+        "answer": "I'll have a glass of water with lemon, please.",
+        "explanation": "음료 주문 시 정중하게 구체적인 요청을 하는 것이 적절합니다."
+    },
+    {
+        "question": "Cashier: 'Would you like your receipt with you today?'",
+        "options": [
+            "Yes, please. I'll need it for my records.",
+            "I don't care about receipts.",
+            "It doesn't really matter to me."
+        ],
+        "answer": "Yes, please. I'll need it for my records.",
+        "explanation": "영수증이 필요한 경우 정중하게 요청하고 이유를 간단히 설명하는 것이 좋습니다."
+    }
+]

@@ -1,10 +1,12 @@
 package com.problemservice.ProblemService.service;
 
+import com.problemservice.ProblemService.exception.EntityNotFoundException;
 import com.problemservice.ProblemService.model.dto.QuestionCreateDto;
 import com.problemservice.ProblemService.model.dto.QuestionResponseDto;
 import com.problemservice.ProblemService.model.dto.QuestionUpdateDto;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.repository.QuestionRepository;
+import com.problemservice.ProblemService.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class QuestionService {
+public class QuestionService extends BaseService {
 
     // 문제 데이터 접근을 위한 레포지토리
     private final QuestionRepository questionRepository;
@@ -36,25 +38,15 @@ public class QuestionService {
      */
     @Transactional
     public QuestionResponseDto createQuestion(QuestionCreateDto createDto) {
-        // 1단계: 입력 DTO에서 Question 엔티티 생성
-        Question question = Question.builder()
-                .questionId(createDto.getQuestionId()) // 문제 고유 ID 설정
-                .questionText(createDto.getQuestionText()) // 문제 텍스트 설정
-                .optionA(createDto.getOptionA()) // 선택지 A 설정
-                .optionB(createDto.getOptionB()) // 선택지 B 설정
-                .optionC(createDto.getOptionC()) // 선택지 C 설정
-                .correctAnswer(createDto.getCorrectAnswer()) // 정답 설정
-                .majorCategory(createDto.getMajorCategory()) // 주요 카테고리 설정
-                .minorCategory(createDto.getMinorCategory()) // 세부 카테고리 설정
-                .questionType(createDto.getQuestionType()) // 문제 유형 설정
-                .explanation(createDto.getExplanation()) // 설명 설정
-                .difficultyLevel(createDto.getDifficultyLevel()) // 난이도 설정
-                .build();
-
-        // 2단계: 데이터베이스에 문제 저장
+        logMethodEntry("createQuestion", createDto.getQuestionId());
+        validateCreateDto(createDto);
+        
+        Question question = buildQuestionFromDto(createDto);
         Question savedQuestion = questionRepository.save(question);
-        // 3단계: 저장된 엔티티를 응답 DTO로 변환하여 반환
-        return convertToResponseDto(savedQuestion);
+        
+        QuestionResponseDto result = convertToResponseDto(savedQuestion);
+        logMethodExit("createQuestion", result.getQuestionId());
+        return result;
     }
 
     /**
@@ -64,12 +56,14 @@ public class QuestionService {
      * 출력: 해당 문제의 상세 정보 DTO
      */
     public QuestionResponseDto getQuestionById(String id) {
-        // 1단계: ID로 문제를 데이터베이스에서 조회
-        Question question = questionRepository.findById(id)
-                // 2단계: 문제가 존재하지 않으면 예외 발생
-                .orElseThrow(() -> new RuntimeException("Question not found"));
-        // 3단계: 조회된 엔티티를 응답 DTO로 변환하여 반환
-        return convertToResponseDto(question);
+        logMethodEntry("getQuestionById", id);
+        validateId(id, "Question");
+        
+        Question question = findQuestionByIdOrThrow(id);
+        
+        QuestionResponseDto result = convertToResponseDto(question);
+        logMethodExit("getQuestionById", result.getQuestionId());
+        return result;
     }
 
     /**
@@ -93,26 +87,17 @@ public class QuestionService {
      */
     @Transactional
     public QuestionResponseDto updateQuestion(String id, QuestionUpdateDto updateDto) {
-        // 1단계: ID로 기존 문제를 데이터베이스에서 조회
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
-
-        // 2단계: 수정 DTO의 값으로 기존 엔티티 필드들을 업데이트
-        question.setQuestionText(updateDto.getQuestionText()); // 문제 텍스트 수정
-        question.setOptionA(updateDto.getOptionA()); // 선택지 A 수정
-        question.setOptionB(updateDto.getOptionB()); // 선택지 B 수정
-        question.setOptionC(updateDto.getOptionC()); // 선택지 C 수정
-        question.setCorrectAnswer(updateDto.getCorrectAnswer()); // 정답 수정
-        question.setMajorCategory(updateDto.getMajorCategory()); // 주요 카테고리 수정
-        question.setMinorCategory(updateDto.getMinorCategory()); // 세부 카테고리 수정
-        question.setQuestionType(updateDto.getQuestionType()); // 문제 유형 수정
-        question.setExplanation(updateDto.getExplanation()); // 설명 수정
-        question.setDifficultyLevel(updateDto.getDifficultyLevel()); // 난이도 수정
-
-        // 3단계: 수정된 엔티티를 데이터베이스에 저장
+        logMethodEntry("updateQuestion", id);
+        validateId(id, "Question");
+        
+        Question question = findQuestionByIdOrThrow(id);
+        updateQuestionFromDto(question, updateDto);
+        
         Question savedQuestion = questionRepository.save(question);
-        // 4단계: 저장된 엔티티를 응답 DTO로 변환하여 반환
-        return convertToResponseDto(savedQuestion);
+        
+        QuestionResponseDto result = convertToResponseDto(savedQuestion);
+        logMethodExit("updateQuestion", result.getQuestionId());
+        return result;
     }
 
     /**
@@ -124,11 +109,13 @@ public class QuestionService {
      */
     @Transactional
     public void deleteQuestion(String id) {
-        // 1단계: ID로 문제 존재 여부 확인 (존재하지 않으면 예외 발생)
-        questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
-        // 2단계: 문제가 존재하면 데이터베이스에서 삭제
+        logMethodEntry("deleteQuestion", id);
+        validateId(id, "Question");
+        
+        findQuestionByIdOrThrow(id);
         questionRepository.deleteById(id);
+        
+        logMethodExit("deleteQuestion", "Question deleted: " + id);
     }
 
     /**
@@ -154,20 +141,17 @@ public class QuestionService {
      * 조건: 유효하지 않은 난이도 형식이면 예외 발생
      */
     public List<QuestionResponseDto> getQuestionsByDifficultyLevel(String level) {
-        Integer difficultyLevel;
-        // 1단계: 입력받은 문자열 난이도를 정수로 변환
-        try {
-            difficultyLevel = Integer.parseInt(level);
-        } catch (NumberFormatException e) {
-            // 2단계: 변환 실패 시 (유효하지 않은 형식) 예외 발생
-            throw new RuntimeException("Invalid difficulty level: " + level);
-        }
-        // 3단계: 변환된 난이도로 문제 목록을 데이터베이스에서 조회
+        logMethodEntry("getQuestionsByDifficultyLevel", level);
+        
+        Integer difficultyLevel = parseDifficultyLevel(level);
         List<Question> questions = questionRepository.findByDifficultyLevel(difficultyLevel);
-        // 4단계: 조회된 각 문제 엔티티를 응답 DTO로 변환하여 리스트로 반환
-        return questions.stream()
-                .map(this::convertToResponseDto) // 각 엔티티를 DTO로 변환
-                .collect(Collectors.toList()); // 변환된 DTO들을 리스트로 수집
+        
+        List<QuestionResponseDto> result = questions.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
+                
+        logMethodExit("getQuestionsByDifficultyLevel", result.size() + " questions found");
+        return result;
     }
 
     /**
@@ -192,22 +176,74 @@ public class QuestionService {
      * 출력: QuestionResponseDto
      */
     private QuestionResponseDto convertToResponseDto(Question question) {
-        // 1단계: 엔티티의 모든 필드 값을 DTO 빌더에 설정
         return QuestionResponseDto.builder()
-                .questionId(question.getQuestionId()) // 문제 ID 설정
-                .questionText(question.getQuestionText()) // 문제 텍스트 설정
-                .optionA(question.getOptionA()) // 선택지 A 설정
-                .optionB(question.getOptionB()) // 선택지 B 설정
-                .optionC(question.getOptionC()) // 선택지 C 설정
-                .correctAnswer(question.getCorrectAnswer()) // 정답 설정
-                .majorCategory(question.getMajorCategory()) // 주요 카테고리 설정
-                .minorCategory(question.getMinorCategory()) // 세부 카테고리 설정
-                .questionType(question.getQuestionType()) // 문제 유형 설정
-                .explanation(question.getExplanation()) // 설명 설정
-                .difficultyLevel(question.getDifficultyLevel()) // 난이도 설정
-                .createdAt(question.getCreatedAt()) // 생성 시각 설정
-                .updatedAt(question.getUpdatedAt()) // 수정 시각 설정
-                // 2단계: 설정된 빌더로 DTO 객체 생성
+                .questionId(question.getQuestionId())
+                .questionText(question.getQuestionText())
+                .optionA(question.getOptionA())
+                .optionB(question.getOptionB())
+                .optionC(question.getOptionC())
+                .correctAnswer(question.getCorrectAnswer())
+                .majorCategory(question.getMajorCategory())
+                .minorCategory(question.getMinorCategory())
+                .questionType(question.getQuestionType())
+                .explanation(question.getExplanation())
+                .difficultyLevel(question.getDifficultyLevel())
+                .createdAt(question.getCreatedAt())
+                .updatedAt(question.getUpdatedAt())
                 .build();
+    }
+    
+    private void validateCreateDto(QuestionCreateDto createDto) {
+        if (createDto == null) {
+            throw new IllegalArgumentException("Create DTO cannot be null");
+        }
+        if (createDto.getQuestionId() == null || createDto.getQuestionId().trim().isEmpty()) {
+            throw new IllegalArgumentException("Question ID cannot be null or empty");
+        }
+        if (createDto.getQuestionText() == null || createDto.getQuestionText().trim().isEmpty()) {
+            throw new IllegalArgumentException("Question text cannot be null or empty");
+        }
+    }
+    
+    private Question buildQuestionFromDto(QuestionCreateDto createDto) {
+        return Question.builder()
+                .questionId(createDto.getQuestionId())
+                .questionText(createDto.getQuestionText())
+                .optionA(createDto.getOptionA())
+                .optionB(createDto.getOptionB())
+                .optionC(createDto.getOptionC())
+                .correctAnswer(createDto.getCorrectAnswer())
+                .majorCategory(createDto.getMajorCategory())
+                .minorCategory(createDto.getMinorCategory())
+                .questionType(createDto.getQuestionType())
+                .explanation(createDto.getExplanation())
+                .difficultyLevel(createDto.getDifficultyLevel())
+                .build();
+    }
+    
+    private Question findQuestionByIdOrThrow(String id) {
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Question", id));
+    }
+    
+    private void updateQuestionFromDto(Question question, QuestionUpdateDto updateDto) {
+        question.setQuestionText(updateDto.getQuestionText());
+        question.setOptionA(updateDto.getOptionA());
+        question.setOptionB(updateDto.getOptionB());
+        question.setOptionC(updateDto.getOptionC());
+        question.setCorrectAnswer(updateDto.getCorrectAnswer());
+        question.setMajorCategory(updateDto.getMajorCategory());
+        question.setMinorCategory(updateDto.getMinorCategory());
+        question.setQuestionType(updateDto.getQuestionType());
+        question.setExplanation(updateDto.getExplanation());
+        question.setDifficultyLevel(updateDto.getDifficultyLevel());
+    }
+    
+    private Integer parseDifficultyLevel(String level) {
+        try {
+            return Integer.parseInt(level);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid difficulty level: " + level, e);
+        }
     }
 }

@@ -1,14 +1,19 @@
 package com.problemservice.ProblemService.service;
 
+import com.problemservice.ProblemService.model.dto.LearningCompletedEventDto;
+import com.problemservice.ProblemService.model.dto.LearningQuestionAnsweredEventDto;
+import com.problemservice.ProblemService.model.dto.LearningSessionStartedEventDto;
 import com.problemservice.ProblemService.model.dto.SessionCompletedEventDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -20,14 +25,19 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "spring.kafka.bootstrap-servers", matchIfMissing = false)
 public class EventPublisherService {
 
-    // Kafka 메시지 전송을 위한 템플릿
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    // 세션 완료 이벤트를 발행할 Kafka 토픽 이름 (기본값: "session-completed")
-    @Value("${app.kafka.topic.session-completed:session-completed}")
+    @Value("${app.kafka.topic.session-completed:learning-session-completed}")
     private String sessionCompletedTopic;
+
+    @Value("${app.kafka.topic.session-started:learning-session-started}")
+    private String sessionStartedTopic;
+
+    @Value("${app.kafka.topic.question-answered:learning-question-answered}")
+    private String questionAnsweredTopic;
 
     /**
      * 학습 세션 완료 이벤트를 Kafka로 발행
@@ -71,6 +81,111 @@ public class EventPublisherService {
         } catch (Exception e) {
             // 4단계: 전송 과정에서 발생한 예외 처리
             log.error("Error occurred while publishing session completed event for session: {}", 
+                event.getSessionId(), e);
+        }
+    }
+
+    public void publishSessionStartedEvent(LearningSessionStartedEventDto event) {
+        try {
+            event.setEventTimestamp(LocalDateTime.now());
+            event.setEventType("SESSION_STARTED");
+            
+            CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(
+                sessionStartedTopic,
+                event.getSessionId(),
+                event
+            );
+            
+            future.whenComplete((result, exception) -> {
+                if (exception == null) {
+                    log.info("Session started event published successfully for session: {} to topic: {} with offset: {}", 
+                        event.getSessionId(), 
+                        sessionStartedTopic, 
+                        result.getRecordMetadata().offset()
+                    );
+                } else {
+                    log.error("Failed to publish session started event for session: {} to topic: {}", 
+                        event.getSessionId(), 
+                        sessionStartedTopic, 
+                        exception
+                    );
+                }
+            });
+            
+        } catch (Exception e) {
+            log.error("Error occurred while publishing session started event for session: {}", 
+                event.getSessionId(), e);
+        }
+    }
+
+    public void publishQuestionAnsweredEvent(LearningQuestionAnsweredEventDto event) {
+        try {
+            event.setEventTimestamp(LocalDateTime.now());
+            event.setEventType("QUESTION_ANSWERED");
+            
+            CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(
+                questionAnsweredTopic,
+                event.getQuestionId(),
+                event
+            );
+            
+            future.whenComplete((result, exception) -> {
+                if (exception == null) {
+                    log.info("Question answered event published successfully for question: {} in session: {} to topic: {} with offset: {}", 
+                        event.getQuestionId(),
+                        event.getSessionId(),
+                        questionAnsweredTopic, 
+                        result.getRecordMetadata().offset()
+                    );
+                } else {
+                    log.error("Failed to publish question answered event for question: {} in session: {} to topic: {}", 
+                        event.getQuestionId(),
+                        event.getSessionId(),
+                        questionAnsweredTopic, 
+                        exception
+                    );
+                }
+            });
+            
+        } catch (Exception e) {
+            log.error("Error occurred while publishing question answered event for question: {} in session: {}", 
+                event.getQuestionId(), event.getSessionId(), e);
+        }
+    }
+
+    public void publishLearningCompletedEvent(LearningCompletedEventDto event) {
+        try {
+            if (event.getEventId() == null) {
+                event.setEventId(UUID.randomUUID().toString());
+            }
+            event.setTimestamp(LocalDateTime.now());
+            event.setEventType("SESSION_COMPLETED");
+            event.setEventSource("Problem_Service");
+            
+            CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(
+                sessionCompletedTopic,
+                event.getSessionId(),
+                event
+            );
+            
+            future.whenComplete((result, exception) -> {
+                if (exception == null) {
+                    log.info("Learning completed event published successfully for session: {} to topic: {} with offset: {}", 
+                        event.getSessionId(), 
+                        sessionCompletedTopic, 
+                        result.getRecordMetadata().offset()
+                    );
+                } else {
+                    log.error("Failed to publish learning completed event for session: {} to topic: {}", 
+                        event.getSessionId(), 
+                        sessionCompletedTopic, 
+                        exception
+                    );
+                }
+            });
+            
+        } catch (Exception e) {
+            log.error("Error occurred while publishing learning completed event for session: {}", 
                 event.getSessionId(), e);
         }
     }

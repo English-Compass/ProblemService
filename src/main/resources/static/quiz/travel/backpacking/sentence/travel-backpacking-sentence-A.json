@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (0)",
+        "question": "I need to *pack* my backpack.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "buy",
+            "empty",
+            "fill"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fill",
+        "explanation": "'Pack'은 짐을 싸다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (1)",
+        "question": "Where can I find a *hostel*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "expensive hotel",
+            "budget accommodation"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "budget accommodation",
+        "explanation": "'Hostel'은 호스텔을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (2)",
+        "question": "I'm traveling on a *budget*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "unlimited money",
+            "limited money",
+            "no money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "limited money",
+        "explanation": "'Budget'은 예산을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (3)",
+        "question": "Can I *store* my luggage here?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "break",
+            "lose",
+            "keep"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "keep",
+        "explanation": "'Store'는 보관하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (4)",
+        "question": "I need a *map* of the city.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ticket",
+            "guide",
+            "menu"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "guide",
+        "explanation": "'Map'은 지도를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (5)",
+        "question": "I need to *pack* my backpack.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "fill",
+            "empty",
+            "buy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fill",
+        "explanation": "'Pack'은 짐을 싸다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (6)",
+        "question": "Where can I find a *hostel*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "budget accommodation",
+            "expensive hotel"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "budget accommodation",
+        "explanation": "'Hostel'은 호스텔을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (7)",
+        "question": "I'm traveling on a *budget*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "unlimited money",
+            "limited money",
+            "no money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "limited money",
+        "explanation": "'Budget'은 예산을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (8)",
+        "question": "Can I *store* my luggage here?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lose",
+            "keep",
+            "break"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "keep",
+        "explanation": "'Store'는 보관하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at A level. (9)",
+        "question": "I need a *map* of the city.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ticket",
+            "guide",
+            "menu"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "guide",
+        "explanation": "'Map'은 지도를 의미합니다."
     }
 ]

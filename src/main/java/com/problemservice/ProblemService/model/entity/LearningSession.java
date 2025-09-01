@@ -18,7 +18,15 @@ import java.time.LocalDateTime;
  * 출력: 진행률과 통계가 포함된 학습 세션 데이터
  */
 @Entity
-@Table(name = "learning_sessions")
+@Table(name = "learning_sessions",
+    indexes = {
+        @Index(name = "idx_user_id", columnList = "user_id"),
+        @Index(name = "idx_status", columnList = "status"),
+        @Index(name = "idx_session_type", columnList = "session_type"),
+        @Index(name = "idx_user_status", columnList = "user_id, status"),
+        @Index(name = "idx_created_at", columnList = "created_at"),
+        @Index(name = "idx_completed_at", columnList = "completed_at")
+    })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,8 +1,10 @@
 package com.problemservice.ProblemService.config;
 
+import com.problemservice.ProblemService.constants.AppConstants;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -11,82 +13,78 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * HTTP 요청 및 응답 로깅을 위한 서블릿 필터
- * /api/** 경로에 대해 요청/응답 내용, 시간, IP 주소를 기록
- * 입력: HTTP 요청 (메소드, URI, 헤더, 바디)
- * 출력: 로깅된 HTTP 요청/응답 정보
+ * HTTP 요청/응답 상세 로깅 서블릿 필터
+ * /api/** 경로의 모든 HTTP 요청에 대해 요청 메서드, URI, 클라이언트 IP, 
+ * 요청/응답 바디, 처리 시간을 상세히 기록하여 API 디버깅과 성능 모니터링 지원
  */
 @Slf4j
+@RequiredArgsConstructor
 public class LoggingFilter implements Filter {
+    
+    private final AppProperties appProperties;
 
-    /**
-     * 대상 요청에 대해 로깅 수행 및 요청 처리
-     * 단계: 1) API 경로 확인 2) 요청/응답 래퍼 생성 3) 요청 로깅 4) 요청 처리 5) 응답 로깅
-     * 입력: 서블릿 요청, 응답, 필터 체인
-     * 출력: 로깅된 요청/응답 정보
-     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
             throws IOException, ServletException {
         
-        // 1단계: HTTP 요청/응답으로 캐스팅
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         
-        // 2단계: API 경로 확인 - /api/로 시작하지 않으면 로깅 없이 통과
+        // API 경로가 아니거나 로깅이 비활성화된 경우 필터링 없이 통과
         String requestURI = httpRequest.getRequestURI();
-        if (!requestURI.startsWith("/api/")) {
+        if (!requestURI.startsWith(AppConstants.Api.BASE_PATH + "/") || 
+            !appProperties.getLogging().isEnableApiLogging()) {
             chain.doFilter(request, response);
             return;
         }
         
-        // 3단계: 요청/응답 내용을 캐시할 수 있는 래퍼 생성
+        // 요청/응답 내용 캐싱을 위한 래퍼 생성
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(httpRequest);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(httpResponse);
         
-        // 4단계: 요청 시작 시간 기록
         long startTime = System.currentTimeMillis();
         
         try {
-            // 5단계: 요청 정보 로깅
             logRequest(wrappedRequest);
-            // 6단계: 다음 필터로 요청 전달 (실제 요청 처리)
             chain.doFilter(wrappedRequest, wrappedResponse);
         } finally {
-            // 7단계: 요청 처리 시간 계산 및 응답 로깅
             long duration = System.currentTimeMillis() - startTime;
             logResponse(wrappedResponse, duration);
-            // 8단계: 응답 바디를 실제 응답으로 복사
             wrappedResponse.copyBodyToResponse();
         }
     }
 
     /**
-     * HTTP 요청 정보를 로깅하는 메소드
-     * 단계: 1) 요청 기본 정보 추출 2) 기본 정보 로깅 3) 대상 메소드에 대해 바디 로깅
-     * 입력: 콘텐츠 캐시를 지원하는 HTTP 요청 래퍼
-     * 출력: 로깅된 요청 정보
+     * HTTP 요청 상세 정보 로깅 및 기록
+     * 요청 메서드, URI, 쿼리 파라미터, 클라이언트 IP를 기록하고,
+     * POST/PUT/PATCH 메서드의 경우 요청 바디도 추가로 로깅
+     * @param request 콘텐츠 캐싱이 가능한 HTTP 요청 래퍼
      */
     private void logRequest(ContentCachingRequestWrapper request) {
-        // 1단계: 요청에서 기본 정보 추출
-        String method = request.getMethod(); // HTTP 메소드 (GET, POST 등)
-        String uri = request.getRequestURI(); // 요청 URI
-        String queryString = request.getQueryString(); // 쿼리 파라미터
-        String clientIp = getClientIpAddress(request); // 클라이언트 IP 주소
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
+        String queryString = request.getQueryString();
+        String clientIp = getClientIpAddress(request);
         
-        // 2단계: 요청 기본 정보 로깅
         log.info("=== API REQUEST === Method: {}, URI: {}, Query: {}, Client IP: {}", 
                 method, uri, queryString, clientIp);
         
-        // 3단계: 데이터를 전송하는 메소드의 경우 요청 바디 로깅
+        // POST, PUT, PATCH 메서드의 경우 요청 바디 로깅
         if ("POST".equals(method) || "PUT".equals(method) || "PATCH".equals(method)) {
-            String requestBody = getRequestBody(request); // 요청 바디 추출
+            String requestBody = getRequestBody(request);
             if (!requestBody.isEmpty()) {
                 log.info("Request Body: {}", requestBody);
             }
         }
     }
 
+    /**
+     * HTTP 응답 상세 정보 로깅 및 기록
+     * 응답 상태 코드, 처리 시간, 응답 바디를 기록하며
+     * 설정된 최대 크기를 초과하는 응답은 자동으로 잘라냄
+     * @param response 콘텐츠 캐싱이 가능한 HTTP 응답 래퍼
+     * @param duration 요청 처리 소요 시간 (밀리초)
+     */
     private void logResponse(ContentCachingResponseWrapper response, long duration) {
         int status = response.getStatus();
         String responseBody = getResponseBody(response);
@@ -94,8 +92,10 @@ public class LoggingFilter implements Filter {
         log.info("=== API RESPONSE === Status: {}, Duration: {}ms", status, duration);
         
         if (!responseBody.isEmpty()) {
-            if (responseBody.length() > 1000) {
-                log.info("Response Body: {}... (truncated)", responseBody.substring(0, 1000));
+            int maxSize = appProperties.getLogging().getMaxBodyLogSize();
+            if (responseBody.length() > maxSize) {
+                String suffix = appProperties.getLogging().getTruncationSuffix();
+                log.info("Response Body: {}{}", responseBody.substring(0, maxSize), suffix);
             } else {
                 log.info("Response Body: {}", responseBody);
             }
@@ -108,7 +108,9 @@ public class LoggingFilter implements Filter {
         byte[] content = request.getContentAsByteArray();
         if (content.length > 0) {
             String body = new String(content, StandardCharsets.UTF_8);
-            return body.length() > 1000 ? body.substring(0, 1000) + "... (truncated)" : body;
+            int maxSize = appProperties.getLogging().getMaxBodyLogSize();
+            String suffix = appProperties.getLogging().getTruncationSuffix();
+            return body.length() > maxSize ? body.substring(0, maxSize) + suffix : body;
         }
         return "";
     }
@@ -121,6 +123,9 @@ public class LoggingFilter implements Filter {
         return "";
     }
 
+    /**
+     * 실제 클라이언트 IP 주소 추출 (프록시 환경 고려)
+     */
     private String getClientIpAddress(HttpServletRequest request) {
         String xForwardedFor = request.getHeader("X-Forwarded-For");
         if (xForwardedFor != null && !xForwardedFor.isEmpty()) {

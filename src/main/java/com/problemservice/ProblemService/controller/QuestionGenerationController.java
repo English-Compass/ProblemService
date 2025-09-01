@@ -5,11 +5,6 @@ import com.problemservice.ProblemService.model.dto.QuestionGenerationRequestDto;
 import com.problemservice.ProblemService.model.dto.QuestionGenerationResponseDto;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.service.QuestionGenerationService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +23,6 @@ import java.util.List;
 @RequestMapping("/api/questions/generate")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Question Generation", description = "AI 기반 문제 생성 API")
 public class QuestionGenerationController {
     
     private final QuestionGenerationService questionGenerationService;
@@ -40,16 +34,9 @@ public class QuestionGenerationController {
      * @return 생성되어 저장된 문제들의 응답
      */
     @PostMapping
-    @Operation(summary = "AI 문제 생성 및 저장", 
-               description = "OpenAI를 사용하여 문제를 생성하고 데이터베이스에 저장합니다")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "문제 생성 및 저장 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
-        @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
     public ResponseEntity<QuestionGenerationResponseDto> generateAndSaveQuestions(
             @Valid @RequestBody 
-            @Parameter(description = "문제 생성 요청 정보", required = true) 
+ 
             QuestionGenerationRequestDto request) {
         
         try {
@@ -106,13 +93,11 @@ public class QuestionGenerationController {
      * @return 생성되어 저장된 문제들의 응답
      */
     @PostMapping("/quick")
-    @Operation(summary = "빠른 문제 생성", 
-               description = "간단한 파라미터로 기본 설정의 문제를 빠르게 생성하고 저장합니다")
     public ResponseEntity<QuestionGenerationResponseDto> quickGenerate(
-            @RequestParam @Parameter(description = "문제 유형 (word, sentence, conversation)", required = true) String questionType,
-            @RequestParam @Parameter(description = "난이도 (A, B, C)", required = true) String difficulty,
-            @RequestParam @Parameter(description = "주제", required = true) String topic,
-            @RequestParam(defaultValue = "1") @Parameter(description = "생성할 문제 수") Integer count) {
+            @RequestParam String questionType,
+            @RequestParam String difficulty,
+            @RequestParam String topic,
+            @RequestParam(defaultValue = "1") Integer count) {
         
         try {
             // 간단한 요청을 전체 요청 DTO로 변환

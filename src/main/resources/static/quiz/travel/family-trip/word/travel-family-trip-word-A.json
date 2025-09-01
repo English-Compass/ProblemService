@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/family-trip at A level. (0)",
+        "question": "The _____ love the pool.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "pets",
+            "adults",
+            "children"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "children",
+        "explanation": "'Children'은 아이들을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (1)",
+        "question": "We need a _____ room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "single",
+            "family",
+            "office"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "family",
+        "explanation": "'Family room'은 가족실을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (2)",
+        "question": "The _____ has many rides.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "park",
+            "library",
+            "office"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "park",
+        "explanation": "'Park'는 공원을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (3)",
+        "question": "Dad is taking _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "photos",
+            "naps",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "photos",
+        "explanation": "'Photos'는 사진을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (4)",
+        "question": "Mom packed healthy _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "books",
+            "snacks",
+            "clothes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "snacks",
+        "explanation": "'Snacks'는 간식을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (5)",
+        "question": "The _____ love the pool.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "pets",
+            "adults",
+            "children"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "children",
+        "explanation": "'Children'은 아이들을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (6)",
+        "question": "We need a _____ room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "family",
+            "office",
+            "single"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "family",
+        "explanation": "'Family room'은 가족실을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (7)",
+        "question": "The _____ has many rides.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "park",
+            "library",
+            "office"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "park",
+        "explanation": "'Park'는 공원을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (8)",
+        "question": "Dad is taking _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "photos",
+            "naps",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "photos",
+        "explanation": "'Photos'는 사진을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/family-trip at A level. (9)",
+        "question": "Mom packed healthy _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "snacks",
+            "clothes",
+            "books"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "snacks",
+        "explanation": "'Snacks'는 간식을 의미합니다."
     }
 ]

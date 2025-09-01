@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (0)",
+        "question": "Backpacking allows for *spontaneous* adventures.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "unplanned",
+            "scheduled",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "unplanned",
+        "explanation": "'Spontaneous'는 즉흥적인을 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (1)",
+        "question": "I need to *optimize* my packing strategy.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "complicate",
+            "improve",
+            "ignore"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "improve",
+        "explanation": "'Optimize'는 최적화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (2)",
+        "question": "The trail is *challenging* but rewarding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "boring",
+            "easy",
+            "difficult"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "difficult",
+        "explanation": "'Challenging'은 도전적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (3)",
+        "question": "I prefer *sustainable* travel practices.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "harmful",
+            "environmentally friendly"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "environmentally friendly",
+        "explanation": "'Sustainable'은 지속가능한을 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (4)",
+        "question": "The journey *encompasses* multiple countries.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoids",
+            "excludes",
+            "includes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Encompasses'는 포함하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (5)",
+        "question": "Backpacking allows for *spontaneous* adventures.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "unplanned",
+            "scheduled",
+            "expensive"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "unplanned",
+        "explanation": "'Spontaneous'는 즉흥적인을 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (6)",
+        "question": "I need to *optimize* my packing strategy.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "complicate",
+            "improve"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "improve",
+        "explanation": "'Optimize'는 최적화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (7)",
+        "question": "The trail is *challenging* but rewarding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "difficult",
+            "boring",
+            "easy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "difficult",
+        "explanation": "'Challenging'은 도전적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (8)",
+        "question": "I prefer *sustainable* travel practices.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "harmful",
+            "environmentally friendly"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "environmentally friendly",
+        "explanation": "'Sustainable'은 지속가능한을 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at C level. (9)",
+        "question": "The journey *encompasses* multiple countries.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoids",
+            "includes",
+            "excludes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "includes",
+        "explanation": "'Encompasses'는 포함하다는 의미입니다."
     }
 ]

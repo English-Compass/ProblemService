@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (0)",
+        "question": "Do you accept _____ cards?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "playing",
+            "transit",
+            "birthday"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "transit",
+        "explanation": "'Transit cards'는 교통카드를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (1)",
+        "question": "The _____ is under construction.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "library",
+            "restaurant",
+            "station"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "station",
+        "explanation": "'Station'은 역을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (2)",
+        "question": "I need to check the train _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "menu",
+            "schedule",
+            "price"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "schedule",
+        "explanation": "'Schedule'은 시간표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (3)",
+        "question": "This is a _____ zone.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "no-parking",
+            "shopping"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "no-parking",
+        "explanation": "'No-parking zone'은 주차금지구역을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (4)",
+        "question": "The _____ announced a delay.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "conductor",
+            "teacher",
+            "chef"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "conductor",
+        "explanation": "'Conductor'는 차장을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (5)",
+        "question": "Do you accept _____ cards?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "transit",
+            "birthday",
+            "playing"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "transit",
+        "explanation": "'Transit cards'는 교통카드를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (6)",
+        "question": "The _____ is under construction.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "station",
+            "library",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "station",
+        "explanation": "'Station'은 역을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (7)",
+        "question": "I need to check the train _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "menu",
+            "price",
+            "schedule"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "schedule",
+        "explanation": "'Schedule'은 시간표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (8)",
+        "question": "This is a _____ zone.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shopping",
+            "restaurant",
+            "no-parking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "no-parking",
+        "explanation": "'No-parking zone'은 주차금지구역을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at B level. (9)",
+        "question": "The _____ announced a delay.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "teacher",
+            "conductor",
+            "chef"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "conductor",
+        "explanation": "'Conductor'는 차장을 의미합니다."
     }
 ]

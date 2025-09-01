@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (0)",
+        "question": "I need to *study* for the exam.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "prepare",
+            "sleep",
+            "play"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "prepare",
+        "explanation": "'Study'는 공부하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (1)",
+        "question": "When is the *deadline* for the assignment?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "start date",
+            "holiday",
+            "due date"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "due date",
+        "explanation": "'Deadline'은 마감일을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (2)",
+        "question": "I need to *research* this topic.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "delete",
+            "ignore",
+            "investigate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "investigate",
+        "explanation": "'Research'는 조사하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (3)",
+        "question": "Can I *submit* my paper online?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "read",
+            "copy",
+            "hand in"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hand in",
+        "explanation": "'Submit'은 제출하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (4)",
+        "question": "I need help with my *homework*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "assignment",
+            "hobby",
+            "lunch"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "assignment",
+        "explanation": "'Homework'는 숙제를 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (5)",
+        "question": "I need to *study* for the exam.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep",
+            "play",
+            "prepare"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "prepare",
+        "explanation": "'Study'는 공부하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (6)",
+        "question": "When is the *deadline* for the assignment?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "holiday",
+            "due date",
+            "start date"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "due date",
+        "explanation": "'Deadline'은 마감일을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (7)",
+        "question": "I need to *research* this topic.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "investigate",
+            "delete"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "investigate",
+        "explanation": "'Research'는 조사하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (8)",
+        "question": "Can I *submit* my paper online?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "copy",
+            "read",
+            "hand in"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "hand in",
+        "explanation": "'Submit'은 제출하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at A level. (9)",
+        "question": "I need help with my *homework*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hobby",
+            "assignment",
+            "lunch"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "assignment",
+        "explanation": "'Homework'는 숙제를 의미합니다."
     }
 ]

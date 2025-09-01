@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Receptionist: 'Do you have an appointment scheduled for today?'",
+        "options": [
+            "Yes, I have an appointment at 3 PM under the name Johnson.",
+            "I think I might have one, but I'm not sure.",
+            "Do I really need an appointment to see a doctor?"
+        ],
+        "answer": "Yes, I have an appointment at 3 PM under the name Johnson.",
+        "explanation": "병원 접수 시 예약 시간과 이름을 명확히 알려주는 것이 중요합니다."
+    },
+    {
+        "question": "Nurse: 'Please have a seat in the waiting area. The doctor will see you shortly.'",
+        "options": [
+            "Thank you. Could you give me an estimate of how long the wait might be?",
+            "I'm really in a hurry today.",
+            "Why does it always take so long here?"
+        ],
+        "answer": "Thank you. Could you give me an estimate of how long the wait might be?",
+        "explanation": "간호사의 안내에 감사를 표하고 대기시간을 정중하게 문의하는 것이 적절합니다."
+    }
+]

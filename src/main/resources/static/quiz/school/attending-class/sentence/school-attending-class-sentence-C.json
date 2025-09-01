@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/attending-class at C level. (0)",
+        "question": "The discussion *elicited* diverse perspectives.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "brought out",
+            "ignored",
+            "prevented"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "brought out",
+        "explanation": "'Elicited'는 이끌어내다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (1)",
+        "question": "Students should *synthesize* course materials.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "combine",
+            "ignore",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combine",
+        "explanation": "'Synthesize'는 종합하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (2)",
+        "question": "The seminar *facilitates* critical thinking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "prevents",
+            "promotes",
+            "ignores"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "promotes",
+        "explanation": "'Facilitates'는 촉진하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (3)",
+        "question": "I need to *articulate* my thoughts clearly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hide",
+            "confuse",
+            "express"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "express",
+        "explanation": "'Articulate'는 명확히 표현하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (4)",
+        "question": "The course *integrates* theory and practice.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separates",
+            "ignores",
+            "combines"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combines",
+        "explanation": "'Integrates'는 통합하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (5)",
+        "question": "The discussion *elicited* diverse perspectives.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignored",
+            "prevented",
+            "brought out"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "brought out",
+        "explanation": "'Elicited'는 이끌어내다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (6)",
+        "question": "Students should *synthesize* course materials.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "combine",
+            "ignore",
+            "separate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combine",
+        "explanation": "'Synthesize'는 종합하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (7)",
+        "question": "The seminar *facilitates* critical thinking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "prevents",
+            "promotes",
+            "ignores"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "promotes",
+        "explanation": "'Facilitates'는 촉진하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (8)",
+        "question": "I need to *articulate* my thoughts clearly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "express",
+            "hide",
+            "confuse"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "express",
+        "explanation": "'Articulate'는 명확히 표현하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at C level. (9)",
+        "question": "The course *integrates* theory and practice.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separates",
+            "ignores",
+            "combines"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "combines",
+        "explanation": "'Integrates'는 통합하다는 의미입니다."
     }
 ]

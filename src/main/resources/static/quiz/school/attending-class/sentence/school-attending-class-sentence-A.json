@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/attending-class at A level. (0)",
+        "question": "Please *take notes* during the lecture.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sleep",
+            "write down",
+            "talk"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "write down",
+        "explanation": "'Take notes'는 노트를 작성하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (1)",
+        "question": "Can you *repeat* the question?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "answer",
+            "say again"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "say again",
+        "explanation": "'Repeat'는 반복하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (2)",
+        "question": "I need to *attend* all classes.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "teach",
+            "go to",
+            "skip"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "go to",
+        "explanation": "'Attend'는 참석하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (3)",
+        "question": "The professor will *explain* the concept.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clarify",
+            "forget",
+            "hide"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "clarify",
+        "explanation": "'Explain'은 설명하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (4)",
+        "question": "Please *raise your hand* if you have a question.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lift your hand up",
+            "stand up",
+            "sit down"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "lift your hand up",
+        "explanation": "'Raise your hand'는 손을 들다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (5)",
+        "question": "Please *take notes* during the lecture.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "talk",
+            "sleep",
+            "write down"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "write down",
+        "explanation": "'Take notes'는 노트를 작성하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (6)",
+        "question": "Can you *repeat* the question?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "say again",
+            "answer"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "say again",
+        "explanation": "'Repeat'는 반복하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (7)",
+        "question": "I need to *attend* all classes.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "skip",
+            "go to",
+            "teach"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "go to",
+        "explanation": "'Attend'는 참석하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (8)",
+        "question": "The professor will *explain* the concept.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clarify",
+            "hide",
+            "forget"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "clarify",
+        "explanation": "'Explain'은 설명하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/attending-class at A level. (9)",
+        "question": "Please *raise your hand* if you have a question.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sit down",
+            "lift your hand up",
+            "stand up"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "lift your hand up",
+        "explanation": "'Raise your hand'는 손을 들다는 의미입니다."
     }
 ]

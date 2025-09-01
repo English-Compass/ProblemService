@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (0)",
+        "question": "The group decided to *venture* into the mountains.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "go exploring",
+            "stay home"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "go exploring",
+        "explanation": "'Venture'는 모험하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (1)",
+        "question": "We should *compromise* on the destination.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "argue",
+            "separate",
+            "find middle ground"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "find middle ground",
+        "explanation": "'Compromise'는 타협하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (2)",
+        "question": "Let's *indulge* in local cuisine.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cook",
+            "avoid",
+            "enjoy freely"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enjoy freely",
+        "explanation": "'Indulge'는 즐기다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (3)",
+        "question": "The trip *strengthened* our friendship.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "weakened",
+            "made stronger",
+            "ended"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "made stronger",
+        "explanation": "'Strengthened'는 강화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (4)",
+        "question": "We need to *synchronize* our departure times.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separate",
+            "ignore",
+            "match up"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "match up",
+        "explanation": "'Synchronize'는 동기화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (5)",
+        "question": "The group decided to *venture* into the mountains.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "go exploring",
+            "work",
+            "stay home"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "go exploring",
+        "explanation": "'Venture'는 모험하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (6)",
+        "question": "We should *compromise* on the destination.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separate",
+            "find middle ground",
+            "argue"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "find middle ground",
+        "explanation": "'Compromise'는 타협하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (7)",
+        "question": "Let's *indulge* in local cuisine.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "enjoy freely",
+            "cook",
+            "avoid"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "enjoy freely",
+        "explanation": "'Indulge'는 즐기다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (8)",
+        "question": "The trip *strengthened* our friendship.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "made stronger",
+            "weakened",
+            "ended"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "made stronger",
+        "explanation": "'Strengthened'는 강화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at B level. (9)",
+        "question": "We need to *synchronize* our departure times.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "separate",
+            "ignore",
+            "match up"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "match up",
+        "explanation": "'Synchronize'는 동기화하다는 의미입니다."
     }
 ]

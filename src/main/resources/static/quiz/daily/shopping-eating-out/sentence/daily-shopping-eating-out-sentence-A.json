@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (0)",
+        "question": "I'd like to *order* a coffee.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ask for",
+            "buy",
+            "request"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "request",
+        "explanation": "'Order'는 주문하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (1)",
+        "question": "Can I have the *bill*, please?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "check",
+            "receipt",
+            "money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "check",
+        "explanation": "'Bill'은 계산서를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (2)",
+        "question": "This meal is *delicious*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "tasty",
+            "bad"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tasty",
+        "explanation": "'Delicious'는 맛있다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (3)",
+        "question": "I'm *allergic* to nuts.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sensitive to",
+            "hate",
+            "love"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "sensitive to",
+        "explanation": "'Allergic'은 알레르기가 있다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (4)",
+        "question": "What do you *recommend*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sell",
+            "suggest",
+            "cook"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suggest",
+        "explanation": "'Recommend'는 추천하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (5)",
+        "question": "I'd like to *order* a coffee.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ask for",
+            "buy",
+            "request"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "request",
+        "explanation": "'Order'는 주문하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (6)",
+        "question": "Can I have the *bill*, please?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "receipt",
+            "check",
+            "money"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "check",
+        "explanation": "'Bill'은 계산서를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (7)",
+        "question": "This meal is *delicious*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "bad",
+            "tasty"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tasty",
+        "explanation": "'Delicious'는 맛있다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (8)",
+        "question": "I'm *allergic* to nuts.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sensitive to",
+            "love",
+            "hate"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "sensitive to",
+        "explanation": "'Allergic'은 알레르기가 있다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at A level. (9)",
+        "question": "What do you *recommend*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sell",
+            "cook",
+            "suggest"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "suggest",
+        "explanation": "'Recommend'는 추천하다는 의미입니다."
     }
 ]

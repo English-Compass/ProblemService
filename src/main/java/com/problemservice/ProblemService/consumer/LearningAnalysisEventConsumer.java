@@ -1,6 +1,12 @@
 package com.problemservice.ProblemService.consumer;
 
+import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysis;
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysisEvent;
+import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
+import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
+import com.problemservice.ProblemService.model.entity.QuestionAnswer;
+import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
+import com.problemservice.ProblemService.service.LearningSessionService;
 import com.problemservice.ProblemService.service.QuestionAssignmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +16,9 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 학습 분석 완료 이벤트를 실시간으로 처리하는 Kafka 컨슈머
@@ -21,6 +30,8 @@ import org.springframework.stereotype.Component;
 public class LearningAnalysisEventConsumer {
     
     private final QuestionAssignmentService questionAssignmentService;
+    private final LearningSessionService learningSessionService;
+    private final QuestionAnswerRepository questionAnswerRepository;
     
     /**
      * 학습 분석 완료 이벤트를 실시간으로 처리
@@ -38,7 +49,7 @@ public class LearningAnalysisEventConsumer {
     )
     public void processLearningAnalysisEvent(
             @Payload CompleteLearningAnalysisEvent event,
-            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
             @Header(KafkaHeaders.OFFSET) long offset,
             Acknowledgment acknowledgment) {
         
@@ -56,13 +67,16 @@ public class LearningAnalysisEventConsumer {
             // 2. 분석 결과를 바탕으로 사용자 학습 프로필 실시간 업데이트
             questionAssignmentService.updateUserLearningProfile(event.getUserId(), event.getAnalysisData());
             
-            // 3. 처리 완료 로그
+            // 3. 사용자 답안 기록에 따라 자동으로 추천 세션 생성
+            createRecommendedSessions(event.getUserId(), event.getAnalysisData());
+            
+            // 4. 처리 완료 로그
             log.info("Learning analysis processed and user profile updated for userId: {}, pattern: {}, consistency: {}", 
                 event.getUserId(), 
                 event.getAnalysisData().getOverallLearningPattern(),
                 event.getAnalysisData().getConsistencyScore());
             
-            // 4. 메시지 처리 완료 확인
+            // 5. 메시지 처리 완료 확인
             acknowledgment.acknowledge();
             
         } catch (Exception e) {
@@ -90,5 +104,76 @@ public class LearningAnalysisEventConsumer {
         return userId != null && !userId.trim().isEmpty() 
             && sessionId != null && !sessionId.trim().isEmpty()
             && event.getTimestamp() > 0;
+    }
+    
+    /**
+     * 사용자의 답안 기록에 따라 추천 세션을 자동 생성
+     * @param userId 사용자 ID
+     * @param analysisData 분석 데이터
+     */
+    private void createRecommendedSessions(String userId, CompleteLearningAnalysis analysisData) {
+        try {
+            // 사용자의 전체 카테고리에서 기록 확인 (모든 주요 카테고리)
+            List<String> allCategories = Arrays.asList("학업", "비즈니스", "여행", "일상생활");
+            
+            // 정답 기록이 있으면 복습 세션 생성
+            List<QuestionAnswer> correctAnswers = questionAnswerRepository
+                .findByUserIdAndCategoriesAndIsCorrect(userId, allCategories, true);
+            
+            if (!correctAnswers.isEmpty()) {
+                createReviewSession(userId, allCategories);
+            }
+            
+            // 오답 기록이 있으면 오답노트 세션 생성
+            List<QuestionAnswer> wrongAnswers = questionAnswerRepository
+                .findWrongAnswersByUserIdAndCategories(userId, allCategories);
+            
+            if (!wrongAnswers.isEmpty()) {
+                createWrongAnswerSession(userId, allCategories);
+            }
+            
+        } catch (Exception e) {
+            log.error("Failed to create recommended sessions for user: {}", userId, e);
+        }
+    }
+    
+    /**
+     * 복습 세션 자동 생성
+     */
+    private void createReviewSession(String userId, List<String> categories) {
+        try {
+            LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
+                .userId(userId)
+                .sessionType(SessionType.REVIEW)
+                .categories(categories)
+                .sessionMetadata("Auto-generated review session")
+                .build();
+                
+            learningSessionService.createReviewSession(createDto);
+            log.info("Auto-generated review session created for user: {}", userId);
+            
+        } catch (Exception e) {
+            log.warn("Could not auto-create review session for user: {} - {}", userId, e.getMessage());
+        }
+    }
+    
+    /**
+     * 오답노트 세션 자동 생성
+     */
+    private void createWrongAnswerSession(String userId, List<String> categories) {
+        try {
+            LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
+                .userId(userId)
+                .sessionType(SessionType.WRONG_ANSWER)
+                .categories(categories)
+                .sessionMetadata("Auto-generated wrong answer session")
+                .build();
+                
+            learningSessionService.createWrongAnswerSession(createDto);
+            log.info("Auto-generated wrong answer session created for user: {}", userId);
+            
+        } catch (Exception e) {
+            log.warn("Could not auto-create wrong answer session for user: {} - {}", userId, e.getMessage());
+        }
     }
 }

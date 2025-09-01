@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Friend: 'I'm feeling really tired from all the walking today. Can we plan something more relaxed for tomorrow?'",
+        "options": [
+            "Of course! Let's plan a more leisurely day tomorrow. Maybe we can find a nice café and do some gentle sightseeing, or just rest by the pool.",
+            "But we're here to see everything, so we shouldn't waste time.",
+            "You can rest while the rest of us continue exploring."
+        ],
+        "answer": "Of course! Let's plan a more leisurely day tomorrow. Maybe we can find a nice café and do some gentle sightseeing, or just rest by the pool.",
+        "explanation": "친구의 피로를 이해하고 함께 편안한 일정을 계획하자고 제안하는 것이 배려 깊은 여행 동반자의 모습입니다."
+    },
+    {
+        "question": "Local guide: 'Your group seems interested in adventure activities. However, weather conditions tomorrow might not be ideal for hiking.'",
+        "options": [
+            "Thanks for the weather update. Let me check with my friends about their preferences. Some might want to wait for better hiking conditions, while others might prefer indoor alternatives. Could you give us a few minutes to discuss?",
+            "We'll do whatever you think is the best option.",
+            "Bad weather doesn't really bother us that much."
+        ],
+        "answer": "Thanks for the weather update. Let me check with my friends about their preferences. Some might want to wait for better hiking conditions, while others might prefer indoor alternatives. Could you give us a few minutes to discuss?",
+        "explanation": "날씨 정보에 감사하고 그룹 내 다양한 선호도를 인정하며 모든 친구들과 상의할 시간을 요청하는 것이 민주적이고 포용적인 그룹 리더십을 보여줍니다."
+    }
+]

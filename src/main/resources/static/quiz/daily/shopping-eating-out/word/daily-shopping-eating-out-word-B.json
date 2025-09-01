@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (0)",
+        "question": "I prefer _____ vegetables.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "organic",
+            "digital",
+            "plastic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organic",
+        "explanation": "'Organic'은 유기농의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (1)",
+        "question": "This offer is valid until the _____ date.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expiry",
+            "birth",
+            "wedding"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "expiry",
+        "explanation": "'Expiry'는 만료를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (2)",
+        "question": "Do you have a _____ program?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "music",
+            "sports",
+            "loyalty"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "loyalty",
+        "explanation": "'Loyalty'는 충성도/적립 프로그램을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (3)",
+        "question": "I'd like to _____ this item.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hide",
+            "destroy",
+            "exchange"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "exchange",
+        "explanation": "'Exchange'는 교환하다를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (4)",
+        "question": "The _____ is included in the price.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "music",
+            "weather",
+            "tax"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tax",
+        "explanation": "'Tax'는 세금을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (5)",
+        "question": "I prefer _____ vegetables.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "organic",
+            "digital",
+            "plastic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "organic",
+        "explanation": "'Organic'은 유기농의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (6)",
+        "question": "This offer is valid until the _____ date.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "birth",
+            "wedding",
+            "expiry"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "expiry",
+        "explanation": "'Expiry'는 만료를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (7)",
+        "question": "Do you have a _____ program?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "loyalty",
+            "music",
+            "sports"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "loyalty",
+        "explanation": "'Loyalty'는 충성도/적립 프로그램을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (8)",
+        "question": "I'd like to _____ this item.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hide",
+            "exchange",
+            "destroy"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "exchange",
+        "explanation": "'Exchange'는 교환하다를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at B level. (9)",
+        "question": "The _____ is included in the price.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "music",
+            "weather",
+            "tax"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tax",
+        "explanation": "'Tax'는 세금을 의미합니다."
     }
 ]

@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (0)",
+        "question": "The _____ is late.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "book",
+            "bus",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bus",
+        "explanation": "'Bus'는 버스를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (1)",
+        "question": "Where can I buy a _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sandwich",
+            "shirt",
+            "ticket"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "ticket",
+        "explanation": "'Ticket'은 표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (2)",
+        "question": "Which _____ goes downtown?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hotel",
+            "restaurant",
+            "route"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "route",
+        "explanation": "'Route'는 노선을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (3)",
+        "question": "The _____ is on platform 3.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "train",
+            "restaurant",
+            "store"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "train",
+        "explanation": "'Train'은 기차를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (4)",
+        "question": "I need to get off at the next _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "mall",
+            "stop"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stop",
+        "explanation": "'Stop'은 정류장을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (5)",
+        "question": "The _____ is late.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "bus",
+            "food",
+            "book"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bus",
+        "explanation": "'Bus'는 버스를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (6)",
+        "question": "Where can I buy a _____?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "sandwich",
+            "ticket",
+            "shirt"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "ticket",
+        "explanation": "'Ticket'은 표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (7)",
+        "question": "Which _____ goes downtown?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "hotel",
+            "route",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "route",
+        "explanation": "'Route'는 노선을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (8)",
+        "question": "The _____ is on platform 3.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "store",
+            "restaurant",
+            "train"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "train",
+        "explanation": "'Train'은 기차를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at A level. (9)",
+        "question": "I need to get off at the next _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "mall",
+            "stop",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "stop",
+        "explanation": "'Stop'은 정류장을 의미합니다."
     }
 ]

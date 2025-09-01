@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Sommelier: 'Based on your preference for bold flavors, I'd recommend our 2018 Cabernet Sauvignon. It has complex tannins with notes of dark cherry and oak.'",
+        "options": [
+            "That sounds perfect for my palate. I appreciate your expertise in wine pairing. Could I try a small taste first?",
+            "Wine is pretty much all the same to me.",
+            "Just bring me whatever red wine you have open."
+        ],
+        "answer": "That sounds perfect for my palate. I appreciate your expertise in wine pairing. Could I try a small taste first?",
+        "explanation": "소믈리에의 전문적인 추천에 대해 감사를 표하고 시음을 정중하게 요청하는 것이 세련된 대응입니다."
+    },
+    {
+        "question": "Boutique manager: 'This piece is from our exclusive artisan collection, handcrafted using sustainable materials and traditional techniques.'",
+        "options": [
+            "That's fascinating. I'm particularly interested in sustainable fashion. Could you tell me more about the artisan's background and the specific materials used?",
+            "How much does it cost? That's all I really care about.",
+            "I'm just browsing today, not looking for anything specific."
+        ],
+        "answer": "That's fascinating. I'm particularly interested in sustainable fashion. Could you tell me more about the artisan's background and the specific materials used?",
+        "explanation": "고급 제품에 대한 설명에 관심을 보이며 지속가능성과 장인정신에 대한 구체적인 질문을 하는 것이 세련된 쇼핑 대화입니다."
+    }
+]

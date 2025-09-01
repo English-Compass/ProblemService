@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (0)",
+        "question": "The excursion *facilitated* group bonding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "prevented",
+            "ignored",
+            "helped"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "helped",
+        "explanation": "'Facilitated'는 촉진하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (1)",
+        "question": "We *prioritized* adventure over comfort.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "put first",
+            "avoided",
+            "ignored"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "put first",
+        "explanation": "'Prioritized'는 우선순위를 두다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (2)",
+        "question": "The journey *encompassed* diverse experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoided",
+            "excluded",
+            "included"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "included",
+        "explanation": "'Encompassed'는 포함하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (3)",
+        "question": "We *collaborated* on trip planning.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "argued",
+            "worked together",
+            "worked separately"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "worked together",
+        "explanation": "'Collaborated'는 협력하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (4)",
+        "question": "The adventure *exceeded* our expectations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "met",
+            "fell short of",
+            "surpassed"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "surpassed",
+        "explanation": "'Exceeded'는 초과하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (5)",
+        "question": "The excursion *facilitated* group bonding.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "helped",
+            "ignored",
+            "prevented"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "helped",
+        "explanation": "'Facilitated'는 촉진하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (6)",
+        "question": "We *prioritized* adventure over comfort.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "put first",
+            "ignored",
+            "avoided"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "put first",
+        "explanation": "'Prioritized'는 우선순위를 두다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (7)",
+        "question": "The journey *encompassed* diverse experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoided",
+            "included",
+            "excluded"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "included",
+        "explanation": "'Encompassed'는 포함하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (8)",
+        "question": "We *collaborated* on trip planning.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "worked together",
+            "worked separately",
+            "argued"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "worked together",
+        "explanation": "'Collaborated'는 협력하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/trip-with-friends at C level. (9)",
+        "question": "The adventure *exceeded* our expectations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "met",
+            "fell short of",
+            "surpassed"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "surpassed",
+        "explanation": "'Exceeded'는 초과하다는 의미입니다."
     }
 ]

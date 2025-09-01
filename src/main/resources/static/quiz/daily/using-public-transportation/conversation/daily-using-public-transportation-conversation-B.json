@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Fellow passenger: 'Excuse me, is this seat taken by anyone?'",
+        "options": [
+            "No, please feel free to sit down. Let me move my bag out of the way.",
+            "I'm not really sure if someone was sitting there.",
+            "There are plenty of other empty seats available."
+        ],
+        "answer": "No, please feel free to sit down. Let me move my bag out of the way.",
+        "explanation": "다른 승객의 자리 문의에 친절하게 응답하고 가방을 옮겨주는 배려를 보이는 것이 좋습니다."
+    },
+    {
+        "question": "Transit officer: 'I need to see your ticket or transit pass for validation.'",
+        "options": [
+            "Of course, here's my monthly pass. Is there anything else you need to verify?",
+            "I thought this section of the train was free.",
+            "I must have left my ticket at home today."
+        ],
+        "answer": "Of course, here's my monthly pass. Is there anything else you need to verify?",
+        "explanation": "교통 검표원의 요청에 협조적으로 응답하고 추가 확인사항이 있는지 문의하는 것이 적절합니다."
+    }
+]

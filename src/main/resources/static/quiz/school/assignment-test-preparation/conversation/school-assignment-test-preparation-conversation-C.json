@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Department advisor: 'Your thesis proposal shows innovative thinking, but I'm concerned about the feasibility of your data collection methodology given current constraints.'",
+        "options": [
+            "Thank you for raising this important methodological concern. I've considered alternative approaches including mixed-methods design and partnerships with industry collaborators to overcome data access limitations. I'd like to discuss these adaptations with you in detail.",
+            "I believe the methodology I've proposed should work fine.",
+            "Maybe I should choose a simpler and easier research topic instead."
+        ],
+        "answer": "Thank you for raising this important methodological concern. I've considered alternative approaches including mixed-methods design and partnerships with industry collaborators to overcome data access limitations. I'd like to discuss these adaptations with you in detail.",
+        "explanation": "지도교수의 방법론적 우려에 대해 감사를 표하고 대안적 접근법들을 구체적으로 제시하며 세부 논의를 요청하는 것이 학술적으로 성숙한 대응입니다."
+    },
+    {
+        "question": "Peer reviewer: 'Your analysis of contemporary theory lacks engagement with recent deconstructionist critiques. How do you justify this theoretical gap?'",
+        "options": [
+            "You raise an excellent point about deconstructionist perspectives. I focused primarily on structuralist approaches, but I see how incorporating recent critiques would strengthen my theoretical framework. I'd appreciate your recommendations for key texts to address this gap.",
+            "I covered all the main theoretical approaches in my analysis.",
+            "Deconstructionist critiques aren't really relevant to my specific research topic."
+        ],
+        "answer": "You raise an excellent point about deconstructionist perspectives. I focused primarily on structuralist approaches, but I see how incorporating recent critiques would strengthen my theoretical framework. I'd appreciate your recommendations for key texts to address this gap.",
+        "explanation": "동료 검토자의 이론적 지적에 대해 그 타당성을 인정하고, 자신의 접근법을 설명하며, 이론적 프레임워크 강화 방안과 추천 텍스트를 요청하는 것이 지적으로 겸손하고 건설적인 대응입니다."
+    }
+]

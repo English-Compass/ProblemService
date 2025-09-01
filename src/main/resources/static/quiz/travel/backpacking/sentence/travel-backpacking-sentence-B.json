@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (0)",
+        "question": "I prefer *off-the-beaten-path* destinations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive places",
+            "uncommon places",
+            "popular places"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "uncommon places",
+        "explanation": "'Off-the-beaten-path'는 잘 알려지지 않은 장소를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (1)",
+        "question": "The hostel offers *dormitory* rooms.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "shared rooms",
+            "private rooms",
+            "expensive rooms"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shared rooms",
+        "explanation": "'Dormitory'는 기숙사식 방을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (2)",
+        "question": "I need to *conserve* my energy for hiking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "waste",
+            "use",
+            "save"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "save",
+        "explanation": "'Conserve'는 아끼다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (3)",
+        "question": "Let's *split* the cost of accommodation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "double",
+            "divide",
+            "ignore"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "divide",
+        "explanation": "'Split'은 나누다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (4)",
+        "question": "I want to experience *local culture*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "native customs",
+            "expensive restaurants",
+            "tourist attractions"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "native customs",
+        "explanation": "'Local culture'는 현지 문화를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (5)",
+        "question": "I prefer *off-the-beaten-path* destinations.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "popular places",
+            "uncommon places",
+            "expensive places"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "uncommon places",
+        "explanation": "'Off-the-beaten-path'는 잘 알려지지 않은 장소를 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (6)",
+        "question": "The hostel offers *dormitory* rooms.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive rooms",
+            "private rooms",
+            "shared rooms"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shared rooms",
+        "explanation": "'Dormitory'는 기숙사식 방을 의미합니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (7)",
+        "question": "I need to *conserve* my energy for hiking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "waste",
+            "use",
+            "save"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "save",
+        "explanation": "'Conserve'는 아끼다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (8)",
+        "question": "Let's *split* the cost of accommodation.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "double",
+            "divide"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "divide",
+        "explanation": "'Split'은 나누다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for travel/backpacking at B level. (9)",
+        "question": "I want to experience *local culture*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "native customs",
+            "tourist attractions",
+            "expensive restaurants"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "native customs",
+        "explanation": "'Local culture'는 현지 문화를 의미합니다."
     }
 ]

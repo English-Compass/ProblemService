@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Customer: 'I've been waiting for 30 minutes and nobody has helped me yet.'",
+        "options": [
+            "I sincerely apologize for the wait. Let me personally assist you right now.",
+            "Everyone is really busy today, so please be patient.",
+            "You should have made an appointment if you wanted faster service."
+        ],
+        "answer": "I sincerely apologize for the wait. Let me personally assist you right now.",
+        "explanation": "장시간 대기에 대해 진심으로 사과하고 즉시 개인적인 도움을 제공하는 것이 적절한 대응입니다."
+    },
+    {
+        "question": "Customer: 'Your competitor offers the same service for half the price.'",
+        "options": [
+            "I understand price is important. Let me explain the additional value we provide.",
+            "Then you should go to our competitor instead.",
+            "Our prices are set and cannot be negotiated."
+        ],
+        "answer": "I understand price is important. Let me explain the additional value we provide.",
+        "explanation": "가격에 대한 고객의 우려를 이해하고 회사가 제공하는 부가가치를 설명하는 것이 좋습니다."
+    }
+]

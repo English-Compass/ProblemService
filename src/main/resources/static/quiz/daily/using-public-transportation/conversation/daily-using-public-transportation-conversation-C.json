@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Transportation supervisor: 'We're implementing a new smart transit system next month. Passengers will need to update their payment methods and learn the new interface.'",
+        "options": [
+            "I appreciate the advance notice. Could you provide information about training sessions or user guides for the new system? I'd also like to know about support for passengers who might need assistance.",
+            "Change is always difficult for regular commuters.",
+            "The current system works fine, so why change it?"
+        ],
+        "answer": "I appreciate the advance notice. Could you provide information about training sessions or user guides for the new system? I'd also like to know about support for passengers who might need assistance.",
+        "explanation": "새로운 교통 시스템 도입에 대해 사전 공지에 감사하고 교육 자료와 취약계층 지원에 대해 건설적으로 문의하는 것이 시민 의식 있는 대응입니다."
+    },
+    {
+        "question": "City planner: 'We're conducting a comprehensive study on commuter patterns to optimize route efficiency. Your input would be valuable for our urban mobility planning.'",
+        "options": [
+            "I'd be happy to contribute to improving our transportation system. Could you provide details about the study scope and how the data will be used to enhance commuter experiences citywide?",
+            "Surveys and studies take too much time to complete.",
+            "I don't really have strong opinions about transportation."
+        ],
+        "answer": "I'd be happy to contribute to improving our transportation system. Could you provide details about the study scope and how the data will be used to enhance commuter experiences citywide?",
+        "explanation": "도시 교통 계획자의 연구 참여 요청에 대해 시민으로서의 책임감을 보이며 연구 범위와 데이터 활용 방안에 대해 구체적으로 문의하는 것이 시민 의식 있는 대응입니다."
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Bus driver: 'Exact change only, please.'",
+        "options": [
+            "Here's the exact fare. Thank you for letting me know.",
+            "I only have a twenty-dollar bill with me.",
+            "Can't you just break this large bill for me?"
+        ],
+        "answer": "Here's the exact fare. Thank you for letting me know.",
+        "explanation": "대중교통에서 정확한 요금을 준비하여 지불하고 안내에 감사하는 것이 매너입니다."
+    },
+    {
+        "question": "Station attendant: 'The next train is delayed by approximately 10 minutes.'",
+        "options": [
+            "Thank you for the update. I appreciate you keeping passengers informed.",
+            "This delay happens way too often on this line.",
+            "Why can't the trains ever run on time here?"
+        ],
+        "answer": "Thank you for the update. I appreciate you keeping passengers informed.",
+        "explanation": "지연 안내에 대해 감사 인사를 하고 정보 제공에 대한 감사를 표현하는 것이 정중한 대응입니다."
+    }
+]

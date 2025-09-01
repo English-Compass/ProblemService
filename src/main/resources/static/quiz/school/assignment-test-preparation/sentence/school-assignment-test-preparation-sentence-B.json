@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (0)",
+        "question": "The professor *assigned* a difficult project.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "canceled",
+            "gave",
+            "praised"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "gave",
+        "explanation": "'Assigned'는 부여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (1)",
+        "question": "I need to *cite* my sources properly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "destroy",
+            "hide",
+            "reference"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reference",
+        "explanation": "'Cite'는 인용하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (2)",
+        "question": "The test will *cover* three chapters.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "include",
+            "skip",
+            "repeat"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "include",
+        "explanation": "'Cover'는 다루다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (3)",
+        "question": "I need to *revise* my essay.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "submit",
+            "delete",
+            "edit"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "edit",
+        "explanation": "'Revise'는 수정하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (4)",
+        "question": "The exam *format* includes multiple choice.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "location",
+            "date",
+            "structure"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "structure",
+        "explanation": "'Format'은 형식을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (5)",
+        "question": "The professor *assigned* a difficult project.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "praised",
+            "canceled",
+            "gave"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "gave",
+        "explanation": "'Assigned'는 부여하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (6)",
+        "question": "I need to *cite* my sources properly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "reference",
+            "destroy",
+            "hide"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "reference",
+        "explanation": "'Cite'는 인용하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (7)",
+        "question": "The test will *cover* three chapters.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "skip",
+            "include",
+            "repeat"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "include",
+        "explanation": "'Cover'는 다루다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (8)",
+        "question": "I need to *revise* my essay.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "edit",
+            "submit",
+            "delete"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "edit",
+        "explanation": "'Revise'는 수정하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/assignment-test-preparation at B level. (9)",
+        "question": "The exam *format* includes multiple choice.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "location",
+            "date",
+            "structure"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "structure",
+        "explanation": "'Format'은 형식을 의미합니다."
     }
 ]

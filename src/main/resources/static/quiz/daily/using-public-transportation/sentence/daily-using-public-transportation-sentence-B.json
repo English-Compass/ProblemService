@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (0)",
+        "question": "I missed my *connection*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "destination",
+            "wallet",
+            "transfer"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "transfer",
+        "explanation": "'Connection'은 연결편을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (1)",
+        "question": "The train is *delayed*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "canceled",
+            "early",
+            "late"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "late",
+        "explanation": "'Delayed'는 지연된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (2)",
+        "question": "Do you have exact *change*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "time",
+            "tickets",
+            "coins"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "coins",
+        "explanation": "'Change'는 잔돈을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (3)",
+        "question": "This is an *express* train.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "fast",
+            "old",
+            "slow"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fast",
+        "explanation": "'Express'는 급행의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (4)",
+        "question": "Please *validate* your ticket.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "buy",
+            "throw away",
+            "confirm"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "confirm",
+        "explanation": "'Validate'는 유효화하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (5)",
+        "question": "I missed my *connection*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "transfer",
+            "wallet",
+            "destination"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "transfer",
+        "explanation": "'Connection'은 연결편을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (6)",
+        "question": "The train is *delayed*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "late",
+            "canceled",
+            "early"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "late",
+        "explanation": "'Delayed'는 지연된을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (7)",
+        "question": "Do you have exact *change*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "coins",
+            "tickets",
+            "time"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "coins",
+        "explanation": "'Change'는 잔돈을 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (8)",
+        "question": "This is an *express* train.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "fast",
+            "slow",
+            "old"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "fast",
+        "explanation": "'Express'는 급행의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/using-public-transportation at B level. (9)",
+        "question": "Please *validate* your ticket.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "confirm",
+            "buy",
+            "throw away"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "confirm",
+        "explanation": "'Validate'는 유효화하다는 의미입니다."
     }
 ]

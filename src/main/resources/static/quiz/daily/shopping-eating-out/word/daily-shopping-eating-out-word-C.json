@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (0)",
+        "question": "This product contains _____ ingredients.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "artificial",
+            "natural"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "artificial",
+        "explanation": "'Artificial'은 인공의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (1)",
+        "question": "I have a _____ for this medication.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "suggestion",
+            "complaint",
+            "prescription"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "prescription",
+        "explanation": "'Prescription'은 처방전을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (2)",
+        "question": "The store offers _____ delivery.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "slow",
+            "complimentary"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "complimentary",
+        "explanation": "'Complimentary'는 무료의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (3)",
+        "question": "Please keep the _____ for your records.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "receipt",
+            "food",
+            "change"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "receipt",
+        "explanation": "'Receipt'는 영수증을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (4)",
+        "question": "This item is currently _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "discontinued",
+            "cheap",
+            "popular"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discontinued",
+        "explanation": "'Discontinued'는 단종된을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (5)",
+        "question": "This product contains _____ ingredients.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "natural",
+            "expensive",
+            "artificial"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "artificial",
+        "explanation": "'Artificial'은 인공의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (6)",
+        "question": "I have a _____ for this medication.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "complaint",
+            "suggestion",
+            "prescription"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "prescription",
+        "explanation": "'Prescription'은 처방전을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (7)",
+        "question": "The store offers _____ delivery.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "complimentary",
+            "slow"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "complimentary",
+        "explanation": "'Complimentary'는 무료의를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (8)",
+        "question": "Please keep the _____ for your records.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "change",
+            "receipt",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "receipt",
+        "explanation": "'Receipt'는 영수증을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/shopping-eating-out at C level. (9)",
+        "question": "This item is currently _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "popular",
+            "discontinued",
+            "cheap"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discontinued",
+        "explanation": "'Discontinued'는 단종된을 의미합니다."
     }
 ]

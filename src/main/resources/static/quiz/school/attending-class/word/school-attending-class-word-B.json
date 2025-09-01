@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for school/attending-class at B level. (0)",
+        "question": "The _____ gave us homework.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "waiter",
+            "professor",
+            "driver"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "professor",
+        "explanation": "'Professor'는 교수를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (1)",
+        "question": "I need to study the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "textbook",
+            "comic",
+            "cookbook"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "textbook",
+        "explanation": "'Textbook'은 교과서를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (2)",
+        "question": "The _____ discussion was helpful.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "sports",
+            "group"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "group",
+        "explanation": "'Group'은 그룹을 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (3)",
+        "question": "I took detailed _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "notes",
+            "naps",
+            "photos"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "notes",
+        "explanation": "'Notes'는 노트를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (4)",
+        "question": "The _____ explained the theory.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "instructor",
+            "chef",
+            "mechanic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "instructor",
+        "explanation": "'Instructor'는 강사를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (5)",
+        "question": "The _____ gave us homework.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "driver",
+            "professor",
+            "waiter"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "professor",
+        "explanation": "'Professor'는 교수를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (6)",
+        "question": "I need to study the _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "comic",
+            "textbook",
+            "cookbook"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "textbook",
+        "explanation": "'Textbook'은 교과서를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (7)",
+        "question": "The _____ discussion was helpful.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "sports",
+            "group"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "group",
+        "explanation": "'Group'은 그룹을 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (8)",
+        "question": "I took detailed _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "notes",
+            "naps",
+            "photos"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "notes",
+        "explanation": "'Notes'는 노트를 의미합니다."
     },
     {
-        "question": "This is a word question for school/attending-class at B level. (9)",
+        "question": "The _____ explained the theory.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "chef",
+            "instructor",
+            "mechanic"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "instructor",
+        "explanation": "'Instructor'는 강사를 의미합니다."
     }
 ]

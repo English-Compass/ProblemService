@@ -1,0 +1,22 @@
+[
+    {
+        "question": "CEO: 'Your performance analysis shows significant deviation from projected targets. Can you elaborate on the underlying factors?'",
+        "options": [
+            "Certainly. The deviation stems from three primary factors: market volatility, seasonal adjustments, and our product launch impact. I can provide detailed breakdowns for each.",
+            "The numbers in the report speak for themselves.",
+            "It's just normal quarterly fluctuation, nothing to worry about."
+        ],
+        "answer": "Certainly. The deviation stems from three primary factors: market volatility, seasonal adjustments, and our product launch impact. I can provide detailed breakdowns for each.",
+        "explanation": "CEO의 질문에 대해 구체적인 요인들을 체계적으로 나열하고 상세 분석을 제공하겠다는 전문적인 답변이 적절합니다."
+    },
+    {
+        "question": "Board member: 'How do you validate the predictive models used in your strategic forecast reports?'",
+        "options": [
+            "We employ cross-validation techniques, backtesting against historical data, and peer review processes to ensure model accuracy and statistical reliability.",
+            "We use standard industry practices for all our modeling work.",
+            "Our IT department handles all the technical validation aspects."
+        ],
+        "answer": "We employ cross-validation techniques, backtesting against historical data, and peer review processes to ensure model accuracy and statistical reliability.",
+        "explanation": "예측 모델 검증에 대한 기술적 질문에는 구체적인 검증 방법론들을 전문적으로 설명하는 것이 적절합니다."
+    }
+]

@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (0)",
+        "question": "Please have your _____ ready for inspection.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "homework",
+            "lunch",
+            "tickets"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tickets",
+        "explanation": "'Tickets'는 표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (1)",
+        "question": "This service operates with reduced _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "noise",
+            "cost",
+            "frequency"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "frequency",
+        "explanation": "'Frequency'는 운행 빈도를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (2)",
+        "question": "The _____ provides real-time updates.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "library",
+            "app",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "app",
+        "explanation": "'App'은 애플리케이션을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (3)",
+        "question": "Senior citizens receive a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "gift",
+            "discount",
+            "penalty"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discount",
+        "explanation": "'Discount'는 할인을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (4)",
+        "question": "The terminal has excellent _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "connectivity",
+            "weather"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "connectivity",
+        "explanation": "'Connectivity'는 연결성을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (5)",
+        "question": "Please have your _____ ready for inspection.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "lunch",
+            "homework",
+            "tickets"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "tickets",
+        "explanation": "'Tickets'는 표를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (6)",
+        "question": "This service operates with reduced _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "noise",
+            "frequency",
+            "cost"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "frequency",
+        "explanation": "'Frequency'는 운행 빈도를 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (7)",
+        "question": "The _____ provides real-time updates.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "app",
+            "library",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "app",
+        "explanation": "'App'은 애플리케이션을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (8)",
+        "question": "Senior citizens receive a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "penalty",
+            "gift",
+            "discount"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "discount",
+        "explanation": "'Discount'는 할인을 의미합니다."
     },
     {
-        "question": "This is a word question for daily/using-public-transportation at C level. (9)",
+        "question": "The terminal has excellent _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "connectivity",
+            "food",
+            "weather"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "connectivity",
+        "explanation": "'Connectivity'는 연결성을 의미합니다."
     }
 ]

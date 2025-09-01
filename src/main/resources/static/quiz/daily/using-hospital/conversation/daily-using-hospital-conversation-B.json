@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Doctor: 'How long have you been experiencing these particular symptoms?'",
+        "options": [
+            "The symptoms started about a week ago. They're most noticeable in the morning and seem to worsen with physical activity.",
+            "It hasn't been very long at all.",
+            "The pain comes and goes randomly."
+        ],
+        "answer": "The symptoms started about a week ago. They're most noticeable in the morning and seem to worsen with physical activity.",
+        "explanation": "의사에게 증상의 시작 시점, 특징, 악화 요인 등을 구체적으로 설명하는 것이 진료에 도움이 됩니다."
+    },
+    {
+        "question": "Pharmacist: 'This medication should be taken twice daily with food. Are you currently taking any other medications or supplements?'",
+        "options": [
+            "Thank you for the instructions. Yes, I'm currently taking blood pressure medication in the morning. Should I be concerned about any interactions?",
+            "I take a few different pills throughout the day.",
+            "I honestly can't remember everything I'm taking."
+        ],
+        "answer": "Thank you for the instructions. Yes, I'm currently taking blood pressure medication in the morning. Should I be concerned about any interactions?",
+        "explanation": "복용법 안내에 감사하고 현재 복용 중인 약물을 구체적으로 알리며 상호작용을 확인하는 것이 안전합니다."
+    }
+]

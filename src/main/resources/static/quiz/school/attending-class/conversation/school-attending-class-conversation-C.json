@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Department chair during seminar: 'Your synthesis of critical theory demonstrates sophisticated understanding, but how would you apply this theoretical framework to contemporary digital humanities methodologies?'",
+        "options": [
+            "That's a fascinating interdisciplinary connection. I see potential for applying these critical frameworks to analyze algorithmic bias in digital archives and computational text analysis. The intersection could reveal new insights about power structures in digital knowledge production.",
+            "I haven't really thought about digital humanities applications before.",
+            "Critical theory and digital methods don't seem to connect very well."
+        ],
+        "answer": "That's a fascinating interdisciplinary connection. I see potential for applying these critical frameworks to analyze algorithmic bias in digital archives and computational text analysis. The intersection could reveal new insights about power structures in digital knowledge production.",
+        "explanation": "학과장의 고차원적 질문에 대해 이론과 실제 적용의 연결점을 찾아 구체적인 사례와 함께 새로운 통찰 가능성을 제시하는 것이 대학원 세미나 수준의 학술적 대응입니다."
+    },
+    {
+        "question": "Visiting scholar: 'Your methodology integrates quantitative and qualitative approaches innovatively. How do you address the epistemological tensions between positivist and interpretivist paradigms?'",
+        "options": [
+            "Thank you for this important epistemological question. I address these paradigmatic tensions through pragmatic pluralism, where I acknowledge the different truth claims while focusing on methodological complementarity to provide richer insights than either approach alone could offer.",
+            "Mixed methods just combines both quantitative and qualitative approaches together.",
+            "I don't really worry about those kinds of epistemological issues."
+        ],
+        "answer": "Thank you for this important epistemological question. I address these paradigmatic tensions through pragmatic pluralism, where I acknowledge the different truth claims while focusing on methodological complementarity to provide richer insights than either approach alone could offer.",
+        "explanation": "방문 학자의 인식론적 질문에 대해 감사를 표하고 실용주의적 다원론이라는 철학적 접근법으로 패러다임 간 긴장을 해결하는 정교한 방법론적 해답을 제시하는 것이 학술적으로 성숙한 대응입니다."
+    }
+]

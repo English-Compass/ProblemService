@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Team member: 'I disagree with the proposed timeline. It seems too aggressive for our resources.'",
+        "options": [
+            "That's a valid concern. Let's break down the timeline and discuss which phases might need more realistic timeframes.",
+            "We need to stick to the timeline regardless of concerns.",
+            "Disagreements like this just slow down our progress."
+        ],
+        "answer": "That's a valid concern. Let's break down the timeline and discuss which phases might need more realistic timeframes.",
+        "explanation": "다른 의견을 타당한 우려로 인정하고 구체적인 해결 방안을 제시하여 건설적인 토론을 이끄는 것이 좋습니다."
+    },
+    {
+        "question": "Client: 'We need to reschedule next week's conference call due to an unexpected emergency.'",
+        "options": [
+            "I understand completely. Let me coordinate with all participants to find an alternative time that works for everyone.",
+            "This kind of last-minute change is really inconvenient for us.",
+            "Emergency rescheduling seems to happen too frequently."
+        ],
+        "answer": "I understand completely. Let me coordinate with all participants to find an alternative time that works for everyone.",
+        "explanation": "긴급상황으로 인한 일정 변경에 이해를 표하고 모든 참가자를 위한 대안을 찾겠다는 적극적인 자세가 전문적입니다."
+    }
+]

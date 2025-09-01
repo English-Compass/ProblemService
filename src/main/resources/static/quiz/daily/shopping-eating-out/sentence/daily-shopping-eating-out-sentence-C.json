@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (0)",
+        "question": "This restaurant has a great *ambiance*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "menu",
+            "atmosphere",
+            "location"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "atmosphere",
+        "explanation": "'Ambiance'는 분위기를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (1)",
+        "question": "I'd like to *complain* about the service.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "pay",
+            "praise",
+            "express dissatisfaction"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "express dissatisfaction",
+        "explanation": "'Complain'은 불만을 표현하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (2)",
+        "question": "The ingredients are *organic*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "naturally grown",
+            "imported"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "naturally grown",
+        "explanation": "'Organic'은 유기농의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (3)",
+        "question": "Could we have separate *checks*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "bills",
+            "menus",
+            "tables"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bills",
+        "explanation": "'Checks'는 각각의 계산서를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (4)",
+        "question": "This wine *complements* the meal perfectly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "costs more than",
+            "replaces",
+            "goes well with"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "goes well with",
+        "explanation": "'Complements'는 잘 어울린다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (5)",
+        "question": "This restaurant has a great *ambiance*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "menu",
+            "location",
+            "atmosphere"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "atmosphere",
+        "explanation": "'Ambiance'는 분위기를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (6)",
+        "question": "I'd like to *complain* about the service.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "praise",
+            "express dissatisfaction",
+            "pay"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "express dissatisfaction",
+        "explanation": "'Complain'은 불만을 표현하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (7)",
+        "question": "The ingredients are *organic*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "naturally grown",
+            "imported"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "naturally grown",
+        "explanation": "'Organic'은 유기농의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (8)",
+        "question": "Could we have separate *checks*?",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "menus",
+            "bills",
+            "tables"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bills",
+        "explanation": "'Checks'는 각각의 계산서를 의미합니다."
     },
     {
-        "question": "This is a sentence question for daily/shopping-eating-out at C level. (9)",
+        "question": "This wine *complements* the meal perfectly.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "goes well with",
+            "replaces",
+            "costs more than"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "goes well with",
+        "explanation": "'Complements'는 잘 어울린다는 의미입니다."
     }
 ]

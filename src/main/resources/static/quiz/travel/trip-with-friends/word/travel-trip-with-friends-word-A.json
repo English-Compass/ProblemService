@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (0)",
+        "question": "My _____ are coming with me.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "parents",
+            "enemies",
+            "friends"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "friends",
+        "explanation": "'Friends'는 친구들을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (1)",
+        "question": "We're going to a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "meeting",
+            "work",
+            "concert"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "concert",
+        "explanation": "'Concert'는 콘서트를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (2)",
+        "question": "Let's try the local _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "homework",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "food",
+        "explanation": "'Food'는 음식을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (3)",
+        "question": "The _____ is very lively.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "club",
+            "office",
+            "library"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "club",
+        "explanation": "'Club'은 클럽을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (4)",
+        "question": "We need to buy _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "homework",
+            "work",
+            "souvenirs"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "souvenirs",
+        "explanation": "'Souvenirs'는 기념품을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (5)",
+        "question": "My _____ are coming with me.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "friends",
+            "parents",
+            "enemies"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "friends",
+        "explanation": "'Friends'는 친구들을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (6)",
+        "question": "We're going to a _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "concert",
+            "meeting"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "concert",
+        "explanation": "'Concert'는 콘서트를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (7)",
+        "question": "Let's try the local _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "homework",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "food",
+        "explanation": "'Food'는 음식을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (8)",
+        "question": "The _____ is very lively.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "office",
+            "club",
+            "library"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "club",
+        "explanation": "'Club'은 클럽을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at A level. (9)",
+        "question": "We need to buy _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "homework",
+            "souvenirs"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "souvenirs",
+        "explanation": "'Souvenirs'는 기념품을 의미합니다."
     }
 ]

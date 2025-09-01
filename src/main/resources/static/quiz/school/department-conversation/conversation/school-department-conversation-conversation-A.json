@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Department secretary: 'You need to register for your courses by this Friday.'",
+        "options": [
+            "Thank you for the important reminder. I'll make sure to complete my registration before the deadline.",
+            "I thought course registration was next week.",
+            "Can I register late if I miss the Friday deadline?"
+        ],
+        "answer": "Thank you for the important reminder. I'll make sure to complete my registration before the deadline.",
+        "explanation": "학과 사무실의 안내에 감사를 표하고 마감일 준수를 약속하는 것이 적절합니다."
+    },
+    {
+        "question": "Academic advisor: 'What courses are you planning to take next semester?'",
+        "options": [
+            "I'm planning to take Introduction to Psychology and Statistics. Do you think these courses align well with my major requirements and academic goals?",
+            "I haven't really decided on my courses yet.",
+            "I'll just take whatever courses are still available."
+        ],
+        "answer": "I'm planning to take Introduction to Psychology and Statistics. Do you think these courses align well with my major requirements and academic goals?",
+        "explanation": "구체적인 수강 계획을 제시하고 전공 요건과 학업 목표와의 연관성을 확인하는 질문을 하는 것이 좋습니다."
+    }
+]

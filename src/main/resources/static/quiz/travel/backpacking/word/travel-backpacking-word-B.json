@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/backpacking at B level. (0)",
+        "question": "I'm staying in a _____ room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "shared",
+            "private"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shared",
+        "explanation": "'Shared'는 공유의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (1)",
+        "question": "The _____ has great reviews.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "movie",
+            "accommodation",
+            "restaurant"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "accommodation",
+        "explanation": "'Accommodation'은 숙박시설을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (2)",
+        "question": "I need to buy travel _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "clothes",
+            "insurance",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "insurance",
+        "explanation": "'Insurance'는 보험을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (3)",
+        "question": "The _____ is breathtaking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "scenery",
+            "music",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "scenery",
+        "explanation": "'Scenery'는 풍경을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (4)",
+        "question": "I'm following the _____ guide.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "driving",
+            "travel",
+            "cooking"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "travel",
+        "explanation": "'Travel guide'는 여행 가이드를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (5)",
+        "question": "I'm staying in a _____ room.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "expensive",
+            "private",
+            "shared"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "shared",
+        "explanation": "'Shared'는 공유의를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (6)",
+        "question": "The _____ has great reviews.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "restaurant",
+            "accommodation",
+            "movie"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "accommodation",
+        "explanation": "'Accommodation'은 숙박시설을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (7)",
+        "question": "I need to buy travel _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "food",
+            "insurance",
+            "clothes"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "insurance",
+        "explanation": "'Insurance'는 보험을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (8)",
+        "question": "The _____ is breathtaking.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "scenery",
+            "music",
+            "food"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "scenery",
+        "explanation": "'Scenery'는 풍경을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/backpacking at B level. (9)",
+        "question": "I'm following the _____ guide.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cooking",
+            "driving",
+            "travel"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "travel",
+        "explanation": "'Travel guide'는 여행 가이드를 의미합니다."
     }
 ]

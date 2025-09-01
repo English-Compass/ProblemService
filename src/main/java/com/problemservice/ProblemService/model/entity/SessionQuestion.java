@@ -19,12 +19,15 @@ import java.util.List;
  */
 @Entity
 @Table(name = "session_question",
-       uniqueConstraints = {
-           // 한 세션에서 같은 문제가 중복되지 않도록 제약
-           @UniqueConstraint(name = "uk_session_question", columnNames = {"session_id", "question_id"}),
-           // 한 세션에서 문제 순서가 중복되지 않도록 제약
-           @UniqueConstraint(name = "uk_session_order", columnNames = {"session_id", "question_order"})
-       })
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_session_question", columnNames = {"session_id", "question_id"}),
+        @UniqueConstraint(name = "uk_session_order", columnNames = {"session_id", "question_order"})
+    },
+    indexes = {
+        @Index(name = "idx_session_id", columnList = "session_id"),
+        @Index(name = "idx_question_id", columnList = "question_id"),
+        @Index(name = "idx_question_order", columnList = "session_id, question_order")
+    })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,12 +61,10 @@ public class SessionQuestion {
     @Size(min = 1, max = 6, message = "Available categories must be between 1 and 6")
     private List<String> categories;
 
-    // 학습 세션 엔티티와의 다대일 연관관계 (지연 로딩)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", insertable = false, updatable = false)
     private LearningSession learningSession;
 
-    // 문제 엔티티와의 다대일 연관관계 (지연 로딩)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", insertable = false, updatable = false)
     private Question question;

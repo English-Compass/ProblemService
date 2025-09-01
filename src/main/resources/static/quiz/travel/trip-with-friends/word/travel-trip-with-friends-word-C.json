@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (0)",
+        "question": "We planned a _____ itinerary.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "rigid",
+            "work",
+            "flexible"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "flexible",
+        "explanation": "'Flexible'은 유연한을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (1)",
+        "question": "The trip created lasting _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "problems",
+            "work",
+            "bonds"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bonds",
+        "explanation": "'Bonds'는 유대감을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (2)",
+        "question": "We documented our _____ journey.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "adventurous",
+            "boring"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adventurous",
+        "explanation": "'Adventurous'는 모험적인을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (3)",
+        "question": "The group showed great _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "conflict",
+            "camaraderie"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "camaraderie",
+        "explanation": "'Camaraderie'는 동료애를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (4)",
+        "question": "We embraced _____ experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "spontaneous",
+            "planned",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "spontaneous",
+        "explanation": "'Spontaneous'는 즉흥적인을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (5)",
+        "question": "We planned a _____ itinerary.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "rigid",
+            "flexible",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "flexible",
+        "explanation": "'Flexible'은 유연한을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (6)",
+        "question": "The trip created lasting _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "bonds",
+            "problems"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "bonds",
+        "explanation": "'Bonds'는 유대감을 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (7)",
+        "question": "We documented our _____ journey.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "boring",
+            "work",
+            "adventurous"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "adventurous",
+        "explanation": "'Adventurous'는 모험적인을 의미입니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (8)",
+        "question": "The group showed great _____.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "work",
+            "camaraderie",
+            "conflict"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "camaraderie",
+        "explanation": "'Camaraderie'는 동료애를 의미합니다."
     },
     {
-        "question": "This is a word question for travel/trip-with-friends at C level. (9)",
+        "question": "We embraced _____ experiences.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "planned",
+            "spontaneous",
+            "work"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "spontaneous",
+        "explanation": "'Spontaneous'는 즉흥적인을 의미입니다."
     }
 ]

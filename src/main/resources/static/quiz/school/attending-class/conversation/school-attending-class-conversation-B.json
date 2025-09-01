@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Professor: 'Your interpretation of the text offers an interesting perspective. However, can you support your argument with more specific textual evidence?'",
+        "options": [
+            "Thank you for the feedback. You're absolutely right that I need stronger textual support. Let me reference the passage in chapter 3 where the author explicitly discusses this theme.",
+            "I thought my interpretation was clear enough without more evidence.",
+            "The textual evidence should be obvious to anyone who read it."
+        ],
+        "answer": "Thank you for the feedback. You're absolutely right that I need stronger textual support. Let me reference the passage in chapter 3 where the author explicitly discusses this theme.",
+        "explanation": "교수의 피드백을 수용하고 구체적인 텍스트 근거를 제시하려는 학문적 자세가 적절합니다."
+    },
+    {
+        "question": "Fellow student during discussion: 'I disagree with your analysis. I think you're overlooking important historical context that changes everything.'",
+        "options": [
+            "That's a really valid point about historical context. Could you elaborate on which specific aspects you think I should consider more deeply? I'm open to refining my analysis.",
+            "I still think my analysis is correct as I presented it.",
+            "Historical context isn't always the most important factor to consider."
+        ],
+        "answer": "That's a really valid point about historical context. Could you elaborate on which specific aspects you think I should consider more deeply? I'm open to refining my analysis.",
+        "explanation": "다른 학생의 비판적 의견을 타당한 지적으로 받아들이고 구체적인 설명을 요청하며 분석 개선 의지를 보이는 것이 학술적 토론에서 적절합니다."
+    }
+]

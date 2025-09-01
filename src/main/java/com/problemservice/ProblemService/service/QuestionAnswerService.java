@@ -115,6 +115,19 @@ public class QuestionAnswerService {
     }
 
     /**
+     * 특정 사용자의 모든 오답 기록을 조회합니다
+     * 단계: 1) 사용자 ID로 오답 기록 조회 2) 응답 DTO 변환
+     * 입력: 사용자 ID
+     * 출력: 오답 기록 응답 DTO 목록
+     */
+    public List<QuestionAnswerResponseDto> getWrongAnswersByUserId(String userId) {
+        List<QuestionAnswer> wrongAnswers = questionAnswerRepository.findByUserIdAndIsCorrect(userId, false);
+        return wrongAnswers.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * QuestionAnswer 엔티티를 QuestionAnswerResponseDto로 변환하는 헬퍼 메소드
      * 단계: 1) 답안 기본 정보 설정 2) 연관된 문제 정보 설정 3) DTO 객체 생성
      * 입력: QuestionAnswer 엔티티

@@ -1,102 +1,102 @@
 [
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (0)",
+        "question": "I need to *petition* for course substitution.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "refuse",
+            "ignore",
+            "formally request"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "formally request",
+        "explanation": "'Petition'은 청원하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (1)",
+        "question": "The department offers *interdisciplinary* studies.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "single-field",
+            "cross-field",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "cross-field",
+        "explanation": "'Interdisciplinary'는 학제간의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (2)",
+        "question": "I want to pursue *graduate studies*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "no education",
+            "undergraduate",
+            "advanced education"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "advanced education",
+        "explanation": "'Graduate studies'는 대학원 과정을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (3)",
+        "question": "The curriculum requires *comprehensive* exams.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "thorough",
+            "easy",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thorough",
+        "explanation": "'Comprehensive'는 종합적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (4)",
+        "question": "I need to *consult* with the department head.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "seek advice from",
+            "argue with"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seek advice from",
+        "explanation": "'Consult'는 상담하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (5)",
+        "question": "I need to *petition* for course substitution.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "ignore",
+            "formally request",
+            "refuse"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "formally request",
+        "explanation": "'Petition'은 청원하다는 의미입니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (6)",
+        "question": "The department offers *interdisciplinary* studies.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "cross-field",
+            "single-field",
+            "no"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "cross-field",
+        "explanation": "'Interdisciplinary'는 학제간의를 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (7)",
+        "question": "I want to pursue *graduate studies*.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "advanced education",
+            "undergraduate",
+            "no education"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "advanced education",
+        "explanation": "'Graduate studies'는 대학원 과정을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (8)",
+        "question": "The curriculum requires *comprehensive* exams.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "easy",
+            "no",
+            "thorough"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "thorough",
+        "explanation": "'Comprehensive'는 종합적인을 의미합니다."
     },
     {
-        "question": "This is a sentence question for school/department-conversation at C level. (9)",
+        "question": "I need to *consult* with the department head.",
         "options": [
-            "Option A",
-            "Option B",
-            "Option C"
+            "avoid",
+            "seek advice from",
+            "argue with"
         ],
-        "answer": "Option A",
-        "explanation": "This is a fallback explanation."
+        "answer": "seek advice from",
+        "explanation": "'Consult'는 상담하다는 의미입니다."
     }
 ]

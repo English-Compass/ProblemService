@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Cultural heritage specialist: 'This UNESCO site offers educational programs that enhance understanding of historical significance. We have age-appropriate materials from elementary to adult levels.'",
+        "options": [
+            "That sounds wonderful! We believe travel is an incredible learning opportunity. Could you help us design an experience that engages our teenagers intellectually while keeping our younger children interested? We're particularly curious about hands-on activities that connect past and present.",
+            "Educational programs sound too formal and structured for vacation time.",
+            "We just want to see the main sights and take some photos."
+        ],
+        "answer": "That sounds wonderful! We believe travel is an incredible learning opportunity. Could you help us design an experience that engages our teenagers intellectually while keeping our younger children interested? We're particularly curious about hands-on activities that connect past and present.",
+        "explanation": "문화유산 전문가의 교육 프로그램 제안에 열정적으로 반응하며 여행을 학습 기회로 보는 교육적 가치관을 표현하고, 다양한 연령대의 아이들을 고려한 맞춤형 경험과 체험 활동을 요청하는 것이 교육에 관심 있는 가족의 성숙한 대응입니다."
+    },
+    {
+        "question": "Sustainable tourism coordinator: 'Our destination implements responsible tourism practices to preserve cultural authenticity while providing meaningful experiences. Your family's choices can support local communities.'",
+        "options": [
+            "We're absolutely committed to responsible travel and want our children to understand their impact as global citizens. Could you recommend locally-owned accommodations, authentic cultural exchanges, and conservation activities where our family can contribute positively? We'd love to make this both educational and meaningful.",
+            "We try to be responsible tourists when we can.",
+            "As long as it doesn't cost significantly more, we're interested."
+        ],
+        "answer": "We're absolutely committed to responsible travel and want our children to understand their impact as global citizens. Could you recommend locally-owned accommodations, authentic cultural exchanges, and conservation activities where our family can contribute positively? We'd love to make this both educational and meaningful.",
+        "explanation": "지속가능한 관광 코디네이터의 책임감 있는 여행 제안에 대해 강한 의지를 표명하며 아이들을 세계시민으로 교육하려는 목표를 밝히고, 지역 경제 지원, 진정한 문화 교류, 보존 활동 참여 등 구체적이고 의미 있는 여행 방식을 요청하는 것이 의식 있는 가족 여행자의 대응입니다."
+    }
+]

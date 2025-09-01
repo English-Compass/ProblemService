@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Colleague: 'What time does today's team meeting start?'",
+        "options": [
+            "The meeting starts at 2 PM in conference room B.",
+            "You should check the calendar yourself.",
+            "I'm not sure about the exact time."
+        ],
+        "answer": "The meeting starts at 2 PM in conference room B.",
+        "explanation": "회의 시간과 장소를 명확하게 알려주는 것이 도움이 됩니다."
+    },
+    {
+        "question": "Manager: 'Could you take notes during today's client presentation?'",
+        "options": [
+            "Of course. I'll take detailed notes and share them with the team afterwards.",
+            "I don't really like taking notes during meetings.",
+            "Someone else should be responsible for that."
+        ],
+        "answer": "Of course. I'll take detailed notes and share them with the team afterwards.",
+        "explanation": "회의 기록 요청에 적극적으로 응답하고 팀 공유까지 언급하는 것이 좋습니다."
+    }
+]
