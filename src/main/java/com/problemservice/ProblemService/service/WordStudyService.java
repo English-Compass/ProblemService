@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.problemservice.ProblemService.model.dto.*;
-import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
@@ -373,13 +372,13 @@ public class WordStudyService {
     }
 
     private Map<String, Double> calculateDifficultyAccuracy(List<QuestionAnswer> userAnswers) {
-        Map<String, List<QuestionAnswer>> difficultyAnswers = userAnswers.stream()
+        Map<Integer, List<QuestionAnswer>> difficultyAnswers = userAnswers.stream()
                 .filter(answer -> answer.getQuestion() != null && answer.getQuestion().getDifficultyLevel() != null)
                 .collect(Collectors.groupingBy(answer -> answer.getQuestion().getDifficultyLevel()));
 
         return difficultyAnswers.entrySet().stream()
                 .collect(Collectors.toMap(
-                        Map.Entry::getKey,
+                        entry -> String.valueOf(entry.getKey()),
                         entry -> {
                             List<QuestionAnswer> answers = entry.getValue();
                             long correctCount = answers.stream().mapToLong(answer -> answer.getIsCorrect() ? 1 : 0).sum();
@@ -389,11 +388,17 @@ public class WordStudyService {
     }
 
     private Map<String, Integer> calculateDifficultyQuestionsSolved(List<QuestionAnswer> userAnswers) {
-        return userAnswers.stream()
+        Map<Integer, Long> countMap = userAnswers.stream()
                 .filter(answer -> answer.getQuestion() != null && answer.getQuestion().getDifficultyLevel() != null)
                 .collect(Collectors.groupingBy(
                         answer -> answer.getQuestion().getDifficultyLevel(),
-                        Collectors.collectingAndThen(Collectors.counting(), Math::toIntExact)
+                        Collectors.counting()
+                ));
+        
+        return countMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> String.valueOf(entry.getKey()),
+                        entry -> entry.getValue().intValue()
                 ));
     }
 

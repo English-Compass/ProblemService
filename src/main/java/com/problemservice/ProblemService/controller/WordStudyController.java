@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 사용자별 맞춤형 단어 학습 API 컨트롤러
  * Combined Tactic 2+3: Category Proficiency + Progressive Difficulty 전략 기반
