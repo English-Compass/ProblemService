@@ -143,6 +143,48 @@ public class WordStudyController {
     }
 
     /**
+     * 오늘의 단어 조회 (Today Words API)
+     * 사용자별 맞춤형 일일 단어 목록을 제공 - 기본 5개 단어
+     * 
+     * @param userId 사용자 ID
+     * @return 오늘의 단어 목록 (간소화된 형태)
+     */
+    @GetMapping("/today-words/{userId}")
+    public ResponseEntity<WordStudyResponseDto> getTodayWords(@PathVariable String userId) {
+        
+        log.info("오늘의 단어 조회 요청 - 사용자: {}", userId);
+        
+        try {
+            // TODO: 구현 필요
+            // 1. 일일 단어 캐시 확인 (Redis 등 활용)
+            // 2. 캐시에 없으면 사용자 프로필 기반으로 5개 단어 생성
+            // 3. 하루 단위로 캐시하여 동일한 단어 목록 제공
+            // 4. 단순화된 응답 형태로 반환 (definition, meaning, example만)
+            
+            // 임시 구현: 기존 generate 엔드포인트 활용
+            WordStudyRequestDto todayWordsRequest = WordStudyRequestDto.builder()
+                    .userId(userId)
+                    .wordCount(5) // 오늘의 단어는 5개 고정
+                    .build();
+            
+            WordStudyResponseDto response = wordStudyService.generateWordStudyList(todayWordsRequest);
+            
+            log.info("오늘의 단어 조회 성공 - 사용자: {}, 단어 수: {}", 
+                    userId, response.getWords().size());
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("오늘의 단어 조회 중 예외 발생", e);
+            WordStudyResponseDto errorResponse = WordStudyResponseDto.builder()
+                    .success(false)
+                    .errorMessage("오늘의 단어 조회 중 서버 오류가 발생했습니다: " + e.getMessage())
+                    .build();
+            return ResponseEntity.internalServerError().body(errorResponse);
+        }
+    }
+
+    /**
      * 사용자의 약점 영역 요약 조회
      * 사용자의 주요 약점 카테고리, 난이도, 문제 유형을 간단히 요약하여 제공
      * 
