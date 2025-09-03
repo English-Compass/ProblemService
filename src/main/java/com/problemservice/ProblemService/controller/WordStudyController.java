@@ -155,13 +155,6 @@ public class WordStudyController {
         log.info("오늘의 단어 조회 요청 - 사용자: {}", userId);
         
         try {
-            // TODO: 구현 필요
-            // 1. 일일 단어 캐시 확인 (Redis 등 활용)
-            // 2. 캐시에 없으면 사용자 프로필 기반으로 5개 단어 생성
-            // 3. 하루 단위로 캐시하여 동일한 단어 목록 제공
-            // 4. 단순화된 응답 형태로 반환 (definition, meaning, example만)
-            
-            // 임시 구현: 기존 generate 엔드포인트 활용
             WordStudyRequestDto todayWordsRequest = WordStudyRequestDto.builder()
                     .userId(userId)
                     .wordCount(5) // 오늘의 단어는 5개 고정

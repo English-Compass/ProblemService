@@ -33,6 +33,12 @@ public class WordStudyService {
     /**
      * 사용자 맞춤형 단어 학습 목록 생성
      * 단계: 1) 사용자 학습 프로필 분석 2) OpenAI 프롬프트 생성 3) AI 단어 생성 요청 4) 응답 파싱
+     * 
+     * TODO: Redis 캐시 적용으로 생성된 단어 학습 목록을 24시간 동안 저장
+     * - 캐시 키: "word-study:{userId}:{wordCount}:{focusCategory}:{targetDifficulty}"
+     * - WordStudyResponseDto를 24시간 TTL로 Redis에 캐싱
+     * - 사용자 프로필 변경 시 캐시 무효화
+     * - 자주 사용하는 사용자를 위한 캐시 사전 로딩 구현
      */
     public WordStudyResponseDto generateWordStudyList(WordStudyRequestDto requestDto) {
         log.info("단어 학습 목록 생성 시작 - 사용자: {}, 단어 수: {}", 
