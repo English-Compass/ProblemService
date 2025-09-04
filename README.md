@@ -22,7 +22,7 @@ ProblemService는 언어 학습 문제에 대한 CRUD 작업을 제공하고, �
 - **Java 17**
 - **Spring Boot 3.5.4**
 - **Spring Data JPA**
-- **MySQL 8.0** (운영) / **H2** (개발)
+- **MySQL 8.0**
 - **Kafka** 이벤트 스트리밍
 - **OpenAI API** 통합
 - **Docker & Docker Compose**
@@ -59,8 +59,9 @@ ProblemService는 언어 학습 문제에 대한 CRUD 작업을 제공하고, �
    docker-compose down
    ```
 
-3. **H2 데이터베이스로 로컬 실행**
+3. **MySQL 데이터베이스로 로컬 실행**
    ```bash
+   # MySQL 데이터베이스가 실행 중인지 확인 후
    ./gradlew bootRun
    ```
 
@@ -117,11 +118,7 @@ ProblemService는 언어 학습 문제에 대한 CRUD 작업을 제공하고, �
 
 ## 데이터베이스
 
-### 개발 환경
-- **H2 인메모리 데이터베이스**
-- 콘솔: http://localhost:8080/h2-console
-
-### 운영 환경
+### 데이터베이스 환경
 - **MySQL 8.0** with Docker
 - 초기화 스크립트는 `init-scripts/` 디렉토리에 위치
 

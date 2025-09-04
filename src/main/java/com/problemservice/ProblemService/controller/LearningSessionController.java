@@ -3,9 +3,9 @@ package com.problemservice.ProblemService.controller;
 import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionResponseDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionUpdateDto;
+import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionStatus;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
-import com.problemservice.ProblemService.model.entity.SessionQuestion;
 import com.problemservice.ProblemService.service.LearningSessionService;
 import com.problemservice.ProblemService.service.SessionQuestionService;
 import jakarta.validation.Valid;
@@ -189,13 +189,13 @@ public class LearningSessionController {
      * 특정 학습 세션에 포함된 모든 문제를 순서대로 조회합니다
      * 
      * @param sessionId 조회할 학습 세션의 고유 식별자
-     * @return 문제 순서대로 정렬된 세션-문제 목록
+     * @return 문제 순서대로 정렬된 세션-문제 DTO 목록
      */
     @GetMapping("/{sessionId}/questions")
-    public ResponseEntity<List<SessionQuestion>> getSessionQuestions(@PathVariable String sessionId) {
-        // 1. 세션 ID로 해당 학습 세션에 포함된 모든 문제들을 순서대로 조회
-        List<SessionQuestion> sessionQuestions = sessionQuestionService.getSessionQuestions(sessionId);
-        // 2. HTTP 200 OK 상태와 함께 세션-문제 목록 반환
+    public ResponseEntity<List<SessionQuestionResponseDto>> getSessionQuestions(@PathVariable String sessionId) {
+        // 1. 세션 ID로 해당 학습 세션에 포함된 모든 문제들을 순서대로 조회하고 DTO로 변환
+        List<SessionQuestionResponseDto> sessionQuestions = sessionQuestionService.getSessionQuestionsAsDto(sessionId);
+        // 2. HTTP 200 OK 상태와 함께 세션-문제 DTO 목록 반환
         return ResponseEntity.ok(sessionQuestions);
     }
 

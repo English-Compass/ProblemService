@@ -2,6 +2,8 @@ package com.problemservice.ProblemService.service;
 
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
+import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
+import com.problemservice.ProblemService.model.dto.QuestionResponseDto;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.repository.SessionQuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 세션-문제 연관관계 관리 비즈니스 로직 서비스
@@ -129,5 +132,64 @@ public class SessionQuestionService {
         Integer maxOrder = sessionQuestionRepository.getMaxQuestionOrderBySessionId(sessionId);
         // 2단계: 기존 문제가 없으면 1을 반환, 있으면 최대값에 1을 더한 값을 반환
         return maxOrder != null ? maxOrder + 1 : 1;
+    }
+
+    /**
+     * 특정 세션의 모든 문제를 DTO 형태로 조회
+     * Hibernate lazy loading 문제를 해결하기 위해 DTO를 사용
+     * 단계: 1) 세션 문제 조회 2) Question 엔티티를 별도 조회하여 DTO로 변환
+     * 입력: 세션 ID
+     * 출력: SessionQuestionResponseDto 목록
+     */
+    public List<SessionQuestionResponseDto> getSessionQuestionsAsDto(String sessionId) {
+        // 1단계: 세션 ID로 문제 목록을 문제 순서(questionOrder)에 따라 정렬하여 조회
+        List<SessionQuestion> sessionQuestions = sessionQuestionRepository.findBySessionIdOrderByQuestionOrder(sessionId);
+        
+        // 2단계: 각 SessionQuestion을 DTO로 변환
+        return sessionQuestions.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * SessionQuestion 엔티티를 SessionQuestionResponseDto로 변환
+     * 연관된 Question 엔티티는 별도로 조회하여 lazy loading 문제 해결
+     * 입력: SessionQuestion 엔티티
+     * 출력: SessionQuestionResponseDto
+     */
+    private SessionQuestionResponseDto convertToDto(SessionQuestion sessionQuestion) {
+        // Question 엔티티를 별도로 조회하여 DTO로 변환 (lazy loading 방지)
+        QuestionResponseDto questionDto = null;
+        if (sessionQuestion.getQuestionId() != null) {
+            // questionRepository를 통해 Question을 별도로 조회
+            Question question = questionRepository.findById(sessionQuestion.getQuestionId()).orElse(null);
+            if (question != null) {
+                questionDto = QuestionResponseDto.builder()
+                        .questionId(question.getQuestionId())
+                        .questionText(question.getQuestionText())
+                        .optionA(question.getOptionA())
+                        .optionB(question.getOptionB())
+                        .optionC(question.getOptionC())
+                        .correctAnswer(question.getCorrectAnswer())
+                        .majorCategory(question.getMajorCategory())
+                        .minorCategory(question.getMinorCategory())
+                        .questionType(question.getQuestionType())
+                        .explanation(question.getExplanation())
+                        .difficultyLevel(question.getDifficultyLevel())
+                        .createdAt(question.getCreatedAt())
+                        .updatedAt(question.getUpdatedAt())
+                        .build();
+            }
+        }
+
+        // SessionQuestionResponseDto 생성
+        return SessionQuestionResponseDto.builder()
+                .sessionQuestionId(sessionQuestion.getId())
+                .sessionId(sessionQuestion.getSessionId())
+                .questionId(sessionQuestion.getQuestionId())
+                .questionOrder(sessionQuestion.getQuestionOrder())
+                .categories(sessionQuestion.getCategories())
+                .question(questionDto)
+                .build();
     }
 }

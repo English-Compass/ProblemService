@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 학습 세션 관리 서비스
@@ -47,6 +49,7 @@ public class LearningSessionService extends BaseService {
     private final SessionQuestionService sessionQuestionService;
     private final QuestionAssignmentService questionAssignmentService;
     private final QuestionAnswerRepository questionAnswerRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 새로운 학습 세션을 생성하고 문제를 할당
@@ -261,25 +264,40 @@ public class LearningSessionService extends BaseService {
                 .startedAt(LocalDateTime.now())
                 .build();
 
-        // 사용자 난이도 설정 추출 (기본값: A)
-        Difficulty userDifficulty = extractUserDifficulty(createDto);
+        // Extract metadata to get categories, keywords, and user level
+        SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
         
-        // 최적화된 문제 할당 서비스를 통한 문제 선택
-        List<String> selectedCategories = createDto.getCategories();
-        List<Question> selectedQuestions = questionAssignmentService.selectOptimalQuestions(
+        // Validate that categories are provided
+        if (metadata.getCategories() == null || metadata.getCategories().isEmpty()) {
+            throw new IllegalArgumentException("At least one category must be selected");
+        }
+        
+        // Use user level from metadata or default to 1 (beginner)
+        Integer userLevel = mapLevelToInteger(metadata.getLevel());
+        
+        // Get selected categories and keywords from metadata
+        List<String> selectedCategories = metadata.getCategories();
+        List<String> keywords = metadata.getKeywords();
+        
+        // Select questions based on user level, categories, and keywords
+        List<Question> selectedQuestions = selectQuestionsForPractice(
                 createDto.getUserId(), 
                 selectedCategories, 
-                10, // 기본 문제 수
-                SessionType.PRACTICE,
-                userDifficulty
+                keywords,
+                userLevel,
+                metadata.getQuestionCount() != null ? metadata.getQuestionCount() : 10
         );
         
-        // 선택된 문제가 없으면 기존 로직으로 폴백
+        // If no questions found with optimal selection, fall back to basic selection
         if (selectedQuestions.isEmpty()) {
-            Integer userLevel = extractUserLevel(createDto.getUserId());
             List<Question> availableQuestions = getUnsolvedQuestionsByUserAndCategories(
                     createDto.getUserId(), selectedCategories, userLevel);
             selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+        }
+        
+        // If still no questions, throw exception
+        if (selectedQuestions.isEmpty()) {
+            throw new BusinessLogicException("No questions available for selected categories and user level");
         }
         
         session.setTotalQuestions(selectedQuestions.size());
@@ -315,23 +333,12 @@ public class LearningSessionService extends BaseService {
      * 사용자가 풀지 않은 문제들 중 선택한 카테고리와 일치하는 문제들을 추출합니다
      */
     private List<Question> getUnsolvedQuestionsByUserAndCategories(String userId, List<String> categories, Integer userLevel) {
-        // 사용자가 이미 푼 문제들의 ID 수집
-        List<LearningSession> userSessions = learningSessionRepository.findByUserId(userId);
-        List<String> solvedQuestionIds = userSessions.stream()
-                .flatMap(session -> sessionQuestionService.getSessionQuestions(session.getSessionId()).stream())
-                .map(SessionQuestion::getQuestionId)
-                .distinct()
-                .collect(Collectors.toList());
-
-        // 선택한 카테고리의 문제들 조회
-        List<Question> categoryQuestions = categories.stream()
-                .flatMap(category -> questionRepository.findByMajorCategoryAndDifficultyLevel(category, userLevel).stream())
-                .collect(Collectors.toList());
-
-        // 이미 푼 문제들 제외
-        return categoryQuestions.stream()
-                .filter(question -> !solvedQuestionIds.contains(question.getQuestionId()))
-                .collect(Collectors.toList());
+        if (categories == null || categories.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // Use the optimized repository method that handles category filtering and user exclusion in a single query
+        return questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(userId, categories, userLevel);
     }
 
     /**
@@ -662,5 +669,111 @@ public class LearningSessionService extends BaseService {
         } else {
             session.setWrongAnswers(session.getWrongAnswers() + 1);
         }
+    }
+
+    /**
+     * Extract session metadata from JSON string
+     */
+    private SessionMetadata extractSessionMetadata(String sessionMetadata) {
+        if (sessionMetadata == null || sessionMetadata.trim().isEmpty()) {
+            return new SessionMetadata();
+        }
+        
+        try {
+            return objectMapper.readValue(sessionMetadata, SessionMetadata.class);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Invalid session metadata format: " + sessionMetadata, e);
+        }
+    }
+
+    /**
+     * Map frontend level string to integer
+     * Frontend sends: A (초급), B (중급), C (상급)
+     * Backend uses: 1 (초급), 2 (중급), 3 (상급)
+     */
+    private Integer mapLevelToInteger(String level) {
+        if (level == null || level.trim().isEmpty()) {
+            return 1; // Default to beginner
+        }
+        
+        switch (level.toUpperCase()) {
+            case "A":
+                return 1;
+            case "B":
+                return 2;
+            case "C":
+                return 3;
+            default:
+                return 1;
+        }
+    }
+
+    /**
+     * Select questions for practice session based on user level, categories, and keywords
+     */
+    private List<Question> selectQuestionsForPractice(String userId, List<String> categories, 
+                                                     List<String> keywords, Integer userLevel, 
+                                                     Integer questionCount) {
+        
+        // Get all questions matching user level and categories
+        List<Question> categoryQuestions = new ArrayList<>();
+        
+        for (String category : categories) {
+            List<Question> questionsForCategory = questionRepository.findByMajorCategoryAndDifficultyLevel(category, userLevel);
+            
+            // If keywords are specified, filter by subcategory (minor category)
+            if (keywords != null && !keywords.isEmpty()) {
+                questionsForCategory = questionsForCategory.stream()
+                    .filter(q -> keywords.contains(q.getMinorCategory()))
+                    .collect(Collectors.toList());
+            }
+            
+            categoryQuestions.addAll(questionsForCategory);
+        }
+
+        // Remove questions the user has already solved
+        List<String> solvedQuestionIds = getSolvedQuestionIds(userId);
+        List<Question> unsolvedQuestions = categoryQuestions.stream()
+            .filter(q -> !solvedQuestionIds.contains(q.getQuestionId()))
+            .collect(Collectors.toList());
+
+        // Select balanced questions from different types
+        return selectBalancedQuestions(unsolvedQuestions, questionCount);
+    }
+
+    /**
+     * Get list of question IDs that the user has already solved
+     */
+    private List<String> getSolvedQuestionIds(String userId) {
+        List<LearningSession> userSessions = learningSessionRepository.findByUserId(userId);
+        return userSessions.stream()
+                .flatMap(session -> sessionQuestionService.getSessionQuestions(session.getSessionId()).stream())
+                .map(SessionQuestion::getQuestionId)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Inner class to represent session metadata structure
+     */
+    private static class SessionMetadata {
+        private List<String> categories;
+        private List<String> keywords;
+        private String level;
+        private Integer questionCount;
+
+        public SessionMetadata() {}
+
+        public List<String> getCategories() { return categories; }
+        public void setCategories(List<String> categories) { this.categories = categories; }
+
+        public List<String> getKeywords() { return keywords; }
+        public void setKeywords(List<String> keywords) { this.keywords = keywords; }
+
+        public String getLevel() { return level; }
+        public void setLevel(String level) { this.level = level; }
+
+        public Integer getQuestionCount() { return questionCount; }
+        public void setQuestionCount(Integer questionCount) { this.questionCount = questionCount; }
     }
 }
