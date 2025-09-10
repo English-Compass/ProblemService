@@ -24,6 +24,7 @@ public class LearningQuestionAnsweredEventDto {
     private String questionDifficulty;
     private String questionType;
     private Integer responseTimeMs;
+    @Builder.Default
     private String eventType = "QUESTION_ANSWERED";
     private LocalDateTime eventTimestamp;
 }

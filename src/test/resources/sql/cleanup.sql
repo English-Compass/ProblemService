@@ -1,0 +1,6 @@
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE question_answer;
+TRUNCATE TABLE session_question;
+TRUNCATE TABLE learning_sessions;
+TRUNCATE TABLE question;
+SET FOREIGN_KEY_CHECKS=1;

@@ -16,11 +16,19 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       # Kafka 연결 (kafka 컨테이너)
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      # Redis 연결 (redis 컨테이너)
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DATABASE=0
       # 외부 API 키
       - KAKAO_API_KEY=${KAKAO_API_KEY}
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
     depends_on:
       - mysql
+      - redis
       - kafka
     networks:
       - problem-network
@@ -56,22 +64,23 @@ services:
       retries: 3
       start_period: 60s
 
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: problem-redis
-  #   ports:
-  #     - "6379:6379"    # Redis cache port
-  #   volumes:
-  #     - redis_data:/data
-  #   networks:
-  #     - problem-network
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "ping"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 30s
+  redis:
+    image: redis:7-alpine
+    container_name: problem-redis
+    ports:
+      - "6379:6379"    # Redis cache port
+    volumes:
+      - redis_data:/data
+    networks:
+      - problem-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 
 
@@ -82,7 +91,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"    # Zookeeper client port
+      - "2182:2181"    # Zookeeper client port (using 2182 to avoid conflict)
     networks:
       - problem-network
     restart: unless-stopped
@@ -147,6 +156,7 @@ services:
 
 volumes:
   mysql_data:
+  redis_data:
 
 networks:
   problem-network:

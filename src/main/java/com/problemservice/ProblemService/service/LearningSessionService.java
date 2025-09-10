@@ -12,12 +12,12 @@ import com.problemservice.ProblemService.model.entity.LearningSession.SessionTyp
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
-import com.problemservice.ProblemService.model.enums.Difficulty;
 import com.problemservice.ProblemService.repository.LearningSessionRepository;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,9 +45,9 @@ public class LearningSessionService extends BaseService {
 
     private final LearningSessionRepository learningSessionRepository;
     private final QuestionRepository questionRepository;
-    private final EventPublisherService eventPublisherService;
+    @Autowired(required = false)
+    private EventPublisherService eventPublisherService;
     private final SessionQuestionService sessionQuestionService;
-    private final QuestionAssignmentService questionAssignmentService;
     private final QuestionAnswerRepository questionAnswerRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -266,17 +266,21 @@ public class LearningSessionService extends BaseService {
 
         // Extract metadata to get categories, keywords, and user level
         SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
-        
+
         // Validate that categories are provided
         if (metadata.getCategories() == null || metadata.getCategories().isEmpty()) {
             throw new IllegalArgumentException("At least one category must be selected");
         }
         
+        // Normalize categories to DB format (ko → en, lower-case)
+        java.util.List<String> normalizedCategories = com.problemservice.ProblemService.util.CategoryMapper
+                .toDbCategories(metadata.getCategories());
+        
         // Use user level from metadata or default to 1 (beginner)
         Integer userLevel = mapLevelToInteger(metadata.getLevel());
         
         // Get selected categories and keywords from metadata
-        List<String> selectedCategories = metadata.getCategories();
+        List<String> selectedCategories = normalizedCategories;
         List<String> keywords = metadata.getKeywords();
         
         // Select questions based on user level, categories, and keywords
@@ -313,21 +317,6 @@ public class LearningSessionService extends BaseService {
         return convertToResponseDto(savedSession);
     }
 
-    private Integer extractUserLevel(String userId) {
-        return 1;
-    }
-    
-    /**
-     * 사용자 난이도 설정 추출
-     * TODO: 사용자 테이블에서 실제 난이도 설정을 조회하도록 구현
-     * @param createDto 세션 생성 DTO
-     * @return 사용자 선호 난이도 (기본값: A)
-     */
-    private Difficulty extractUserDifficulty(LearningSessionCreateDto createDto) {
-        // TODO: 데이터베이스에서 사용자의 난이도 설정을 조회
-        // 현재는 기본값으로 A(초급) 반환
-        return Difficulty.A;
-    }
 
     /**
      * 사용자가 풀지 않은 문제들 중 선택한 카테고리와 일치하는 문제들을 추출합니다
@@ -419,7 +408,16 @@ public class LearningSessionService extends BaseService {
         }
 
         // 4단계: 복습 문제는 사용자가 정답을 맞힌 문제들에서 선택
-        List<String> selectedCategories = createDto.getCategories();
+        // 메타데이터에서 카테고리 추출
+        SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
+        List<String> selectedCategories = metadata.getCategories() != null && !metadata.getCategories().isEmpty() 
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getCategories()) 
+                : (createDto.getCategories() != null ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(createDto.getCategories()) : new ArrayList<>());
+        
+        if (selectedCategories.isEmpty()) {
+            throw new IllegalArgumentException("At least one category must be selected");
+        }
+        
         List<Question> selectedQuestions = selectQuestionsForReview(createDto.getUserId(), selectedCategories, 5);
         
         // 정답 기록이 없으면 복습 세션 생성 불가
@@ -483,7 +481,16 @@ public class LearningSessionService extends BaseService {
         }
 
         // 4단계: 오답노트 문제는 사용자가 틀린 문제들에서 선택
-        List<String> selectedCategories = createDto.getCategories();
+        // 메타데이터에서 카테고리 추출
+        SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
+        List<String> selectedCategories = metadata.getCategories() != null && !metadata.getCategories().isEmpty() 
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getCategories()) 
+                : (createDto.getCategories() != null ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(createDto.getCategories()) : new ArrayList<>());
+        
+        if (selectedCategories.isEmpty()) {
+            throw new IllegalArgumentException("At least one category must be selected");
+        }
+        
         List<Question> selectedQuestions = selectQuestionsForWrongAnswer(createDto.getUserId(), selectedCategories, 5);
         
         // 오답 기록이 없으면 오답노트 세션 생성 불가
@@ -587,7 +594,9 @@ public class LearningSessionService extends BaseService {
                 .progressPercentage(session.getProgressPercentage())
                 .build();
                 
-        eventPublisherService.publishSessionCompletedEvent(event);
+        if (eventPublisherService != null) {
+            eventPublisherService.publishSessionCompletedEvent(event);
+        }
     }
     
     private void validateCreateDto(LearningSessionCreateDto createDto) {
@@ -688,23 +697,27 @@ public class LearningSessionService extends BaseService {
 
     /**
      * Map frontend level string to integer
-     * Frontend sends: A (초급), B (중급), C (상급)
+     * Frontend sends: beginner, intermediate, advanced 또는 A, B, C
      * Backend uses: 1 (초급), 2 (중급), 3 (상급)
      */
     private Integer mapLevelToInteger(String level) {
         if (level == null || level.trim().isEmpty()) {
-            return 1; // Default to beginner
+            return 2; // Default to intermediate
         }
         
-        switch (level.toUpperCase()) {
+        String levelUpper = level.toUpperCase().trim();
+        switch (levelUpper) {
             case "A":
+            case "BEGINNER":
                 return 1;
             case "B":
+            case "INTERMEDIATE":
                 return 2;
             case "C":
+            case "ADVANCED":
                 return 3;
             default:
-                return 1;
+                return 2; // Default to intermediate
         }
     }
 
@@ -755,6 +768,8 @@ public class LearningSessionService extends BaseService {
 
     /**
      * Inner class to represent session metadata structure
+     * Jackson ObjectMapper가 JSON 역직렬화를 위해 setter 메서드들을 내부적으로 사용
+     * 직접적인 개발자 호출은 없지만 JSON 파싱을 위해 필수적임
      */
     private static class SessionMetadata {
         private List<String> categories;
@@ -764,16 +779,17 @@ public class LearningSessionService extends BaseService {
 
         public SessionMetadata() {}
 
+        // Getter 메서드들: 실제 비즈니스 로직에서 사용
         public List<String> getCategories() { return categories; }
-        public void setCategories(List<String> categories) { this.categories = categories; }
-
         public List<String> getKeywords() { return keywords; }
-        public void setKeywords(List<String> keywords) { this.keywords = keywords; }
-
         public String getLevel() { return level; }
-        public void setLevel(String level) { this.level = level; }
-
         public Integer getQuestionCount() { return questionCount; }
+        
+        // Setter 메서드들: Jackson ObjectMapper의 JSON 역직렬화에서 내부적으로 사용
+        // 직접 호출되지 않지만 JSON 파싱을 위해 필수적임
+        public void setCategories(List<String> categories) { this.categories = categories; }
+        public void setKeywords(List<String> keywords) { this.keywords = keywords; }
+        public void setLevel(String level) { this.level = level; }
         public void setQuestionCount(Integer questionCount) { this.questionCount = questionCount; }
     }
 }

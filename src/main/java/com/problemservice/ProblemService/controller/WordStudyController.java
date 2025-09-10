@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -215,6 +216,121 @@ public class WordStudyController {
             return ResponseEntity.internalServerError().body(
                     Map.of("error", "약점 영역 요약 조회 중 오류가 발생했습니다: " + e.getMessage())
             );
+        }
+    }
+    
+    // ==================== 캐시 관리 API ====================
+    
+    /**
+     * 사용자별 단어 학습 캐시 무효화
+     * 사용자의 학습 프로필이 변경되었을 때 캐시를 갱신하기 위해 사용
+     * 
+     * @param userId 캐시를 무효화할 사용자 ID
+     * @return 무효화 결과
+     */
+    @DeleteMapping("/cache/{userId}")
+    public ResponseEntity<Map<String, Object>> evictUserCache(@PathVariable String userId) {
+        
+        log.info("사용자 단어 학습 캐시 무효화 요청 - 사용자: {}", userId);
+        
+        try {
+            wordStudyService.evictUserWordStudyCache(userId);
+            
+            Map<String, Object> response = Map.of(
+                "success", true,
+                "userId", userId,
+                "message", "사용자 캐시가 성공적으로 무효화되었습니다",
+                "timestamp", System.currentTimeMillis()
+            );
+            
+            log.info("사용자 단어 학습 캐시 무효화 성공 - 사용자: {}", userId);
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("사용자 캐시 무효화 중 예외 발생", e);
+            Map<String, Object> errorResponse = Map.of(
+                "success", false,
+                "userId", userId,
+                "error", "캐시 무효화 중 오류가 발생했습니다: " + e.getMessage(),
+                "timestamp", System.currentTimeMillis()
+            );
+            return ResponseEntity.internalServerError().body(errorResponse);
+        }
+    }
+    
+    /**
+     * 사용자 캐시 통계 정보 조회
+     * 모니터링 및 디버깅 목적으로 사용자의 캐시 상태를 확인
+     * 
+     * @param userId 캐시 통계를 조회할 사용자 ID
+     * @return 캐시 통계 정보
+     */
+    @GetMapping("/cache/stats/{userId}")
+    public ResponseEntity<Map<String, Object>> getCacheStatistics(@PathVariable String userId) {
+        
+        log.info("사용자 캐시 통계 조회 요청 - 사용자: {}", userId);
+        
+        try {
+            Map<String, Object> stats = wordStudyService.getCacheStatistics(userId);
+            
+            log.debug("사용자 캐시 통계 조회 성공 - 사용자: {}, 캐시 항목: {}", 
+                    userId, stats.get("cachedItems"));
+            
+            return ResponseEntity.ok(stats);
+            
+        } catch (Exception e) {
+            log.error("사용자 캐시 통계 조회 중 예외 발생", e);
+            Map<String, Object> errorResponse = Map.of(
+                "error", "캐시 통계 조회 중 오류가 발생했습니다: " + e.getMessage(),
+                "userId", userId,
+                "timestamp", System.currentTimeMillis()
+            );
+            return ResponseEntity.internalServerError().body(errorResponse);
+        }
+    }
+    
+    /**
+     * 자주 사용하는 사용자를 위한 캐시 사전 로딩
+     * 시스템 성능 최적화를 위해 예상되는 요청에 대해 미리 캐시를 준비
+     * 
+     * @param userId 캐시를 사전 로딩할 사용자 ID
+     * @param categories 사전 로딩할 카테고리 목록 (선택사항)
+     * @return 사전 로딩 결과
+     */
+    @PostMapping("/cache/preload/{userId}")
+    public ResponseEntity<Map<String, Object>> preloadUserCache(
+            @PathVariable String userId,
+            @RequestParam(required = false) List<String> categories) {
+        
+        log.info("사용자 캐시 사전 로딩 요청 - 사용자: {}, 카테고리: {}", userId, categories);
+        
+        try {
+            // 기본 카테고리 설정 (파라미터가 없는 경우)
+            List<String> preloadCategories = categories != null && !categories.isEmpty() ? 
+                    categories : List.of("학업", "비즈니스", "여행", "일상생활");
+            
+            wordStudyService.preloadFrequentUserCache(userId, preloadCategories);
+            
+            Map<String, Object> response = Map.of(
+                "success", true,
+                "userId", userId,
+                "preloadCategories", preloadCategories,
+                "message", "사용자 캐시 사전 로딩이 시작되었습니다 (백그라운드 처리)",
+                "timestamp", System.currentTimeMillis()
+            );
+            
+            log.info("사용자 캐시 사전 로딩 시작 - 사용자: {}", userId);
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("사용자 캐시 사전 로딩 중 예외 발생", e);
+            Map<String, Object> errorResponse = Map.of(
+                "success", false,
+                "userId", userId,
+                "error", "캐시 사전 로딩 중 오류가 발생했습니다: " + e.getMessage(),
+                "timestamp", System.currentTimeMillis()
+            );
+            return ResponseEntity.internalServerError().body(errorResponse);
         }
     }
 }

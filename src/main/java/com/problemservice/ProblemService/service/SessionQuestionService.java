@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +51,9 @@ public class SessionQuestionService {
     @Transactional
     public void addQuestionToSession(String sessionId, String questionId) {
         // 1단계: 추가하려는 문제가 실제로 존재하는지 확인
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
+        if (!questionRepository.existsById(questionId)) {
+            throw new RuntimeException("Question not found: " + questionId);
+        }
 
         // 2단계: 해당 세션에서 가장 큰 순서 번호를 조회하여 다음 순서 계산
         Integer maxOrder = sessionQuestionRepository.getMaxQuestionOrderBySessionId(sessionId);
@@ -93,31 +95,29 @@ public class SessionQuestionService {
 
     /**
      * 세션에 여러 문제를 한 번에 추가하여 세션-문제 연관관계 생성
-     * 단계: 1) 문제 ID 목록 순회 2) 각 문제 존재 확인 3) 순서대로 연관관계 생성 4) 데이터베이스 저장
+     * 단계: 1) 모든 문제 존재 확인 2) 배치로 연관관계 생성 3) 데이터베이스 저장
      * 입력: 세션 ID, 추가할 문제 ID 목록
      * 출력: 없음 (void)
      * 조건: 문제 목록 중 하나라도 존재하지 않으면 예외 발생
      */
     @Transactional
     public void createSessionQuestions(String sessionId, List<String> questionIds) {
-        // 1단계: 문제 ID 목록을 순회하며 각 문제에 대해 연관관계 생성
-        for (int i = 0; i < questionIds.size(); i++) {
-            String questionId = questionIds.get(i); // 현재 처리할 문제 ID
-            
-            // 2단계: 문제가 실제로 존재하는지 확인
-            Question question = questionRepository.findById(questionId)
-                    .orElseThrow(() -> new RuntimeException("Question not found: " + questionId));
+        // 1단계: 모든 문제가 존재하는지 한 번에 확인
+        validateQuestionsExist(questionIds);
 
-            // 3단계: 세션-문제 연관관계 엔티티 생성 (순서는 배열 인덱스 + 1)
+        // 2단계: 세션-문제 연관관계 엔티티들을 생성하여 배치 저장
+        List<SessionQuestion> sessionQuestions = new ArrayList<>();
+        for (int i = 0; i < questionIds.size(); i++) {
             SessionQuestion sessionQuestion = SessionQuestion.builder()
-                    .sessionId(sessionId) // 세션 ID 설정
-                    .questionId(questionId) // 문제 ID 설정
+                    .sessionId(sessionId)
+                    .questionId(questionIds.get(i))
                     .questionOrder(i + 1) // 순서 번호 설정 (1부터 시작)
                     .build();
-
-            // 4단계: 생성된 세션-문제 연관관계를 데이터베이스에 저장
-            sessionQuestionRepository.save(sessionQuestion);
+            sessionQuestions.add(sessionQuestion);
         }
+
+        // 3단계: 생성된 모든 세션-문제 연관관계를 데이터베이스에 배치 저장
+        sessionQuestionRepository.saveAll(sessionQuestions);
     }
 
     /**
@@ -136,50 +136,33 @@ public class SessionQuestionService {
 
     /**
      * 특정 세션의 모든 문제를 DTO 형태로 조회
-     * Hibernate lazy loading 문제를 해결하기 위해 DTO를 사용
-     * 단계: 1) 세션 문제 조회 2) Question 엔티티를 별도 조회하여 DTO로 변환
+     * Fetch Join을 사용하여 N+1 문제 해결
+     * 단계: 1) Question과 함께 세션 문제 조회 2) DTO로 변환
      * 입력: 세션 ID
      * 출력: SessionQuestionResponseDto 목록
      */
     public List<SessionQuestionResponseDto> getSessionQuestionsAsDto(String sessionId) {
-        // 1단계: 세션 ID로 문제 목록을 문제 순서(questionOrder)에 따라 정렬하여 조회
-        List<SessionQuestion> sessionQuestions = sessionQuestionRepository.findBySessionIdOrderByQuestionOrder(sessionId);
+        // 1단계: Fetch Join을 사용하여 Question과 함께 조회 (N+1 문제 해결)
+        List<SessionQuestion> sessionQuestions = sessionQuestionRepository.findBySessionIdWithQuestionOrderByQuestionOrder(sessionId);
         
         // 2단계: 각 SessionQuestion을 DTO로 변환
         return sessionQuestions.stream()
-                .map(this::convertToDto)
+                .map(this::convertToDtoWithQuestion)
                 .collect(Collectors.toList());
     }
 
     /**
-     * SessionQuestion 엔티티를 SessionQuestionResponseDto로 변환
-     * 연관된 Question 엔티티는 별도로 조회하여 lazy loading 문제 해결
-     * 입력: SessionQuestion 엔티티
+     * Fetch Join으로 조회된 SessionQuestion을 DTO로 변환
+     * 이미 로딩된 Question 엔티티를 활용하여 효율적으로 변환
+     * 입력: SessionQuestion 엔티티 (Question 포함)
      * 출력: SessionQuestionResponseDto
      */
-    private SessionQuestionResponseDto convertToDto(SessionQuestion sessionQuestion) {
-        // Question 엔티티를 별도로 조회하여 DTO로 변환 (lazy loading 방지)
+    private SessionQuestionResponseDto convertToDtoWithQuestion(SessionQuestion sessionQuestion) {
+        // 이미 Fetch Join으로 로딩된 Question 엔티티 사용
         QuestionResponseDto questionDto = null;
-        if (sessionQuestion.getQuestionId() != null) {
-            // questionRepository를 통해 Question을 별도로 조회
-            Question question = questionRepository.findById(sessionQuestion.getQuestionId()).orElse(null);
-            if (question != null) {
-                questionDto = QuestionResponseDto.builder()
-                        .questionId(question.getQuestionId())
-                        .questionText(question.getQuestionText())
-                        .optionA(question.getOptionA())
-                        .optionB(question.getOptionB())
-                        .optionC(question.getOptionC())
-                        .correctAnswer(question.getCorrectAnswer())
-                        .majorCategory(question.getMajorCategory())
-                        .minorCategory(question.getMinorCategory())
-                        .questionType(question.getQuestionType())
-                        .explanation(question.getExplanation())
-                        .difficultyLevel(question.getDifficultyLevel())
-                        .createdAt(question.getCreatedAt())
-                        .updatedAt(question.getUpdatedAt())
-                        .build();
-            }
+        Question question = sessionQuestion.getQuestion();
+        if (question != null) {
+            questionDto = buildQuestionResponseDto(question);
         }
 
         // SessionQuestionResponseDto 생성
@@ -191,5 +174,43 @@ public class SessionQuestionService {
                 .categories(sessionQuestion.getCategories())
                 .question(questionDto)
                 .build();
+    }
+
+    /**
+     * Question 엔티티를 QuestionResponseDto로 변환하는 헬퍼 메소드
+     * 중복 코드를 제거하고 일관성 있는 변환 로직 제공
+     * 입력: Question 엔티티
+     * 출력: QuestionResponseDto
+     */
+    private QuestionResponseDto buildQuestionResponseDto(Question question) {
+        return QuestionResponseDto.builder()
+                .questionId(question.getQuestionId())
+                .questionText(question.getQuestionText())
+                .optionA(question.getOptionA())
+                .optionB(question.getOptionB())
+                .optionC(question.getOptionC())
+                .correctAnswer(question.getCorrectAnswer())
+                .majorCategory(question.getMajorCategory())
+                .minorCategory(question.getMinorCategory())
+                .questionType(question.getQuestionType())
+                .explanation(question.getExplanation())
+                .difficultyLevel(question.getDifficultyLevel())
+                .createdAt(question.getCreatedAt())
+                .updatedAt(question.getUpdatedAt())
+                .build();
+    }
+
+    /**
+     * 여러 문제 ID의 존재 여부를 검증하는 헬퍼 메소드
+     * 배치 생성 시 모든 문제가 존재하는지 사전에 확인
+     * 입력: 문제 ID 목록
+     * 출력: 없음 (존재하지 않는 문제가 있으면 예외 발생)
+     */
+    private void validateQuestionsExist(List<String> questionIds) {
+        for (String questionId : questionIds) {
+            if (!questionRepository.existsById(questionId)) {
+                throw new RuntimeException("Question not found: " + questionId);
+            }
+        }
     }
 }

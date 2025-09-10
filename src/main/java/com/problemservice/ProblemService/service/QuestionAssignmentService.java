@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class QuestionAssignmentService {
                 .averageTimePerQuestion(analysisData.getAverageTimePerQuestion())
                 .weakQuestionTypes(new HashSet<>(analysisData.getWeakQuestionTypes()))
                 .wrongQuestionIds(new HashSet<>(analysisData.getWrongQuestionIds()))
-                .recommendedReviewQuestionIds(new HashSet<>(analysisData.getRecommendedReviewQuestions()))
+                .recommendedReviewQuestionIds(new HashSet<>(analysisData.getRecommendedReviewQuestions())) // 향후 개인화된 복습 문제 추천에 사용 예정
                 .focusAreas(new HashSet<>(analysisData.getFocusAreas()))
                 .lastUpdated(System.currentTimeMillis())
                 .build();
@@ -72,6 +73,8 @@ public class QuestionAssignmentService {
                                                 Difficulty userPreferredDifficulty) {
         
         UserLearningProfile profile = userProfiles.get(userId);
+        log.info("selectOptimalQuestions: userId={}, sessionType={}, categories={}, count={}, hasProfile={}",
+            userId, sessionType, categories, questionCount, profile != null);
         
         if (profile == null) {
             // 프로필이 없으면 사용자 설정 기반으로만 선택 (연습 세션의 경우 풀지 않은 문제만)
@@ -89,7 +92,11 @@ public class QuestionAssignmentService {
             case REVIEW:
                 return selectReviewQuestions(profile, categories, questionCount, userPreferredDifficulty);
             case WRONG_ANSWER:
-                return selectWrongAnswerQuestions(profile, categories, questionCount, userPreferredDifficulty);
+                List<Question> wa = selectWrongAnswerQuestions(profile, categories, questionCount, userPreferredDifficulty);
+                try {
+                    System.out.println("WRONG_ANSWER picked IDs: " + wa.stream().map(Question::getQuestionId).collect(Collectors.toList()));
+                } catch (Exception ignore) { }
+                return wa;
             default:
                 return selectDefaultQuestions(categories, questionCount, userPreferredDifficulty);
         }
@@ -104,12 +111,22 @@ public class QuestionAssignmentService {
         String userId = profile.getUserId();
         Integer difficultyLevel = userPreferredDifficulty.getLevel();
         
-        // 사용자가 아직 풀지 않은 문제들만 선택 (사용자 선택 카테고리와 난이도만)
-        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
-            userId, categories, difficultyLevel);
+        // 중복 방지를 위해 최근 3일 동안 출제된 문제 제외
+        LocalDateTime recentCutoff = LocalDateTime.now().minusDays(3);
         
-        // 요청된 개수만큼 반환 (랜덤 순서로)
-        Collections.shuffle(unsolvedQuestions);
+        // 최근 출제된 문제를 제외하고 조회 시도
+        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsExcludingRecent(
+            userId, categories, difficultyLevel, recentCutoff);
+        
+        // 최근 제외 조회에서 충분한 문제가 없으면 기본 조회 사용
+        if (unsolvedQuestions.size() < questionCount) {
+            log.debug("최근 제외 조회에서 문제 부족, 기본 조회로 전환: userId={}, available={}, required={}", 
+                userId, unsolvedQuestions.size(), questionCount);
+            unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
+                userId, categories, difficultyLevel);
+        }
+        
+        // 데이터베이스에서 이미 랜덤 정렬되어 반환되므로 바로 제한된 수만큼 반환
         return unsolvedQuestions.stream()
             .limit(questionCount)
             .collect(Collectors.toList());
@@ -147,13 +164,35 @@ public class QuestionAssignmentService {
         
         List<Question> wrongAnswerQuestions = new ArrayList<>();
         
-        // 1. 오답 문제를 70% 비율로 포함
+        // 1. 오답 문제를 70% 비율로 포함 (ID 우선 포함 보장)
         if (!profile.getWrongQuestionIds().isEmpty()) {
-            int wrongCount = Math.min((int)(questionCount * 0.7), profile.getWrongQuestionIds().size());
-            List<Question> wrongQuestions = questionRepository.findByQuestionIdInAndMajorCategoryIn(
-                new ArrayList<>(profile.getWrongQuestionIds()), categories);
-            
-            wrongAnswerQuestions.addAll(wrongQuestions.stream().limit(wrongCount).collect(Collectors.toList()));
+            int wrongCount = (int) Math.ceil(questionCount * 0.7);
+            if (wrongCount <= 0 && questionCount > 0) wrongCount = 1;
+            wrongCount = Math.min(wrongCount, profile.getWrongQuestionIds().size());
+
+            // ID 기반으로 우선 조회하여 포함 보장
+            List<Question> wrongQuestionsById = profile.getWrongQuestionIds().stream()
+                .map(qid -> questionRepository.findById(qid).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+            // 카테고리 필터가 있는 경우 적용하되, 오답 ID 포함을 우선시
+            List<Question> filtered = wrongQuestionsById;
+            if (categories != null && !categories.isEmpty()) {
+                List<String> categorySet = new ArrayList<>(categories);
+                filtered = wrongQuestionsById.stream()
+                    .filter(q -> categorySet.contains(q.getMajorCategory()))
+                    .collect(Collectors.toList());
+
+                // 카테고리 필터링 후 결과가 비어있다면 카테고리 제한 없이 오답 ID 포함
+                if (filtered.isEmpty()) {
+                    filtered = wrongQuestionsById;
+                }
+            }
+
+            // 추가 랜덤성을 위해 섞은 후 제한된 수만큼 선택
+            Collections.shuffle(filtered);
+            wrongAnswerQuestions.addAll(filtered.stream().limit(wrongCount).collect(Collectors.toList()));
         }
         
         // 2. 취약 유형 문제로 나머지 채우기 (30%)
@@ -204,10 +243,20 @@ public class QuestionAssignmentService {
     private List<Question> selectDefaultPracticeQuestions(String userId, List<String> categories, int questionCount, Difficulty userPreferredDifficulty) {
         Integer difficultyLevel = userPreferredDifficulty.getLevel();
         
-        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
-            userId, categories, difficultyLevel);
+        // 중복 방지를 위해 최근 3일 동안 출제된 문제 제외
+        LocalDateTime recentCutoff = LocalDateTime.now().minusDays(3);
         
-        Collections.shuffle(unsolvedQuestions);
+        // 최근 출제된 문제를 제외하고 조회 시도
+        List<Question> unsolvedQuestions = questionRepository.findUnsolvedQuestionsExcludingRecent(
+            userId, categories, difficultyLevel, recentCutoff);
+        
+        // 최근 제외 조회에서 충분한 문제가 없으면 기본 조회 사용
+        if (unsolvedQuestions.size() < questionCount) {
+            unsolvedQuestions = questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(
+                userId, categories, difficultyLevel);
+        }
+        
+        // 데이터베이스에서 이미 랜덤 정렬되어 반환되므로 바로 제한된 수만큼 반환
         return unsolvedQuestions.stream()
             .limit(questionCount)
             .collect(Collectors.toList());
@@ -234,8 +283,8 @@ public class QuestionAssignmentService {
         private double averageTimePerQuestion;
         private Set<QuestionType> weakQuestionTypes;
         private Set<String> wrongQuestionIds;
-        private Set<String> recommendedReviewQuestionIds;
+        private Set<String> recommendedReviewQuestionIds; // 향후 개인화된 복습 문제 추천에 사용 예정
         private Set<String> focusAreas;
-        private long lastUpdated;
+        private long lastUpdated; // 프로필 업데이트 시간 추적용 (향후 만료 정책에 사용)
     }
 }

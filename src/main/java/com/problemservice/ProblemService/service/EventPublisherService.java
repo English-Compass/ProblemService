@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * 출력: Kafka 로 발행된 이벤트 메시지
  */
 @Service
+@Profile("!local")
 @RequiredArgsConstructor
 @Slf4j
 @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers", matchIfMissing = false)

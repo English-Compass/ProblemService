@@ -54,12 +54,10 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
     
     /**
      * 특정 사용자의 모든 답안 조회 (학습 프로필 분석용)
-     * 학습 세션을 통해 사용자 ID로 필터링하여 모든 답안 조회
      * 입력: 사용자 ID
      * 출력: 해당 사용자의 모든 답안 목록
      */
-    @Query("SELECT qa FROM QuestionAnswer qa JOIN LearningSession ls ON qa.sessionId = ls.sessionId WHERE ls.userId = :userId ORDER BY qa.answeredAt DESC")
-    List<QuestionAnswer> findByUserId(@Param("userId") String userId);
+    List<QuestionAnswer> findAllByUserId(String userId);
     
     /**
      * 특정 사용자의 정답 답안들 조회 (복습용)
@@ -75,7 +73,11 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
      * 입력: 사용자 ID, 카테고리 목록, 정답 여부
      * 출력: 해당 사용자가 해당 카테고리에서 정답을 맞힌 문제들의 답안 목록
      */
-    @Query("SELECT qa FROM QuestionAnswer qa JOIN LearningSession ls ON qa.sessionId = ls.sessionId JOIN qa.question q WHERE ls.userId = :userId AND q.majorCategory IN :categories AND qa.isCorrect = :isCorrect ORDER BY qa.answeredAt DESC")
+    @Query("SELECT DISTINCT qa FROM QuestionAnswer qa " +
+           "WHERE qa.userId = :userId " +
+           "AND qa.questionId IN (SELECT q.questionId FROM Question q WHERE q.majorCategory IN :categories) " +
+           "AND qa.isCorrect = :isCorrect " +
+           "ORDER BY qa.answeredAt DESC")
     List<QuestionAnswer> findByUserIdAndCategoriesAndIsCorrect(@Param("userId") String userId, @Param("categories") List<String> categories, @Param("isCorrect") Boolean isCorrect);
     
     /**
@@ -84,6 +86,10 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
      * 입력: 사용자 ID, 카테고리 목록, 오답 여부 (false)
      * 출력: 해당 사용자가 해당 카테고리에서 틀린 문제들의 답안 목록
      */
-    @Query("SELECT qa FROM QuestionAnswer qa JOIN LearningSession ls ON qa.sessionId = ls.sessionId JOIN qa.question q WHERE ls.userId = :userId AND q.majorCategory IN :categories AND qa.isCorrect = false ORDER BY qa.solveCount DESC, qa.answeredAt DESC")
+    @Query("SELECT DISTINCT qa FROM QuestionAnswer qa " +
+           "WHERE qa.userId = :userId " +
+           "AND qa.questionId IN (SELECT q.questionId FROM Question q WHERE q.majorCategory IN :categories) " +
+           "AND qa.isCorrect = false " +
+           "ORDER BY qa.solveCount DESC, qa.answeredAt DESC")
     List<QuestionAnswer> findWrongAnswersByUserIdAndCategories(@Param("userId") String userId, @Param("categories") List<String> categories);
 }

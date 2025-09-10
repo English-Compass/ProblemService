@@ -15,6 +15,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.List;
  * 분석 데이터를 저장하지 않고 즉시 처리하여 사용자 학습 프로필을 업데이트
  */
 @Component
+@Profile("!local")
 @RequiredArgsConstructor
 @Slf4j
 public class LearningAnalysisEventConsumer {

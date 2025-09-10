@@ -18,8 +18,11 @@ import java.time.LocalDateTime;
  * 출력: 답안 정확성 및 통계 데이터
  */
 @Entity
-@Table(name = "question_answer", 
-       uniqueConstraints = @UniqueConstraint(name = "uk_session_question_answer", 
+@Table(name = "question_answer",
+       indexes = {
+           @Index(name = "idx_qa_user_id", columnList = "user_id")
+       },
+       uniqueConstraints = @UniqueConstraint(name = "uk_session_question_answer",
                                            columnNames = {"session_id", "question_id"}))
 @Data
 @NoArgsConstructor
@@ -36,6 +39,11 @@ public class QuestionAnswer {
     @Column(name = "session_id", nullable = false)
     @NotBlank
     private String sessionId;
+
+    // 이 답안을 제출한 사용자 ID
+    @Column(name = "user_id", nullable = false)
+    @NotBlank
+    private String userId;
 
     // 답안이 제출된 문제 ID
     @Column(name = "question_id", nullable = false)

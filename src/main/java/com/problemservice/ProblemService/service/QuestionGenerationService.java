@@ -3,7 +3,7 @@ package com.problemservice.ProblemService.service;
 import com.problemservice.ProblemService.model.dto.*;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.enums.Difficulty;
-import com.problemservice.ProblemService.model.enums.QuestionType;
+
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,12 +45,27 @@ public class QuestionGenerationService {
         List<String> errorMessages = new ArrayList<>();
         int totalTokensUsed = 0;
         
+        // 중복 방지를 위한 다양한 프롬프트 변형 준비
+        List<String> usedPromptVariations = new ArrayList<>();
+        
         // 요청된 개수만큼 문제 생성
         for (int i = 0; i < request.getQuestionCount(); i++) {
             try {
-                GeneratedQuestionDto question = generateSingleQuestion(request);
+                GeneratedQuestionDto question = generateSingleQuestionWithVariation(request, i, usedPromptVariations);
                 if (question.isValid()) {
-                    generatedQuestions.add(question);
+                    // 중복 체크
+                    if (!isDuplicateQuestion(question, generatedQuestions)) {
+                        generatedQuestions.add(question);
+                    } else {
+                        log.warn("중복 문제 감지, 재생성 시도: {}", i + 1);
+                        // 재시도
+                        question = generateSingleQuestionWithVariation(request, i + 10, usedPromptVariations);
+                        if (question.isValid() && !isDuplicateQuestion(question, generatedQuestions)) {
+                            generatedQuestions.add(question);
+                        } else {
+                            errorMessages.add("문제 " + (i + 1) + " 중복으로 인한 생성 실패");
+                        }
+                    }
                 } else {
                     errorMessages.add("문제 " + (i + 1) + " 생성 실패: " + question.getErrorMessage());
                 }
@@ -79,7 +94,38 @@ public class QuestionGenerationService {
     }
     
     /**
-     * 단일 문제 생성
+     * 중복 방지를 위한 다양성이 있는 단일 문제 생성
+     * @param request 문제 생성 요청 정보
+     * @param variation 변형 번호 (다양성을 위해)
+     * @param usedPromptVariations 이미 사용된 프롬프트 변형들
+     * @return 생성된 문제 DTO
+     */
+    private GeneratedQuestionDto generateSingleQuestionWithVariation(QuestionGenerationRequestDto request, int variation, List<String> usedPromptVariations) {
+        String prompt = buildPromptForQuestionTypeWithVariation(request, variation);
+        usedPromptVariations.add(prompt);
+        
+        OpenAIRequestDto openAIRequest = OpenAIRequestDto.builder()
+            .prompt(prompt)
+            .model("gpt-3.5-turbo")
+            .maxTokens(500)
+            .temperature(0.8 + (variation * 0.1)) // 다양성을 위해 temperature 조정
+            .build();
+        
+        OpenAIResponseDto response = openAIService.generateResponse(openAIRequest);
+        
+        if (!response.isSuccess()) {
+            return GeneratedQuestionDto.builder()
+                .isValid(false)
+                .errorMessage(response.getErrorMessage())
+                .generatedAt(LocalDateTime.now())
+                .build();
+        }
+        
+        return parseOpenAIResponse(response.getResponse(), request);
+    }
+    
+    /**
+     * 기존 단일 문제 생성 (하위 호환성)
      * @param request 문제 생성 요청 정보
      * @return 생성된 문제 DTO
      */
@@ -107,7 +153,30 @@ public class QuestionGenerationService {
     }
     
     /**
-     * 문제 유형별 프롬프트 생성
+     * 중복 방지를 위한 다양성 있는 프롬프트 생성
+     * @param request 문제 생성 요청 정보
+     * @param variation 변형 번호
+     * @return 문제 유형에 맞는 다양성 있는 프롬프트
+     */
+    private String buildPromptForQuestionTypeWithVariation(QuestionGenerationRequestDto request, int variation) {
+        String difficultyDescription = getDifficultyDescription(request.getDifficulty());
+        String topicsText = request.getTopics() != null && !request.getTopics().isEmpty() 
+            ? String.join(", ", request.getTopics()) : request.getMajorCategory();
+        
+        switch (request.getQuestionType()) {
+            case WORD:
+                return buildWordQuestionPromptWithVariation(difficultyDescription, topicsText, request, variation);
+            case SENTENCE:
+                return buildSentenceQuestionPromptWithVariation(difficultyDescription, topicsText, request, variation);
+            case CONVERSATION:
+                return buildConversationQuestionPromptWithVariation(difficultyDescription, topicsText, request, variation);
+            default:
+                throw new IllegalArgumentException("지원하지 않는 문제 유형: " + request.getQuestionType());
+        }
+    }
+    
+    /**
+     * 기존 문제 유형별 프롬프트 생성 (하위 호환성)
      * @param request 문제 생성 요청 정보
      * @return 문제 유형에 맞는 프롬프트
      */
@@ -303,6 +372,138 @@ public class QuestionGenerationService {
             default:
                 throw new IllegalArgumentException("유효하지 않은 답안 형식: " + letterAnswer + " (A, B, C만 허용)");
         }
+    }
+    
+    /**
+     * 중복 문제 체크
+     * @param newQuestion 새로 생성된 문제
+     * @param existingQuestions 이미 생성된 문제들
+     * @return 중복 여부
+     */
+    private boolean isDuplicateQuestion(GeneratedQuestionDto newQuestion, List<GeneratedQuestionDto> existingQuestions) {
+        for (GeneratedQuestionDto existing : existingQuestions) {
+            // 문제 텍스트의 유사성 검사 (빈칸 제거 후 비교)
+            String newQuestionText = newQuestion.getQuestionText().replaceAll("_+", "").trim().toLowerCase();
+            String existingQuestionText = existing.getQuestionText().replaceAll("_+", "").trim().toLowerCase();
+            
+            // 80% 이상 유사하면 중복으로 판단
+            if (calculateSimilarity(newQuestionText, existingQuestionText) > 0.8) {
+                return true;
+            }
+            
+            // 선택지가 동일한지 체크
+            if (newQuestion.getOptionA().equals(existing.getOptionA()) &&
+                newQuestion.getOptionB().equals(existing.getOptionB()) &&
+                newQuestion.getOptionC().equals(existing.getOptionC())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 문자열 유사도 계산 (간단한 Levenshtein distance 기반)
+     */
+    private double calculateSimilarity(String s1, String s2) {
+        if (s1.equals(s2)) return 1.0;
+        if (s1.length() == 0 || s2.length() == 0) return 0.0;
+        
+        int maxLength = Math.max(s1.length(), s2.length());
+        int distance = levenshteinDistance(s1, s2);
+        return 1.0 - (double) distance / maxLength;
+    }
+    
+    /**
+     * Levenshtein distance 계산
+     */
+    private int levenshteinDistance(String s1, String s2) {
+        int[][] dp = new int[s1.length() + 1][s2.length() + 1];
+        
+        for (int i = 0; i <= s1.length(); i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= s2.length(); j++) {
+            dp[0][j] = j;
+        }
+        
+        for (int i = 1; i <= s1.length(); i++) {
+            for (int j = 1; j <= s2.length(); j++) {
+                int cost = s1.charAt(i - 1) == s2.charAt(j - 1) ? 0 : 1;
+                dp[i][j] = Math.min(Math.min(
+                    dp[i - 1][j] + 1,        // deletion
+                    dp[i][j - 1] + 1),      // insertion
+                    dp[i - 1][j - 1] + cost // substitution
+                );
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+    
+    /**
+     * 다양성 있는 WORD 타입 문제 프롬프트 생성
+     */
+    private String buildWordQuestionPromptWithVariation(String difficulty, String topics, QuestionGenerationRequestDto request, int variation) {
+        String[] scenarios = {
+            "일상 대화에서 자주 사용되는 상황",
+            "직장이나 학교에서의 상황", 
+            "여행이나 쇼핑 상황",
+            "친구나 가족과의 대화",
+            "뉴스나 잡지에서 볼 수 있는 문장"
+        };
+        
+        String[] questionStyles = {
+            "빈칸에 들어갈 가장 적절한 단어는?",
+            "다음 문장을 완성하는 올바른 단어는?",
+            "문맥상 가장 자연스러운 단어는?",
+            "다음 상황에서 사용할 적절한 단어는?"
+        };
+        
+        String scenario = scenarios[variation % scenarios.length];
+        String questionStyle = questionStyles[variation % questionStyles.length];
+        
+        return String.format(
+            "다음 조건에 맞는 영어 학습 문제를 1개 생성해주세요:\n\n" +
+            "【문제 유형】: 빈칸 채우기 (WORD)\n" +
+            "【난이도】: %s\n" +
+            "【주제/카테고리】: %s\n" +
+            "【상황】: %s\n" +
+            "【질문 스타일】: %s\n" +
+            "【추가 컨텍스트】: %s\n\n" +
+            "【요구사항】:\n" +
+            "1. %s 맥락에서 자연스럽게 사용되는 문장을 만들어주세요\n" +
+            "2. 문장에서 핵심 단어 하나를 빈칸(______)으로 만들어주세요\n" +
+            "3. 빈칸에 들어갈 정답과 비슷하지만 틀린 선택지 2개를 포함해주세요\n" +
+            "4. 선택지는 모두 같은 품사여야 합니다\n" +
+            "5. 이전에 생성한 문제와 다른 새로운 상황과 단어를 사용해주세요\n\n" +
+            "【응답 형식】: 다음 형식을 정확히 따라주세요\n" +
+            "QUESTION: [빈칸이 포함된 영어 문장]\n" +
+            "A: [선택지1]\n" +
+            "B: [선택지2]\n" +
+            "C: [선택지3]\n" +
+            "ANSWER: [A, B, C 중 정답]\n" +
+            "EXPLANATION: [정답 설명 (한국어)]",
+            difficulty, topics, scenario, questionStyle,
+            request.getAdditionalContext() != null ? request.getAdditionalContext() : "없음",
+            scenario
+        );
+    }
+    
+    /**
+     * 다양성 있는 SENTENCE 타입 문제 프롬프트 생성
+     */
+    private String buildSentenceQuestionPromptWithVariation(String difficulty, String topics, QuestionGenerationRequestDto request, int variation) {
+        // 기존 buildSentenceQuestionPrompt와 동일하지만 다양성 추가
+        return buildSentenceQuestionPrompt(difficulty, topics, request) + 
+               "\n\n【다양성 요구】: 이전 문제와 다른 새로운 단어와 문맥을 사용해주세요.";
+    }
+    
+    /**
+     * 다양성 있는 CONVERSATION 타입 문제 프롬프트 생성
+     */
+    private String buildConversationQuestionPromptWithVariation(String difficulty, String topics, QuestionGenerationRequestDto request, int variation) {
+        // 기존 buildConversationQuestionPrompt와 동일하지만 다양성 추가
+        return buildConversationQuestionPrompt(difficulty, topics, request) + 
+               "\n\n【다양성 요구】: 이전 문제와 다른 새로운 대화 상황과 표현을 사용해주세요.";
     }
     
     /**

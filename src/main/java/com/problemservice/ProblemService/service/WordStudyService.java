@@ -9,11 +9,16 @@ import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 /**
  * 사용자별 맞춤형 단어 학습 서비스
@@ -28,50 +33,20 @@ public class WordStudyService {
     private final QuestionAnswerRepository questionAnswerRepository;
     private final QuestionRepository questionRepository;
     private final OpenAIService openAIService;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    
+    // 캐시 TTL 상수 (24시간)
+    private static final long CACHE_TTL_HOURS = 24;
 
     /**
-     * 사용자 맞춤형 단어 학습 목록 생성
-     * 단계: 1) 사용자 학습 프로필 분석 2) OpenAI 프롬프트 생성 3) AI 단어 생성 요청 4) 응답 파싱
-     * 
-     * TODO: Redis 캐시 적용으로 생성된 단어 학습 목록을 24시간 동안 저장
-     * - 캐시 키: "word-study:{userId}:{wordCount}:{focusCategory}:{targetDifficulty}"
-     * - WordStudyResponseDto를 24시간 TTL로 Redis에 캐싱
-     * - 사용자 프로필 변경 시 캐시 무효화
-     * - 자주 사용하는 사용자를 위한 캐시 사전 로딩 구현
+     * 사용자 맞춤형 단어 학습 목록 생성 (JSON 캐시 사용)
+     * - 캐시에 JSON 문자열로 저장하여 역직렬화 이슈를 방지
      */
     public WordStudyResponseDto generateWordStudyList(WordStudyRequestDto requestDto) {
-        log.info("단어 학습 목록 생성 시작 - 사용자: {}, 단어 수: {}", 
-                requestDto.getUserId(), requestDto.getWordCount());
-
         try {
-            // 1단계: 사용자 학습 프로필 분석
-            UserLearningProfileDto userProfile = analyzeUserLearningProfile(requestDto.getUserId());
-            
-            // 2단계: Combined Tactic 프롬프트 생성
-            String combinedTacticPrompt = buildCombinedTacticPrompt(userProfile, requestDto);
-            
-            // 3단계: OpenAI API 호출
-            OpenAIRequestDto openAIRequest = OpenAIRequestDto.builder()
-                    .prompt(combinedTacticPrompt)
-                    .model("gpt-3.5-turbo")
-                    .maxTokens(4000)
-                    .temperature(0.8)
-                    .build();
-            
-            OpenAIResponseDto aiResponse = openAIService.generateResponse(openAIRequest);
-            
-            // 4단계: AI 응답 파싱 및 DTO 변환
-            if (aiResponse.isSuccess()) {
-                return parseWordStudyResponse(aiResponse.getResponse());
-            } else {
-                return WordStudyResponseDto.builder()
-                        .success(false)
-                        .errorMessage("단어 생성 중 오류가 발생했습니다: " + aiResponse.getErrorMessage())
-                        .generatedAt(LocalDateTime.now())
-                        .build();
-            }
-            
+            String json = thisSelf().generateWordStudyListJson(requestDto);
+            return objectMapper.readValue(json, WordStudyResponseDto.class);
         } catch (Exception e) {
             log.error("단어 학습 목록 생성 실패", e);
             return WordStudyResponseDto.builder()
@@ -83,6 +58,62 @@ public class WordStudyService {
     }
 
     /**
+     * 캐시에 저장되는 JSON 생성 메서드
+     */
+    @Cacheable(value = "wordStudy", key = "#requestDto.userId + ':' + #requestDto.wordCount + ':' + T(String).join(',', #requestDto.focusCategories != null ? #requestDto.focusCategories : {}) + ':' + (#requestDto.targetDifficulty != null ? #requestDto.targetDifficulty : 'AUTO')")
+    public String generateWordStudyListJson(WordStudyRequestDto requestDto) {
+        WordStudyResponseDto dto = doGenerateWordStudyList(requestDto);
+        try {
+            return objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            // 실패 시 최소 정보만 반환
+            return "{\"success\":false,\"errorMessage\":\"JSON 직렬화 실패\"}";
+        }
+    }
+
+    // 실제 생성 로직
+    private WordStudyResponseDto doGenerateWordStudyList(WordStudyRequestDto requestDto) {
+        log.info("단어 학습 목록 생성 시작 - 사용자: {}, 단어 수: {}", requestDto.getUserId(), requestDto.getWordCount());
+        try {
+            UserLearningProfileDto userProfile = analyzeUserLearningProfile(requestDto.getUserId());
+            String combinedTacticPrompt = buildCombinedTacticPrompt(userProfile, requestDto);
+
+            OpenAIRequestDto openAIRequest = OpenAIRequestDto.builder()
+                    .prompt(combinedTacticPrompt)
+                    .model("gpt-3.5-turbo")
+                    .maxTokens(4000)
+                    .temperature(0.8)
+                    .build();
+
+            OpenAIResponseDto aiResponse = openAIService.generateResponse(openAIRequest);
+
+            if (aiResponse.isSuccess()) {
+                return parseWordStudyResponse(aiResponse.getResponse());
+            } else {
+                return WordStudyResponseDto.builder()
+                        .success(false)
+                        .errorMessage("단어 생성 중 오류가 발생했습니다: " + aiResponse.getErrorMessage())
+                        .generatedAt(LocalDateTime.now())
+                        .build();
+            }
+        } catch (Exception e) {
+            log.error("단어 학습 목록 생성 실패", e);
+            return WordStudyResponseDto.builder()
+                    .success(false)
+                    .errorMessage("단어 학습 목록 생성 중 오류가 발생했습니다: " + e.getMessage())
+                    .generatedAt(LocalDateTime.now())
+                    .build();
+        }
+    }
+
+    // 프록시를 통한 자기 호출 보장 (@Cacheable 적용용)
+    @org.springframework.beans.factory.annotation.Autowired
+    @org.springframework.context.annotation.Lazy
+    private WordStudyService self;
+
+    private WordStudyService thisSelf() { return self != null ? self : this; }
+
+    /**
      * 사용자의 학습 성과 데이터를 분석하여 프로필 생성
      * 카테고리별, 난이도별 정답률 및 약점 영역 식별
      */
@@ -90,7 +121,7 @@ public class WordStudyService {
         log.info("사용자 학습 프로필 분석 시작 - 사용자: {}", userId);
 
         // 사용자의 모든 답안 기록 조회
-        List<QuestionAnswer> userAnswers = questionAnswerRepository.findByUserId(userId);
+        List<QuestionAnswer> userAnswers = questionAnswerRepository.findAllByUserId(userId);
         
         if (userAnswers.isEmpty()) {
             // 신규 사용자의 경우 기본 프로필 반환
@@ -280,23 +311,26 @@ public class WordStudyService {
         Map<String, Object> responseMap = objectMapper.readValue(jsonContent, new TypeReference<Map<String, Object>>() {});
         
         // words 배열 파싱
+        @SuppressWarnings("unchecked")
         List<Map<String, Object>> wordsData = (List<Map<String, Object>>) responseMap.get("words");
         List<WordStudyWordDto> words = wordsData.stream()
                 .map(this::convertToWordStudyWordDto)
                 .collect(Collectors.toList());
         
         // difficultyDistribution 파싱
+        @SuppressWarnings("unchecked")
         Map<String, Object> difficultyDistributionObj = (Map<String, Object>) responseMap.get("difficultyDistribution");
         Map<String, Integer> difficultyDistribution = convertToIntegerMap(difficultyDistributionObj);
         
         // categoryDistribution 파싱
+        @SuppressWarnings("unchecked")
         Map<String, Object> categoryDistributionObj = (Map<String, Object>) responseMap.get("categoryDistribution");
         Map<String, Integer> categoryDistribution = convertToIntegerMap(categoryDistributionObj);
         
         return WordStudyResponseDto.builder()
                 .words(words)
                 .studyStrategy((String) responseMap.get("studyStrategy"))
-                .focusAreas((List<String>) responseMap.get("focusAreas"))
+                .focusAreas(getFocusAreasFromResponse(responseMap))
                 .estimatedStudyTime((Integer) responseMap.get("estimatedStudyTime"))
                 .difficultyDistribution(difficultyDistribution)
                 .categoryDistribution(categoryDistribution)
@@ -384,7 +418,7 @@ public class WordStudyService {
 
         return difficultyAnswers.entrySet().stream()
                 .collect(Collectors.toMap(
-                        entry -> String.valueOf(entry.getKey()),
+                        entry -> mapIntegerToStringDifficulty(entry.getKey()),
                         entry -> {
                             List<QuestionAnswer> answers = entry.getValue();
                             long correctCount = answers.stream().mapToLong(answer -> answer.getIsCorrect() ? 1 : 0).sum();
@@ -403,7 +437,7 @@ public class WordStudyService {
         
         return countMap.entrySet().stream()
                 .collect(Collectors.toMap(
-                        entry -> String.valueOf(entry.getKey()),
+                        entry -> mapIntegerToStringDifficulty(entry.getKey()),
                         entry -> entry.getValue().intValue()
                 ));
     }
@@ -507,5 +541,136 @@ public class WordStudyService {
                 .mapToDouble(category -> accuracyMap.getOrDefault(category, 0.0) * 100)
                 .average()
                 .orElse(0.0);
+    }
+    
+    // ==================== 캐시 관리 메소드들 ====================
+    
+    /**
+     * 특정 사용자의 단어 학습 캐시를 무효화
+     * 사용자 프로필이 변경되었을 때 호출하여 최신 데이터를 반영
+     */
+    @CacheEvict(value = "wordStudy", key = "#userId + '*'")
+    public void evictUserWordStudyCache(String userId) {
+        log.info("사용자 단어 학습 캐시 무효화: {}", userId);
+        
+        // Spring의 와일드카드 지원이 제한적이므로 직접 Redis에서 패턴 매칭으로 삭제
+        String pattern = "wordStudy::" + userId + ":*";
+        try {
+            Set<String> keys = redisTemplate.keys(pattern);
+            if (keys != null && !keys.isEmpty()) {
+                redisTemplate.delete(keys);
+                log.info("사용자 {}의 {} 개 캐시 키 삭제 완료", userId, keys.size());
+            }
+        } catch (Exception e) {
+            log.error("사용자 캐시 무효화 중 오류 발생: {}", userId, e);
+        }
+    }
+    
+    /**
+     * 자주 사용하는 사용자를 위한 캐시 사전 로딩 (워밍업)
+     * 일반적인 요청 패턴에 대해 미리 캐시를 준비
+     */
+    public void preloadFrequentUserCache(String userId, List<String> commonCategories) {
+        log.info("사용자 {}의 캐시 사전 로딩 시작", userId);
+        
+        try {
+            // 자주 사용되는 단어 수와 카테고리 조합으로 사전 로딩
+            int[] commonWordCounts = {10, 15, 20};
+            
+            for (int wordCount : commonWordCounts) {
+                WordStudyRequestDto preloadRequest = WordStudyRequestDto.builder()
+                        .userId(userId)
+                        .wordCount(wordCount)
+                        .focusCategories(commonCategories)
+                        .targetDifficulty("AUTO")
+                        .build();
+                
+                // 백그라운드에서 비동기로 실행 (실제 구현에서는 @Async 사용 권장)
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        generateWordStudyList(preloadRequest);
+                        log.debug("캐시 사전 로딩 완료: userId={}, wordCount={}", userId, wordCount);
+                    } catch (Exception e) {
+                        log.warn("캐시 사전 로딩 실패: userId={}, wordCount={}", userId, wordCount, e);
+                    }
+                });
+            }
+            
+        } catch (Exception e) {
+            log.error("캐시 사전 로딩 중 오류 발생: {}", userId, e);
+        }
+    }
+    
+    /**
+     * 캐시 통계 정보 조회 (모니터링용)
+     */
+    public Map<String, Object> getCacheStatistics(String userId) {
+        Map<String, Object> stats = new HashMap<>();
+        
+        try {
+            String pattern = "wordStudy::" + userId + ":*";
+            Set<String> keys = redisTemplate.keys(pattern);
+            
+            stats.put("userId", userId);
+            stats.put("cachedItems", keys != null ? keys.size() : 0);
+            stats.put("cacheKeys", keys);
+            stats.put("ttlHours", CACHE_TTL_HOURS);
+            
+            log.debug("사용자 {} 캐시 통계: {} 개 캐시 항목", userId, keys != null ? keys.size() : 0);
+            
+        } catch (Exception e) {
+            log.error("캐시 통계 조회 중 오류 발생: {}", userId, e);
+            stats.put("error", e.getMessage());
+        }
+        
+        return stats;
+    }
+    
+    /**
+     * 캐시 키 생성 헬퍼 메소드
+     */
+    private String generateCacheKey(WordStudyRequestDto requestDto) {
+        String focusCategories = requestDto.getFocusCategories() != null ? 
+                String.join(",", requestDto.getFocusCategories()) : "";
+        String targetDifficulty = requestDto.getTargetDifficulty() != null ? 
+                requestDto.getTargetDifficulty() : "AUTO";
+                
+        return String.format("%s:%d:%s:%s", 
+                requestDto.getUserId(),
+                requestDto.getWordCount(),
+                focusCategories,
+                targetDifficulty);
+    }
+    
+    /**
+     * JSON 파싱 헬퍼 메소드
+     */
+    @SuppressWarnings("unchecked")
+    private List<String> getFocusAreasFromResponse(Map<String, Object> responseMap) {
+        return (List<String>) responseMap.get("focusAreas");
+    }
+    
+    /**
+     * 난이도 매핑 헬퍼 메소드들
+     * DB의 Integer (1, 2, 3) ↔ API의 String ("A", "B", "C") 변환
+     */
+    private String mapIntegerToStringDifficulty(Integer difficultyLevel) {
+        if (difficultyLevel == null) return "A";
+        switch (difficultyLevel) {
+            case 1: return "A";  // 초급
+            case 2: return "B";  // 중급
+            case 3: return "C";  // 고급
+            default: return "A";
+        }
+    }
+    
+    private Integer mapStringToIntegerDifficulty(String difficulty) {
+        if (difficulty == null) return 1;
+        switch (difficulty.toUpperCase()) {
+            case "A": return 1;  // 초급
+            case "B": return 2;  // 중급
+            case "C": return 3;  // 고급
+            default: return 1;
+        }
     }
 }

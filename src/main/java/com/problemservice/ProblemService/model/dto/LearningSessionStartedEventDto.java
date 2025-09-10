@@ -22,6 +22,7 @@ public class LearningSessionStartedEventDto {
     private Map<String, Object> selectedCategories;
     private Integer totalQuestions;
     private LocalDateTime startedAt;
+    @Builder.Default
     private String eventType = "SESSION_STARTED";
     private LocalDateTime eventTimestamp;
 }

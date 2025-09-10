@@ -1,0 +1,58 @@
+# 운영체제/에디터 파일 (불필요한 로컬 파일)
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.fleet/
+.history/
+
+# 환경 변수/비밀 값
+.env
+.env.*
+
+# Gradle/빌드 산출물 (생성물은 커밋하지 않음)
+.gradle/
+build/
+out/
+bin/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Java 산출물
+*.class
+*.jar
+*.war
+hs_err_pid*
+replay_pid*
+*.pid
+*.seed
+
+# 로그/임시 파일
+*.log
+logs/
+nginx/logs/
+*.tmp
+tmp/
+.cache/
+*.swp
+*.swo
+*.orig
+
+# 테스트/리포트 산출물
+test-output/
+reports/
+coverage/
+
+# Docker 로컬 데이터
+docker/**/data/**
+docker/**/volumes/**
+
+# 로컬 스크립트/덤프(공유 불필요한 로컬 전용 파일만)
+init-scripts/local/**
+*.local.sql
+*.backup.sql
+*.dump.sql
+

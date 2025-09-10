@@ -18,7 +18,9 @@ public class LearningCompletedEventDto {
     private LocalDateTime timestamp;
     private String sessionId;
     private String userId;
+    @Builder.Default
     private String eventType = "SESSION_COMPLETED";
+    @Builder.Default
     private String eventSource = "Problem_Service";
     private Map<String, Object> metadata;
 }

@@ -68,4 +68,12 @@ public interface SessionQuestionRepository extends JpaRepository<SessionQuestion
      * 출력: 없음 (해당 세션의 모든 문제 연관관계가 삭제됨)
      */
     void deleteBySessionId(String sessionId);
+    
+    /**
+     * 세션의 모든 문제를 Question과 함께 조회 (N+1 문제 해결)
+     * 입력: 세션 ID
+     * 출력: Question이 포함된 세션-문제 연관관계 목록
+     */
+    @Query("SELECT sq FROM SessionQuestion sq JOIN FETCH sq.question WHERE sq.sessionId = :sessionId ORDER BY sq.questionOrder")
+    List<SessionQuestion> findBySessionIdWithQuestionOrderByQuestionOrder(@Param("sessionId") String sessionId);
 }

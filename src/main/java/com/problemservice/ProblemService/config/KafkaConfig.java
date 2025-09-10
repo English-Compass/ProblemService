@@ -21,6 +21,7 @@ import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Kafka 메시징 시스템 설정
@@ -28,6 +29,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableKafka
+@Profile("!local")
 public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")

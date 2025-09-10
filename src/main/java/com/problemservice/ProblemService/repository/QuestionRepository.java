@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -55,11 +56,12 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     List<Question> findByMajorCategoryAndDifficultyLevel(String majorCategory, Integer difficultyLevel);
     
     /**
-     * 여러 주요 카테고리와 난이도 조합 조회
+     * 여러 주요 카테고리와 난이도 조합 조회 (랜덤 정렬)
      * 입력: 주요 카테고리 목록과 난이도 레벨
-     * 출력: 카테고리 목록 중 하나에 속하고 해당 난이도인 문제 목록
+     * 출력: 카테고리 목록 중 하나에 속하고 해당 난이도인 문제 목록 (랜덤 순서)
      */
-    List<Question> findByMajorCategoryInAndDifficultyLevel(List<String> majorCategories, Integer difficultyLevel);
+    @Query("SELECT q FROM Question q WHERE q.majorCategory IN (:majorCategories) AND q.difficultyLevel = :difficultyLevel ORDER BY FUNCTION('RAND')")
+    List<Question> findByMajorCategoryInAndDifficultyLevel(@Param("majorCategories") List<String> majorCategories, @Param("difficultyLevel") Integer difficultyLevel);
     
     /**
      * 문제 ID 목록과 카테고리로 조회
@@ -83,11 +85,12 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     List<Question> findByMajorCategoryInAndQuestionType(List<String> majorCategories, String questionType);
     
     /**
-     * 주요 카테고리, 문제 유형, 난이도로 조회
+     * 주요 카테고리, 문제 유형, 난이도로 조회 (랜덤 정렬)
      * 입력: 주요 카테고리 목록, 문제 유형, 난이도 레벨
-     * 출력: 모든 조건을 만족하는 문제 목록
+     * 출력: 모든 조건을 만족하는 문제 목록 (랜덤 순서)
      */
-    List<Question> findByMajorCategoryInAndQuestionTypeAndDifficultyLevel(List<String> majorCategories, String questionType, Integer difficultyLevel);
+    @Query("SELECT q FROM Question q WHERE q.majorCategory IN (:majorCategories) AND q.questionType = :questionType AND q.difficultyLevel = :difficultyLevel ORDER BY FUNCTION('RAND')")
+    List<Question> findByMajorCategoryInAndQuestionTypeAndDifficultyLevel(@Param("majorCategories") List<String> majorCategories, @Param("questionType") String questionType, @Param("difficultyLevel") Integer difficultyLevel);
     
     /**
      * 카테고리별 문제 수 조회 (페이징 지원)
@@ -124,15 +127,32 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     List<Question> findRandomQuestionsByCategories(@Param("categories") List<String> categories, @Param("difficultyLevel") Integer difficultyLevel, Pageable pageable);
     
     /**
-     * 사용자가 아직 풀지 않은 문제 조회 (카테고리, 난이도 필터링)
+     * 사용자가 아직 풀지 않은 문제 조회 (카테고리, 난이도 필터링, 랜덤 정렬)
      * 사용자가 답변한 적 없는 문제들을 카테고리와 난이도로 필터링하여 반환
      * 입력: 사용자 ID, 주요 카테고리 목록, 난이도 레벨
-     * 출력: 사용자가 풀지 않은 문제 목록
+     * 출력: 사용자가 풀지 않은 문제 목록 (랜덤 순서)
      */
     @Query("SELECT q FROM Question q WHERE q.majorCategory IN (:categories) AND q.difficultyLevel = :difficultyLevel " +
            "AND q.questionId NOT IN (SELECT DISTINCT qa.questionId FROM QuestionAnswer qa " +
-           "JOIN LearningSession ls ON qa.sessionId = ls.sessionId WHERE ls.userId = :userId)")
+           "WHERE qa.userId = :userId) ORDER BY FUNCTION('RAND')")
     List<Question> findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(@Param("userId") String userId, 
                                                                          @Param("categories") List<String> categories, 
                                                                          @Param("difficultyLevel") Integer difficultyLevel);
+    
+    /**
+     * 사용자가 최근에 풀지 않은 문제 조회 (최근 N개 세션에서 출제되지 않은 문제)
+     * 중복 방지를 위해 최근 출제된 문제는 제외하고 반환
+     * 입력: 사용자 ID, 주요 카테고리 목록, 난이도 레벨, 제외할 최근 세션 수
+     * 출력: 최근에 출제되지 않은 문제 목록 (랜덤 순서)
+     */
+    @Query("SELECT q FROM Question q WHERE q.majorCategory IN (:categories) AND q.difficultyLevel = :difficultyLevel " +
+           "AND q.questionId NOT IN (SELECT DISTINCT qa.questionId FROM QuestionAnswer qa " +
+           "WHERE qa.userId = :userId) " +
+           "AND q.questionId NOT IN (SELECT DISTINCT sq.questionId FROM SessionQuestion sq " +
+           "JOIN LearningSession ls ON sq.sessionId = ls.sessionId " +
+           "WHERE ls.userId = :userId AND ls.createdAt >= :recentCutoff) ORDER BY FUNCTION('RAND')")
+    List<Question> findUnsolvedQuestionsExcludingRecent(@Param("userId") String userId, 
+                                                       @Param("categories") List<String> categories, 
+                                                       @Param("difficultyLevel") Integer difficultyLevel,
+                                                       @Param("recentCutoff") LocalDateTime recentCutoff);
 }

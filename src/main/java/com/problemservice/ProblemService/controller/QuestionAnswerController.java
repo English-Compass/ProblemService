@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 /**
  * 문제에 대한 답변 내역 관리를 위한 REST API 컨트롤러
  * 문제 풀이 기록의 생성, 조회, 삭제 기능을 제공합니다
@@ -31,9 +33,10 @@ public class QuestionAnswerController {
      * @return HTTP 201 Created와 함께 생성된 문제에 대한 답변 내역 정보
      */
     @PostMapping
-    public ResponseEntity<QuestionAnswerResponseDto> createQuestionAnswer(@Valid @RequestBody QuestionAnswerCreateDto createDto) {
+    public ResponseEntity<QuestionAnswerResponseDto> createQuestionAnswer(@Valid @RequestBody QuestionAnswerCreateDto createDto, Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
         // 1. 유효성 검증이 완료된 답변 데이터를 사용하여 새로운 문제 답변 기록을 생성
-        QuestionAnswerResponseDto createdQuestionAnswer = questionAnswerService.createQuestionAnswer(createDto);
+        QuestionAnswerResponseDto createdQuestionAnswer = questionAnswerService.createQuestionAnswer(createDto, userId);
         // 2. HTTP 201 Created 상태와 함께 생성된 답변 기록 정보를 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestionAnswer);
     }

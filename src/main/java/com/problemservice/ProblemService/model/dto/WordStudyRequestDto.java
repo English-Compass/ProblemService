@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Max;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class WordStudyRequestDto {
@@ -20,7 +22,10 @@ public class WordStudyRequestDto {
     private Integer wordCount;
     
     @Builder.Default
-    private String focusCategory = null; // 특정 카테고리에 집중하고 싶은 경우
+    private String focusCategory = null; // 특정 카테고리에 집중하고 싶은 경우 (단일 카테고리)
+    
+    @Builder.Default
+    private List<String> focusCategories = null; // 여러 카테고리에 집중하고 싶은 경우
     
     @Builder.Default
     private String targetDifficulty = null; // 특정 난이도에 집중하고 싶은 경우
