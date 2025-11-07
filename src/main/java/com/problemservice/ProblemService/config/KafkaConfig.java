@@ -18,6 +18,7 @@ import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.util.backoff.FixedBackOff;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Profile;
  * Kafka 메시징 시스템 설정
  * 프로듀서, 컨슈머, 토픽 구성
  */
+@Slf4j
 @Configuration
 @EnableKafka
 @Profile("!local")
@@ -113,8 +115,7 @@ public class KafkaConfig {
         DefaultErrorHandler errorHandler = new DefaultErrorHandler(
             (record, exception) -> {
                 // Log the error and continue processing
-                System.err.println("Error processing Kafka record: " + record);
-                System.err.println("Exception: " + exception.getMessage());
+                log.error("Error processing Kafka record: {}", record, exception);
             },
             new FixedBackOff(1000L, 3L) // Retry 3 times with 1 second delay
         );
@@ -163,31 +164,9 @@ public class KafkaConfig {
 
     @Bean
     @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-    public NewTopic learningUserPatternsTopic() {
-        return TopicBuilder.name("learning-user-patterns")
+    public NewTopic learningAnalysisCompletedTopic() {
+        return TopicBuilder.name("learning-analysis-completed")
                 .partitions(3)
-                .replicas(1)
-                .config("retention.ms", "7776000000") // 90 days
-                .config("compression.type", "lz4")
-                .build();
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-    public NewTopic learningSystemHealthTopic() {
-        return TopicBuilder.name("learning-system-health")
-                .partitions(1)
-                .replicas(1)
-                .config("retention.ms", "604800000") // 7 days
-                .config("compression.type", "lz4")
-                .build();
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-    public NewTopic learningErrorEventsTopic() {
-        return TopicBuilder.name("learning-error-events")
-                .partitions(2)
                 .replicas(1)
                 .config("retention.ms", "2592000000") // 30 days
                 .config("compression.type", "lz4")
