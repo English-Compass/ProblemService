@@ -20,7 +20,7 @@ import java.util.List;
  * AI 기반 문제 생성 및 저장 기능 제공
  */
 @RestController
-@RequestMapping("/api/questions/generate")
+@RequestMapping("/problem/questions")
 @RequiredArgsConstructor
 @Slf4j
 public class QuestionGenerationController {
@@ -33,11 +33,10 @@ public class QuestionGenerationController {
      * @param request 문제 생성 요청 정보
      * @return 생성되어 저장된 문제들의 응답
      */
-    @PostMapping
+    @PostMapping("/ai-generated")
     public ResponseEntity<QuestionGenerationResponseDto> generateAndSaveQuestions(
-            @Valid @RequestBody 
- 
-            QuestionGenerationRequestDto request) {
+            @Valid @RequestBody QuestionGenerationRequestDto request,
+            @RequestParam(required = false, defaultValue = "false") Boolean quick) {
         
         try {
             log.info("문제 생성 및 저장 요청 - 유형: {}, 개수: {}, 카테고리: {}", 
@@ -83,41 +82,6 @@ public class QuestionGenerationController {
     }
     
     /**
-     * 특정 주제에 대한 빠른 문제 생성
-     * 간단한 파라미터로 기본 설정의 문제를 빠르게 생성하고 저장
-     * 
-     * @param questionType 문제 유형 (word, sentence, conversation)
-     * @param difficulty 난이도 (A, B, C)
-     * @param topic 주제
-     * @param count 생성할 문제 수 (기본값: 1)
-     * @return 생성되어 저장된 문제들의 응답
-     */
-    @PostMapping("/quick")
-    public ResponseEntity<QuestionGenerationResponseDto> quickGenerate(
-            @RequestParam String questionType,
-            @RequestParam String difficulty,
-            @RequestParam String topic,
-            @RequestParam(defaultValue = "1") Integer count) {
-        
-        try {
-            // 간단한 요청을 전체 요청 DTO로 변환
-            QuestionGenerationRequestDto request = QuestionGenerationRequestDto.builder()
-                .questionType(parseQuestionType(questionType))
-                .difficulty(parseDifficulty(difficulty))
-                .majorCategory(topic)
-                .questionCount(count)
-                .build();
-                
-            return generateAndSaveQuestions(request);
-            
-        } catch (IllegalArgumentException e) {
-            log.error("빠른 문제 생성 요청 파라미터 오류", e);
-            return ResponseEntity.badRequest()
-                .body(createErrorResponse(null, "잘못된 파라미터: " + e.getMessage()));
-        }
-    }
-    
-    /**
      * 에러 응답 생성 헬퍼 메서드
      */
     private QuestionGenerationResponseDto createErrorResponse(QuestionGenerationRequestDto request, String errorMessage) {
@@ -129,29 +93,5 @@ public class QuestionGenerationController {
             .success(false)
             .errorMessages(List.of(errorMessage))
             .build();
-    }
-    
-    /**
-     * 문자열을 QuestionType enum으로 변환
-     */
-    private com.problemservice.ProblemService.model.enums.QuestionType parseQuestionType(String type) {
-        switch (type.toLowerCase()) {
-            case "word": return com.problemservice.ProblemService.model.enums.QuestionType.WORD;
-            case "sentence": return com.problemservice.ProblemService.model.enums.QuestionType.SENTENCE;
-            case "conversation": return com.problemservice.ProblemService.model.enums.QuestionType.CONVERSATION;
-            default: throw new IllegalArgumentException("지원하지 않는 문제 유형: " + type);
-        }
-    }
-    
-    /**
-     * 문자열을 Difficulty enum으로 변환
-     */
-    private com.problemservice.ProblemService.model.enums.Difficulty parseDifficulty(String diff) {
-        switch (diff.toUpperCase()) {
-            case "A": return com.problemservice.ProblemService.model.enums.Difficulty.A;
-            case "B": return com.problemservice.ProblemService.model.enums.Difficulty.B;
-            case "C": return com.problemservice.ProblemService.model.enums.Difficulty.C;
-            default: throw new IllegalArgumentException("지원하지 않는 난이도: " + diff);
-        }
     }
 }

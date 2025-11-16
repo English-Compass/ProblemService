@@ -16,7 +16,7 @@ import java.util.List;
  * 사용자의 학습 프로필 정보, 약점 분석, 추천 정보를 제공
  */
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/problem/profile")
 @RequiredArgsConstructor
 public class ProfileController {
 

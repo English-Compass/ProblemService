@@ -357,10 +357,10 @@
 
 ### 1. 저장소 클론
 
-```bash
-git clone <repository-url>
-cd ProblemService
-```
+   ```bash
+   git clone <repository-url>
+   cd ProblemService
+   ```
 
 ### 2. 환경 변수 설정
 
@@ -429,10 +429,10 @@ services:
 
 ### 4. Docker Compose로 실행
 
-```bash
+   ```bash
 # 전체 빌드 및 실행 (app 컨테이너만)
-docker-compose up --build
-
+   docker-compose up --build
+   
 # 백그라운드 실행
 docker-compose up -d
 
@@ -440,8 +440,8 @@ docker-compose up -d
 docker-compose logs -f app
 
 # 중지
-docker-compose down
-```
+   docker-compose down
+   ```
 
 ### 5. 로컬 개발 모드 실행
 

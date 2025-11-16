@@ -1,8 +1,10 @@
 package com.problemservice.ProblemService.controller;
 
+import com.problemservice.ProblemService.model.dto.AddQuestionRequestDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionResponseDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionUpdateDto;
+import com.problemservice.ProblemService.model.dto.SessionAnswerRequestDto;
 import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionStatus;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
@@ -19,14 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 학습 세션 REST API 컨트롤러
  * 세션 CRUD, 진행 상황 관리, 통계 조회 기능 제공
  */
 @RestController
-@RequestMapping("/api/learning-sessions")
+@RequestMapping("/problem/learning-sessions")
 @RequiredArgsConstructor
 public class LearningSessionController {
 
@@ -35,12 +36,33 @@ public class LearningSessionController {
 
     /**
      * 새로운 학습 세션을 생성하고 문제를 할당
+     * sessionType에 따라 적절한 세션 생성 로직을 자동으로 선택합니다.
+     * 
      * @param createDto 세션 생성 요청 데이터 (사용자 ID, 세션 타입, 메타데이터 포함)
+     *                  - sessionType: PRACTICE (연습), REVIEW (복습), WRONG_ANSWER (오답노트)
      * @return 201 CREATED - 생성된 세션 정보와 할당된 문제 수
      */
     @PostMapping
     public ResponseEntity<LearningSessionResponseDto> createLearningSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        LearningSessionResponseDto createdSession = learningSessionService.createLearningSession(createDto);
+        LearningSessionResponseDto createdSession;
+        
+        // sessionType에 따라 적절한 생성 메서드 호출
+        switch (createDto.getSessionType()) {
+            case PRACTICE:
+                createdSession = learningSessionService.createPracticeSession(createDto);
+                break;
+            case REVIEW:
+                createdSession = learningSessionService.createReviewSession(createDto);
+                break;
+            case WRONG_ANSWER:
+                createdSession = learningSessionService.createWrongAnswerSession(createDto);
+                break;
+            default:
+                // 기본적으로 일반 생성 메서드 사용
+                createdSession = learningSessionService.createLearningSession(createDto);
+                break;
+        }
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
     }
 
@@ -56,17 +78,47 @@ public class LearningSessionController {
     }
 
     /**
-     * 특정 사용자의 모든 학습 세션을 페이지 단위로 조회
+     * 특정 사용자의 학습 세션을 조회합니다 (Query Parameter로 필터링 지원)
+     * 
      * @param userId 조회할 사용자의 고유 식별자
+     * @param status 세션 상태로 필터링 (선택)
+     * @param sessionType 세션 타입으로 필터링 (선택)
+     * @param startDate 조회 시작 날짜 (ISO 8601 형식, 선택)
+     * @param endDate 조회 종료 날짜 (ISO 8601 형식, 선택)
      * @param pageable 페이지 설정 (페이지 번호, 크기, 정렬 순서)
-     * @return 200 OK - 페이지네이션된 세션 목록과 링크 정보
+     * @return 필터링된 세션 목록
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Page<LearningSessionResponseDto>> getAllLearningSessionsByUserId(
+    public ResponseEntity<?> getLearningSessionsByUserId(
             @PathVariable String userId,
+            @RequestParam(required = false) SessionStatus status,
+            @RequestParam(required = false) SessionType sessionType,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             Pageable pageable) {
-        Page<LearningSessionResponseDto> sessions = learningSessionService.getAllLearningSessionsByUserId(userId, pageable);
-        return ResponseEntity.ok(sessions);
+        
+        // 필터링 조건에 따라 적절한 서비스 메서드 호출
+        if (status != null && sessionType != null) {
+            // 상태 + 타입 조합은 지원하지 않음 (하나만 사용)
+            List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndStatus(userId, status);
+            return ResponseEntity.ok(sessions);
+        } else if (status != null) {
+            // 상태만
+            List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndStatus(userId, status);
+            return ResponseEntity.ok(sessions);
+        } else if (sessionType != null) {
+            // 타입만
+            List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndType(userId, sessionType);
+            return ResponseEntity.ok(sessions);
+        } else if (startDate != null && endDate != null) {
+            // 날짜 범위
+            List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByDateRange(userId, startDate, endDate);
+            return ResponseEntity.ok(sessions);
+        } else {
+            // 필터 없음 - 전체 조회 (페이지네이션)
+            Page<LearningSessionResponseDto> sessions = learningSessionService.getAllLearningSessionsByUserId(userId, pageable);
+            return ResponseEntity.ok(sessions);
+        }
     }
 
     /**
@@ -100,89 +152,67 @@ public class LearningSessionController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 특정 사용자의 특정 상태에 해당하는 학습 세션들을 조회합니다
-     * 
-     * @param userId 조회할 사용자의 고유 식별자
-     * @param status 필터링할 세션 상태
-     * @return 지정된 상태의 학습 세션 목록
-     */
-    @GetMapping("/user/{userId}/status/{status}")
-    public ResponseEntity<List<LearningSessionResponseDto>> getLearningSessionsByUserIdAndStatus(
-            @PathVariable String userId,
-            @PathVariable SessionStatus status) {
-        // 1. 사용자 ID와 세션 상태로 필터링하여 해당하는 학습 세션들 조회
-        List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndStatus(userId, status);
-        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 세션 목록 반환
-        return ResponseEntity.ok(sessions);
-    }
 
     /**
-     * 특정 사용자의 특정 유형에 해당하는 학습 세션들을 조회합니다
-     * 
-     * @param userId 조회할 사용자의 고유 식별자
-     * @param sessionType 필터링할 세션 유형
-     * @return 지정된 유형의 학습 세션 목록
-     */
-    @GetMapping("/user/{userId}/type/{sessionType}")
-    public ResponseEntity<List<LearningSessionResponseDto>> getLearningSessionsByUserIdAndType(
-            @PathVariable String userId,
-            @PathVariable SessionType sessionType) {
-        // 1. 사용자 ID와 세션 유형으로 필터링하여 해당하는 학습 세션들 조회
-        List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByUserIdAndType(userId, sessionType);
-        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 세션 목록 반환
-        return ResponseEntity.ok(sessions);
-    }
-
-    /**
-     * 학습 세션을 시작합니다
-     * 
-     * @param sessionId 시작할 학습 세션의 고유 식별자
-     * @return 업데이트된 학습 세션 정보
-     */
-    @PostMapping("/{sessionId}/start")
-    public ResponseEntity<LearningSessionResponseDto> startSession(@PathVariable String sessionId) {
-        // 1. 세션 상태를 IN_PROGRESS로 변경하고 시작 시간 기록
-        LearningSessionResponseDto session = learningSessionService.startSession(sessionId);
-        // 2. HTTP 200 OK 상태와 함께 업데이트된 세션 정보 반환
-        return ResponseEntity.ok(session);
-    }
-
-    /**
-     * 학습 세션을 완료합니다
-     * 
-     * @param sessionId 완료할 학습 세션의 고유 식별자
-     * @return 업데이트된 학습 세션 정보
-     */
-    @PostMapping("/{sessionId}/complete")
-    public ResponseEntity<LearningSessionResponseDto> completeSession(@PathVariable String sessionId) {
-        // 1. 세션 상태를 COMPLETED로 변경하고 진행률 계산 및 Kafka 이벤트 발행
-        LearningSessionResponseDto session = learningSessionService.completeSession(sessionId);
-        // 2. HTTP 200 OK 상태와 함께 업데이트된 세션 정보 반환
-        return ResponseEntity.ok(session);
-    }
-
-    /**
-     * 학습 세션의 진행 상황을 업데이트합니다 (답변 처리 후 호출)
+     * 학습 세션의 상태를 업데이트합니다 (RESTful 방식)
      * 
      * @param sessionId 업데이트할 학습 세션의 고유 식별자
-     * @param progressData 진행 상황 데이터 (isCorrect: 정답 여부)
+     * @param updateDto 세션 상태 업데이트 데이터
+     *                  - status: "IN_PROGRESS" (시작), "COMPLETED" (완료) 등
      * @return 업데이트된 학습 세션 정보
      */
-    @PostMapping("/{sessionId}/progress")
-    public ResponseEntity<LearningSessionResponseDto> updateSessionProgress(
+    @PatchMapping("/{sessionId}")
+    public ResponseEntity<LearningSessionResponseDto> updateSessionStatus(
             @PathVariable String sessionId,
-            @RequestBody Map<String, Boolean> progressData) {
-        // 1. 요청 데이터에서 정답 여부 추출
-        Boolean isCorrect = progressData.get("isCorrect");
-        if (isCorrect == null) {
-            // 2. 필수 필드가 누락된 경우 예외 발생
-            throw new IllegalArgumentException("isCorrect field is required");
+            @Valid @RequestBody LearningSessionUpdateDto updateDto) {
+        LearningSessionResponseDto session;
+        
+        // status에 따라 적절한 서비스 메서드 호출
+        if (updateDto.getStatus() != null) {
+            switch (updateDto.getStatus()) {
+                case IN_PROGRESS:
+                    // 세션 시작
+                    session = learningSessionService.startSession(sessionId);
+                    break;
+                case COMPLETED:
+                    // 세션 완료
+                    session = learningSessionService.completeSession(sessionId);
+                    break;
+                default:
+                    // 기타 상태 업데이트는 일반 업데이트 메서드 사용
+                    session = learningSessionService.updateLearningSession(sessionId, updateDto);
+                    break;
+            }
+        } else {
+            // status가 없으면 일반 업데이트
+            session = learningSessionService.updateLearningSession(sessionId, updateDto);
         }
-        // 3. 답변 결과에 따라 세션의 진행률과 정답/오답 통계 업데이트
-        LearningSessionResponseDto session = learningSessionService.updateSessionProgress(sessionId, isCorrect);
-        // 4. HTTP 200 OK 상태와 함께 업데이트된 세션 정보 반환
+        
         return ResponseEntity.ok(session);
+    }
+
+    /**
+     * 세션에 답변을 제출합니다 (답변 리소스 생성)
+     * 
+     * Note: 실제 답변 생성은 QuestionAnswerController에서 처리하는 것이 더 적절하지만,
+     * 세션 컨텍스트에서의 답변 제출을 위해 이 엔드포인트를 유지합니다.
+     * 
+     * @param sessionId 답변을 제출할 학습 세션의 고유 식별자
+     * @param answerDto 답변 데이터 (questionId, isCorrect)
+     * @return 생성된 답변 정보 (201 Created) 또는 업데이트된 세션 정보 (200 OK)
+     */
+    @PostMapping("/{sessionId}/answers")
+    public ResponseEntity<LearningSessionResponseDto> submitAnswer(
+            @PathVariable String sessionId,
+            @Valid @RequestBody SessionAnswerRequestDto answerDto) {
+        // 답변 제출에 따라 세션의 진행률과 정답/오답 통계 업데이트
+        // Note: 실제 QuestionAnswer 생성은 QuestionAnswerController에서 처리해야 함
+        LearningSessionResponseDto session = learningSessionService.updateSessionProgress(
+                sessionId, 
+                answerDto.getIsCorrect()
+        );
+        // 답변 리소스 생성이므로 201 Created 반환
+        return ResponseEntity.status(HttpStatus.CREATED).body(session);
     }
 
     /**
@@ -203,22 +233,16 @@ public class LearningSessionController {
      * 기존 학습 세션에 새로운 문제를 추가합니다
      * 
      * @param sessionId 문제를 추가할 학습 세션의 고유 식별자
-     * @param questionData 추가할 문제 데이터 (questionId: 문제 ID)
+     * @param requestDto 추가할 문제 데이터
      * @return 문제 추가 완료 응답
      */
     @PostMapping("/{sessionId}/questions")
     public ResponseEntity<Void> addQuestionToSession(
             @PathVariable String sessionId,
-            @RequestBody Map<String, String> questionData) {
-        // 1. 요청 데이터에서 문제 ID 추출
-        String questionId = questionData.get("questionId");
-        // 2. 문제 ID 유효성 검증 (필수 필드 체크)
-        if (questionId == null || questionId.trim().isEmpty()) {
-            throw new IllegalArgumentException("questionId field is required");
-        }
-        // 3. 기존 학습 세션에 새로운 문제 추가
-        learningSessionService.addQuestionToSession(sessionId, questionId);
-        // 4. HTTP 201 Created 상태 반환 (문제 추가 성공)
+            @Valid @RequestBody AddQuestionRequestDto requestDto) {
+        // 기존 학습 세션에 새로운 문제 추가
+        learningSessionService.addQuestionToSession(sessionId, requestDto.getQuestionId());
+        // HTTP 201 Created 상태 반환 (문제 추가 성공)
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -229,14 +253,18 @@ public class LearningSessionController {
      * @param status 필터링할 세션 상태
      * @return 해당 상태의 학습 세션 수
      */
-    @GetMapping("/user/{userId}/status/{status}/count")
-    public ResponseEntity<Long> getSessionCountByUserIdAndStatus(
+    @GetMapping("/user/{userId}/count")
+    public ResponseEntity<Long> getSessionCountByUserId(
             @PathVariable String userId,
-            @PathVariable SessionStatus status) {
-        // 1. 사용자 ID와 세션 상태로 필터링하여 해당 세션들의 개수 조회
-        Long count = learningSessionService.getSessionCountByUserIdAndStatus(userId, status);
-        // 2. HTTP 200 OK 상태와 함께 세션 개수 반환
-        return ResponseEntity.ok(count);
+            @RequestParam(required = false) SessionStatus status) {
+        if (status != null) {
+            Long count = learningSessionService.getSessionCountByUserIdAndStatus(userId, status);
+            return ResponseEntity.ok(count);
+        } else {
+            // 전체 세션 수는 getAllLearningSessionsByUserId의 totalElements로 제공 가능
+            Page<LearningSessionResponseDto> sessions = learningSessionService.getAllLearningSessionsByUserId(userId, org.springframework.data.domain.PageRequest.of(0, 1));
+            return ResponseEntity.ok(sessions.getTotalElements());
+        }
     }
 
     /**
@@ -245,7 +273,7 @@ public class LearningSessionController {
      * @param userId 조회할 사용자의 고유 식별자
      * @return 완료된 세션들의 평균 진행률
      */
-    @GetMapping("/user/{userId}/average-progress")
+    @GetMapping("/user/{userId}/statistics/average-progress")
     public ResponseEntity<Double> getAverageProgressByUserId(@PathVariable String userId) {
         // 1. 사용자 ID로 해당 사용자의 완료된 세션들의 평균 진행률 계산
         Double averageProgress = learningSessionService.getAverageProgressByUserId(userId);
@@ -253,64 +281,4 @@ public class LearningSessionController {
         return ResponseEntity.ok(averageProgress != null ? averageProgress : 0.0);
     }
 
-    /**
-     * 특정 사용자의 특정 기간 내 학습 세션들을 조회합니다
-     * 
-     * @param userId 조회할 사용자의 고유 식별자
-     * @param startDate 조회 시작 날짜 (ISO 8601 형식: yyyy-MM-ddTHH:mm:ss)
-     * @param endDate 조회 종료 날짜 (ISO 8601 형식: yyyy-MM-ddTHH:mm:ss)
-     * @return 지정된 기간 내의 학습 세션 목록
-     */
-    @GetMapping("/user/{userId}/date-range")
-    public ResponseEntity<List<LearningSessionResponseDto>> getLearningSessionsByDateRange(
-            @PathVariable String userId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        // 1. 사용자 ID와 시작/종료 날짜 범위로 해당 기간 내 학습 세션들 조회
-        List<LearningSessionResponseDto> sessions = learningSessionService.getLearningSessionsByDateRange(userId, startDate, endDate);
-        // 2. HTTP 200 OK 상태와 함께 지정된 기간 내 세션 목록 반환
-        return ResponseEntity.ok(sessions);
-    }
-
-    /**
-     * 사용자 맞춤형 연습 세션 생성
-     * 사용자의 난이도와 선호 카테고리를 기반으로 최적화된 문제들을 선별하여 구성
-     * @param createDto 세션 생성 요청 데이터 (카테고리, 난이도 선호도 포함)
-     * @return 201 CREATED - 생성된 연습 세션과 할당된 문제 수
-     */
-    @PostMapping("/practice")
-    public ResponseEntity<LearningSessionResponseDto> createPracticeSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 검증된 데이터로 연습용 학습 세션 생성
-        LearningSessionResponseDto createdSession = learningSessionService.createPracticeSession(createDto);
-        // 2. HTTP 201 Created 상태와 함께 생성된 연습 세션 정보 반환
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-    }
-
-    /**
-     * 사용자의 학습 이력 기반 복습 세션 생성
-     * 이전에 정답을 맞힌 문제들 중 복습이 필요한 문제들을 선별하여 구성
-     * @param createDto 복습 세션 생성 요청 데이터 (카테고리 목록 포함)
-     * @return 201 CREATED - 생성된 복습 세션과 할당된 문제 수
-     */
-    @PostMapping("/review")
-    public ResponseEntity<LearningSessionResponseDto> createReviewSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 검증된 데이터로 복습용 학습 세션 생성
-        LearningSessionResponseDto createdSession = learningSessionService.createReviewSession(createDto);
-        // 2. HTTP 201 Created 상태와 함께 생성된 복습 세션 정보 반환
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-    }
-
-    /**
-     * 사용자의 오답 기록 기반 오답노트 세션 생성
-     * 이전에 틀린 문제들 중 틀린 횟수가 많고 최근에 틀린 문제들을 우선 선별
-     * @param createDto 오답노트 세션 생성 요청 데이터 (카테고리 목록 포함)
-     * @return 201 CREATED - 생성된 오답노트 세션과 할당된 문제 수
-     */
-    @PostMapping("/wrong-answer")
-    public ResponseEntity<LearningSessionResponseDto> createWrongAnswerSession(@Valid @RequestBody LearningSessionCreateDto createDto) {
-        // 1. 검증된 데이터로 오답노트용 학습 세션 생성
-        LearningSessionResponseDto createdSession = learningSessionService.createWrongAnswerSession(createDto);
-        // 2. HTTP 201 Created 상태와 함께 생성된 오답노트 세션 정보 반환
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-    }
 }

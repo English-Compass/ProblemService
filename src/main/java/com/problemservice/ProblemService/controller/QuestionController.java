@@ -19,7 +19,7 @@ import java.util.List;
  * 문제 생성, 조회, 수정, 삭제 및 다양한 필터링 기능을 제공합니다.
  */
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/problem/questions")
 @RequiredArgsConstructor
 public class QuestionController {
 
@@ -54,17 +54,36 @@ public class QuestionController {
     }
 
     /**
-     * 모든 언어학습 퀴즈 문제를 페이지네이션을 지원하여 조회합니다
+     * 언어학습 퀴즈 문제를 조회합니다 (Query Parameter로 필터링 지원)
      * 
+     * @param category 카테고리로 필터링 (선택)
+     * @param level 난이도로 필터링 (선택)
+     * @param type 문제 유형으로 필터링 (선택)
      * @param pageable 페이지네이션 설정 (페이지 번호, 크기, 정렬 조건)
-     * @return 페이지네이션된 문제 목록을 포함한 ResponseEntity
+     * @return 필터링된 문제 목록 (필터가 있으면 List, 없으면 Page)
      */
     @GetMapping
-    public ResponseEntity<Page<QuestionResponseDto>> getAllQuestions(Pageable pageable) {
-        // 1. 페이지네이션 설정에 따라 모든 문제를 조회
-        Page<QuestionResponseDto> questions = questionService.getAllQuestions(pageable);
-        // 2. HTTP 200 OK 상태와 함께 페이지네이션된 문제 목록을 반환
-        return ResponseEntity.ok(questions);
+    public ResponseEntity<?> getQuestions(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String level,
+            @RequestParam(required = false) String type,
+            Pageable pageable) {
+        
+        // 필터링 조건에 따라 적절한 서비스 메서드 호출
+        if (category != null) {
+            List<QuestionResponseDto> questions = questionService.getQuestionsByCategory(category);
+            return ResponseEntity.ok(questions);
+        } else if (level != null) {
+            List<QuestionResponseDto> questions = questionService.getQuestionsByDifficultyLevel(level);
+            return ResponseEntity.ok(questions);
+        } else if (type != null) {
+            List<QuestionResponseDto> questions = questionService.getQuestionsByQuestionType(type);
+            return ResponseEntity.ok(questions);
+        } else {
+            // 필터 없음 - 전체 조회 (페이지네이션)
+            Page<QuestionResponseDto> questions = questionService.getAllQuestions(pageable);
+            return ResponseEntity.ok(questions);
+        }
     }
 
     /**
@@ -98,45 +117,4 @@ public class QuestionController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 특정 분류(카테고리)에 해당하는 언어학습 퀴즈 문제들을 조회합니다
-     * 
-     * @param category 필터링할 문제 분류 (예: 학업, 비즈니스, 여행, 일상생활)
-     * @return 해당 분류의 문제 목록을 포함한 ResponseEntity
-     */
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<QuestionResponseDto>> getQuestionsByCategory(@PathVariable String category) {
-        // 1. 지정된 카테고리에 속하는 모든 문제를 조회
-        List<QuestionResponseDto> questions = questionService.getQuestionsByCategory(category);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 문제 목록을 반환
-        return ResponseEntity.ok(questions);
-    }
-
-    /**
-     * 특정 난이도 레벨에 해당하는 언어학습 퀴즈 문제들을 조회합니다
-     * 
-     * @param level 필터링할 난이도 레벨 (A: 초급, B: 중급, C: 고급)
-     * @return 해당 난이도의 문제 목록을 포함한 ResponseEntity
-     */
-    @GetMapping("/difficulty/{level}")
-    public ResponseEntity<List<QuestionResponseDto>> getQuestionsByDifficultyLevel(@PathVariable String level) {
-        // 1. 지정된 난이도 레벨에 해당하는 모든 문제를 조회
-        List<QuestionResponseDto> questions = questionService.getQuestionsByDifficultyLevel(level);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 문제 목록을 반환
-        return ResponseEntity.ok(questions);
-    }
-
-    /**
-     * 특정 문제 유형에 해당하는 언어학습 퀴즈 문제들을 조회합니다
-     * 
-     * @param type 필터링할 문제 유형 (Word: 빈칸 채우기, Sentence: 동의어 매칭)
-     * @return 해당 유형의 문제 목록을 포함한 ResponseEntity
-     */
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<QuestionResponseDto>> getQuestionsByQuestionType(@PathVariable String type) {
-        // 1. 지정된 문제 유형에 해당하는 모든 문제를 조회
-        List<QuestionResponseDto> questions = questionService.getQuestionsByQuestionType(type);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 문제 목록을 반환
-        return ResponseEntity.ok(questions);
-    }
 }

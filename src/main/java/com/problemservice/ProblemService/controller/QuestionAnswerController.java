@@ -20,7 +20,7 @@ import org.springframework.security.core.Authentication;
  * 문제 풀이 기록의 생성, 조회, 삭제 기능을 제공합니다
  */
 @RestController
-@RequestMapping("/api/question-answers")
+@RequestMapping("/problem/question-answers")
 @RequiredArgsConstructor
 public class QuestionAnswerController {
 
@@ -56,17 +56,49 @@ public class QuestionAnswerController {
     }
 
     /**
-     * 모든 문제에 대한 답변 내역을 페이지네이션으로 조회합니다
+     * 문제 답변 내역을 조회합니다 (Query Parameter로 필터링 지원)
      * 
+     * @param sessionId 세션 ID로 필터링 (선택)
+     * @param questionId 문제 ID로 필터링 (선택)
+     * @param sessionType 세션 타입으로 필터링 (선택)
+     * @param isCorrect 정답 여부로 필터링 (선택)
      * @param pageable 페이지네이션 정보 (페이지 번호, 크기, 정렬 조건)
-     * @return HTTP 200 OK와 함께 페이지네이션된 문제에 대한 답변 내역 목록
+     * @return HTTP 200 OK와 함께 필터링된 문제 답변 내역 목록
      */
     @GetMapping
-    public ResponseEntity<Page<QuestionAnswerResponseDto>> getAllQuestionAnswers(Pageable pageable) {
-        // 1. 페이지네이션 설정에 따라 모든 문제 답변 기록을 조회
-        Page<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getAllQuestionAnswers(pageable);
-        // 2. HTTP 200 OK 상태와 함께 페이지네이션된 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
+    public ResponseEntity<?> getQuestionAnswers(
+            @RequestParam(required = false) String sessionId,
+            @RequestParam(required = false) String questionId,
+            @RequestParam(required = false) String sessionType,
+            @RequestParam(required = false) Boolean isCorrect,
+            Pageable pageable) {
+        
+        // 필터링 조건에 따라 적절한 서비스 메서드 호출
+        if (sessionId != null && questionId != null) {
+            // 세션 ID + 문제 ID 조합
+            List<QuestionAnswerResponseDto> answers = questionAnswerService.getQuestionAnswersBySessionIdAndQuestionId(sessionId, questionId);
+            return ResponseEntity.ok(answers);
+        } else if (sessionId != null && isCorrect != null) {
+            // 세션 ID + 정답 여부 조합
+            List<QuestionAnswerResponseDto> answers = questionAnswerService.getQuestionAnswersBySessionIdAndCorrectness(sessionId, isCorrect);
+            return ResponseEntity.ok(answers);
+        } else if (sessionId != null) {
+            // 세션 ID만
+            List<QuestionAnswerResponseDto> answers = questionAnswerService.getQuestionAnswersBySessionId(sessionId);
+            return ResponseEntity.ok(answers);
+        } else if (questionId != null) {
+            // 문제 ID만
+            List<QuestionAnswerResponseDto> answers = questionAnswerService.getQuestionAnswersByQuestionId(questionId);
+            return ResponseEntity.ok(answers);
+        } else if (sessionType != null) {
+            // 세션 타입만
+            List<QuestionAnswerResponseDto> answers = questionAnswerService.getQuestionAnswersBySessionType(sessionType);
+            return ResponseEntity.ok(answers);
+        } else {
+            // 필터 없음 - 전체 조회 (페이지네이션)
+            Page<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getAllQuestionAnswers(pageable);
+            return ResponseEntity.ok(questionAnswers);
+        }
     }
 
     /**
@@ -83,79 +115,4 @@ public class QuestionAnswerController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 특정 사용자의 모든 문제에 대한 답변 내역을 조회합니다
-     * 
-     * @param userId 사용자의 고유 식별자
-     * @return HTTP 200 OK와 함께 해당 사용자의 모든 문제에 대한 답변 내역
-     */
-    @GetMapping("/session/{sessionId}")
-    public ResponseEntity<List<QuestionAnswerResponseDto>> getQuestionAnswersBySessionId(@PathVariable String sessionId) {
-        // 1. 지정된 세션 ID에 속하는 모든 문제 답변 기록을 조회
-        List<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getQuestionAnswersBySessionId(sessionId);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
-    }
-
-    /**
-     * 특정 문제에 대한 모든 답변 내역을 조회합니다
-     * 
-     * @param questionId 문제의 고유 식별자
-     * @return HTTP 200 OK와 함께 해당 문제의 모든 답변 내역
-     */
-    @GetMapping("/question/{questionId}")
-    public ResponseEntity<List<QuestionAnswerResponseDto>> getQuestionAnswersByQuestionId(@PathVariable String questionId) {
-        // 1. 지정된 문제 ID에 대한 모든 답변 기록을 조회
-        List<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getQuestionAnswersByQuestionId(questionId);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
-    }
-
-    /**
-     * 특정 사용자의 특정 문제에 대한 모든 답변 내역을 조회합니다
-     * 
-     * @param userId 사용자의 고유 식별자
-     * @param questionId 문제의 고유 식별자
-     * @return HTTP 200 OK와 함께 해당 조건의 모든 문제에 대한 답변 내역
-     */
-    @GetMapping("/session/{sessionId}/question/{questionId}")
-    public ResponseEntity<List<QuestionAnswerResponseDto>> getQuestionAnswersBySessionIdAndQuestionId(
-            @PathVariable String sessionId, 
-            @PathVariable String questionId) {
-        // 1. 지정된 세션 ID와 문제 ID 조건을 모두 만족하는 답변 기록을 조회
-        List<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getQuestionAnswersBySessionIdAndQuestionId(sessionId, questionId);
-        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
-    }
-
-    /**
-     * 특정 세션 타입의 모든 문제에 대한 답변 내역을 조회합니다
-     * 
-     * @param sessionType 세션 타입 (예: "practice", "test")
-     * @return HTTP 200 OK와 함께 해당 세션 타입의 모든 문제에 대한 답변 내역
-     */
-    @GetMapping("/session/{sessionType}")
-    public ResponseEntity<List<QuestionAnswerResponseDto>> getQuestionAnswersBySessionType(@PathVariable String sessionType) {
-        // 1. 지정된 세션 타입에 해당하는 모든 답변 기록을 조회
-        List<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getQuestionAnswersBySessionType(sessionType);
-        // 2. HTTP 200 OK 상태와 함께 필터링된 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
-    }
-
-    /**
-     * 특정 사용자의 정답/오답 여부에 따른 문제에 대한 답변 내역을 조회합니다
-     * 
-     * @param userId 사용자의 고유 식별자
-     * @param isCorrect 정답 여부 (true: 정답, false: 오답)
-     * @return HTTP 200 OK와 함께 해당 조건의 모든 문제에 대한 답변 내역
-     */
-    @GetMapping("/session/{sessionId}/correct/{isCorrect}")
-    public ResponseEntity<List<QuestionAnswerResponseDto>> getQuestionAnswersBySessionIdAndCorrectness(
-            @PathVariable String sessionId, 
-            @PathVariable Boolean isCorrect) {
-        // 1. 지정된 세션 ID와 정답 여부 조건을 모두 만족하는 답변 기록을 조회
-        List<QuestionAnswerResponseDto> questionAnswers = questionAnswerService.getQuestionAnswersBySessionIdAndCorrectness(sessionId, isCorrect);
-        // 2. HTTP 200 OK 상태와 함께 조건에 맞는 답변 기록 목록을 반환
-        return ResponseEntity.ok(questionAnswers);
-    }
 }
