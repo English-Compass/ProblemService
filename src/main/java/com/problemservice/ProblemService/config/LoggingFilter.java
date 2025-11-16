@@ -1,6 +1,5 @@
 package com.problemservice.ProblemService.config;
 
-import com.problemservice.ProblemService.constants.AppConstants;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +31,7 @@ public class LoggingFilter implements Filter {
         
         // API 경로가 아니거나 로깅이 비활성화된 경우 필터링 없이 통과
         String requestURI = httpRequest.getRequestURI();
-        if (!requestURI.startsWith(AppConstants.Api.BASE_PATH + "/") || 
+        if (!requestURI.startsWith(appProperties.getApi().getBasePath() + "/") || 
             !appProperties.getLogging().isEnableApiLogging()) {
             chain.doFilter(request, response);
             return;

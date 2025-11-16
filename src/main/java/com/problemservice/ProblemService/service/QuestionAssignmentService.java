@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 /**
  * 실시간 학습 분석 데이터를 기반으로 한 문제 할당 서비스
  * Kafka 이벤트로 받은 분석 결과를 즉시 처리하여 사용자별 최적화된 문제를 선택
+ * 
+ * 사용자 프로필 정보:
+ * - UserService로부터: difficultyLevel, selectedCategories (DB에 저장)
+ * - LearningAnalysisService로부터: 약점 분석, 추천 문제 (메모리 + DB에 저장)
  */
 @Service
 @RequiredArgsConstructor
@@ -26,8 +30,10 @@ import java.util.stream.Collectors;
 public class QuestionAssignmentService {
     
     private final QuestionRepository questionRepository;
+    private final UserProfileService userProfileService; // TODO: DB fallback 로직 추가 예정
     
-    // 사용자별 학습 프로필 (메모리 저장)
+    // 사용자별 학습 분석 프로필 (메모리 캐시, 성능 최적화)
+    // DB의 UserProfile은 영구 저장용, 메모리 캐시는 빠른 문제 선택용
     private final Map<String, UserLearningProfile> userProfiles = new ConcurrentHashMap<>();
     
     /**

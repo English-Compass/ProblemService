@@ -34,6 +34,7 @@ public class AppProperties {
     
     @Data
     public static class Api {
+        private String basePath = "/api";
         private int defaultPageSize = 20;
         private int maxPageSize = 100;
     }

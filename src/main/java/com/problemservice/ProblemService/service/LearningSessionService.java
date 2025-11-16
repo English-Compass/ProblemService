@@ -268,13 +268,13 @@ public class LearningSessionService extends BaseService {
         SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
 
         // Validate that categories are provided
-        if (metadata.getCategories() == null || metadata.getCategories().isEmpty()) {
+        if (metadata.getMajorCategories() == null || metadata.getMajorCategories().isEmpty()) {
             throw new IllegalArgumentException("At least one category must be selected");
         }
         
         // Normalize categories to DB format (ko → en, lower-case)
         java.util.List<String> normalizedCategories = com.problemservice.ProblemService.util.CategoryMapper
-                .toDbCategories(metadata.getCategories());
+                .toDbCategories(metadata.getMajorCategories());
         
         // Use user level from metadata or default to 1 (beginner)
         Integer userLevel = mapLevelToInteger(metadata.getLevel());
@@ -410,8 +410,8 @@ public class LearningSessionService extends BaseService {
         // 4단계: 복습 문제는 사용자가 정답을 맞힌 문제들에서 선택
         // 메타데이터에서 카테고리 추출
         SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
-        List<String> selectedCategories = metadata.getCategories() != null && !metadata.getCategories().isEmpty() 
-                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getCategories()) 
+        List<String> selectedCategories = metadata.getMajorCategories() != null && !metadata.getMajorCategories().isEmpty() 
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getMajorCategories()) 
                 : (createDto.getCategories() != null ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(createDto.getCategories()) : new ArrayList<>());
         
         if (selectedCategories.isEmpty()) {
@@ -483,8 +483,8 @@ public class LearningSessionService extends BaseService {
         // 4단계: 오답노트 문제는 사용자가 틀린 문제들에서 선택
         // 메타데이터에서 카테고리 추출
         SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
-        List<String> selectedCategories = metadata.getCategories() != null && !metadata.getCategories().isEmpty() 
-                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getCategories()) 
+        List<String> selectedCategories = metadata.getMajorCategories() != null && !metadata.getMajorCategories().isEmpty() 
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getMajorCategories()) 
                 : (createDto.getCategories() != null ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(createDto.getCategories()) : new ArrayList<>());
         
         if (selectedCategories.isEmpty()) {
@@ -770,25 +770,40 @@ public class LearningSessionService extends BaseService {
      * Inner class to represent session metadata structure
      * Jackson ObjectMapper가 JSON 역직렬화를 위해 setter 메서드들을 내부적으로 사용
      * 직접적인 개발자 호출은 없지만 JSON 파싱을 위해 필수적임
+     * 
+     * categories 형태: { "학업": ["과제", "수업"], "비즈니스": ["회의", "이메일"] }
+     * - Key: 대분류 카테고리
+     * - Value: 소분류 키워드 리스트
      */
     private static class SessionMetadata {
-        private List<String> categories;
-        private List<String> keywords;
+        private Map<String, List<String>> categories;  // 대분류 -> 소분류 리스트
         private String level;
         private Integer questionCount;
 
         public SessionMetadata() {}
 
         // Getter 메서드들: 실제 비즈니스 로직에서 사용
-        public List<String> getCategories() { return categories; }
-        public List<String> getKeywords() { return keywords; }
+        public Map<String, List<String>> getCategories() { return categories; }
         public String getLevel() { return level; }
         public Integer getQuestionCount() { return questionCount; }
         
+        // Helper methods
+        public List<String> getMajorCategories() {
+            return categories != null ? new ArrayList<>(categories.keySet()) : new ArrayList<>();
+        }
+        
+        public List<String> getKeywords() {
+            if (categories == null || categories.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return categories.values().stream()
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
+        }
+        
         // Setter 메서드들: Jackson ObjectMapper의 JSON 역직렬화에서 내부적으로 사용
         // 직접 호출되지 않지만 JSON 파싱을 위해 필수적임
-        public void setCategories(List<String> categories) { this.categories = categories; }
-        public void setKeywords(List<String> keywords) { this.keywords = keywords; }
+        public void setCategories(Map<String, List<String>> categories) { this.categories = categories; }
         public void setLevel(String level) { this.level = level; }
         public void setQuestionCount(Integer questionCount) { this.questionCount = questionCount; }
     }

@@ -172,4 +172,15 @@ public class KafkaConfig {
                 .config("compression.type", "lz4")
                 .build();
     }
+
+    @Bean
+    @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
+    public NewTopic userProfileEventsTopic() {
+        return TopicBuilder.name("user-profile-events")
+                .partitions(3)
+                .replicas(1)
+                .config("retention.ms", "2592000000") // 30 days
+                .config("compression.type", "lz4")
+                .build();
+    }
 }

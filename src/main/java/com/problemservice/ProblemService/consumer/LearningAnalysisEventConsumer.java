@@ -3,11 +3,14 @@ package com.problemservice.ProblemService.consumer;
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysis;
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysisEvent;
 import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
+import com.problemservice.ProblemService.model.entity.KafkaEventLog;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
+import com.problemservice.ProblemService.service.KafkaEventLogService;
 import com.problemservice.ProblemService.service.LearningSessionService;
 import com.problemservice.ProblemService.service.QuestionAssignmentService;
+import com.problemservice.ProblemService.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -23,7 +26,7 @@ import java.util.List;
 
 /**
  * 학습 분석 완료 이벤트를 실시간으로 처리하는 Kafka 컨슈머
- * 분석 데이터를 저장하지 않고 즉시 처리하여 사용자 학습 프로필을 업데이트
+ * LearningAnalysisService로부터 받은 분석 결과를 UserProfile에 반영
  */
 @Component
 @Profile("!local")
@@ -34,6 +37,8 @@ public class LearningAnalysisEventConsumer {
     private final QuestionAssignmentService questionAssignmentService;
     private final LearningSessionService learningSessionService;
     private final QuestionAnswerRepository questionAnswerRepository;
+    private final KafkaEventLogService kafkaEventLogService;
+    private final UserProfileService userProfileService;
     
     /**
      * 학습 분석 완료 이벤트를 실시간으로 처리
@@ -55,21 +60,42 @@ public class LearningAnalysisEventConsumer {
             @Header(KafkaHeaders.OFFSET) long offset,
             Acknowledgment acknowledgment) {
         
+        KafkaEventLog eventLog = null;
+        
         try {
             log.info("Processing learning analysis event in real-time - userId: {}, sessionId: {}, partition: {}, offset: {}", 
                 event.getUserId(), event.getSessionId(), partition, offset);
             
+            // 0. 이벤트를 데이터베이스에 저장 (감사 로그 및 추적용)
+            eventLog = kafkaEventLogService.saveEventFromObject(
+                event, 
+                "learning-analysis-completed", 
+                partition, 
+                offset
+            );
+            
             // 1. 분석 데이터 유효성 검증
             if (!isValidAnalysisEvent(event)) {
                 log.warn("Invalid learning analysis event received: {}", event);
+                if (eventLog != null) {
+                    kafkaEventLogService.markAsFailed(eventLog.getId(), "Invalid event data");
+                }
                 acknowledgment.acknowledge();
                 return;
             }
             
-            // 2. 분석 결과를 바탕으로 사용자 학습 프로필 실시간 업데이트
+            // 이벤트 처리 중 상태로 업데이트
+            if (eventLog != null) {
+                eventLog.markAsProcessing();
+            }
+            
+            // 2. 분석 결과를 바탕으로 사용자 학습 프로필 실시간 업데이트 (메모리)
             questionAssignmentService.updateUserLearningProfile(event.getUserId(), event.getAnalysisData());
             
-            // 3. 사용자 답안 기록에 따라 자동으로 추천 세션 생성
+            // 3. 분석 결과를 UserProfile 엔티티에 영구 저장 (DB)
+            userProfileService.updateProfileWithAnalysis(event.getUserId(), event.getAnalysisData());
+            
+            // 4. 사용자 답안 기록에 따라 자동으로 추천 세션 생성
             createRecommendedSessions(event.getUserId(), event.getAnalysisData());
             
             // 4. 처리 완료 로그
@@ -78,12 +104,22 @@ public class LearningAnalysisEventConsumer {
                 event.getAnalysisData().getOverallLearningPattern(),
                 event.getAnalysisData().getConsistencyScore());
             
-            // 5. 메시지 처리 완료 확인
+            // 5. 이벤트 처리 완료 상태로 업데이트
+            if (eventLog != null) {
+                kafkaEventLogService.markAsCompleted(eventLog.getId());
+            }
+            
+            // 6. 메시지 처리 완료 확인
             acknowledgment.acknowledge();
             
         } catch (Exception e) {
             log.error("Failed to process learning analysis event for user: {}, sessionId: {}", 
                 event.getUserId(), event.getSessionId(), e);
+            
+            // 이벤트 처리 실패 상태로 업데이트
+            if (eventLog != null) {
+                kafkaEventLogService.markAsFailed(eventLog.getId(), e.getMessage());
+            }
             
             // 에러 발생 시에도 acknowledge하여 무한 재시도 방지
             acknowledgment.acknowledge();
