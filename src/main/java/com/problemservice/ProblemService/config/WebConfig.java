@@ -25,9 +25,10 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
+        // /problem/** 경로에 대한 CORS 설정 (실제 컨트롤러 경로)
+        registry.addMapping("/problem/**")
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
@@ -35,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     /**
      * API 엔드포인트에 대한 HTTP 요청/응답 로깅 필터 등록
-     * /api/* 패턴의 모든 요청에 대해 메서드, URI, 클라이언트 IP, 요청/응답 바디를 로깅
+     * /problem/* 패턴의 모든 요청에 대해 메서드, URI, 클라이언트 IP, 요청/응답 바디를 로깅
      * 필터 실행 순서를 1로 설정하여 다른 필터들보다 먼저 실행되도록 구성
      * @return 구성된 로깅 필터 등록 빈
      */
@@ -43,7 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<LoggingFilter> loggingFilter() {
         FilterRegistrationBean<LoggingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new LoggingFilter(appProperties));
-        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.addUrlPatterns("/problem/*");
         registrationBean.setOrder(1);
         return registrationBean;
     }

@@ -35,19 +35,36 @@ public class QuizController {
      * @return 퀴즈 형식의 문제 목록
      */
     @GetMapping("/sessions/{sessionId}")
-    public ResponseEntity<List<QuizQuestionDto>> getQuizBySessionId(@PathVariable String sessionId) {
+    public ResponseEntity<List<QuestionResponseDto>> getQuizBySessionId(@PathVariable String sessionId) {
         // 1. 세션의 문제들 조회
         List<SessionQuestion> sessionQuestions = sessionQuestionService.getSessionQuestions(sessionId);
         
-        // 2. 문제 ID를 사용하여 실제 문제 데이터 조회 및 표준 형식으로 변환
-        List<QuizQuestionDto> quizQuestions = sessionQuestions.stream()
-                .map(sq -> {
-                    QuestionResponseDto question = questionService.getQuestionById(sq.getQuestionId());
-                    return QuizQuestionDto.fromQuestionResponseDto(question);
-                })
+        // 2. 문제 ID를 사용하여 실제 문제 데이터 조회
+        List<QuestionResponseDto> quizQuestions = sessionQuestions.stream()
+                .map(sq -> questionService.getQuestionById(sq.getQuestionId()))
                 .collect(Collectors.toList());
         
         return ResponseEntity.ok(quizQuestions);
+    }
+
+    /**
+     * 사용자의 복습 가능한 문제 목록 조회 (정답 맞힌 문제들)
+     * 
+     * @param userId 사용자 ID (Query Parameter)
+     * @return 복습 가능한 문제 목록
+     */
+    @GetMapping("/review")
+    public ResponseEntity<List<QuestionResponseDto>> getReviewQuestions(@RequestParam String userId) {
+        // 1. 사용자의 모든 정답 기록 조회
+        List<QuestionAnswerResponseDto> correctAnswers = questionAnswerService.getCorrectAnswersByUserId(userId);
+        
+        // 2. 정답 기록 -> 문제 정보 변환 (중복 제거)
+        List<QuestionResponseDto> reviewQuestionList = correctAnswers.stream()
+                .map(answer -> questionService.getQuestionById(answer.getQuestionId()))
+                .distinct() // 중복 문제 제거
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(reviewQuestionList);
     }
 
     /**
@@ -57,13 +74,13 @@ public class QuizController {
      * @return 틀린 문제 목록
      */
     @GetMapping("/users/{userId}/wrong-questions")
-    public ResponseEntity<List<WrongAnswerQuestionDto>> getUserWrongQuestions(@PathVariable String userId) {
+    public ResponseEntity<List<QuestionResponseDto>> getUserWrongQuestions(@PathVariable String userId) {
         // 1. 사용자의 모든 오답 기록 조회
         List<QuestionAnswerResponseDto> wrongAnswers = questionAnswerService.getWrongAnswersByUserId(userId);
         
-        // 2. 오답 기록을 표준 형식으로 변환
-        List<WrongAnswerQuestionDto> wrongQuestionList = wrongAnswers.stream()
-                .map(WrongAnswerQuestionDto::fromQuestionAnswerResponseDto)
+        // 2. 오답 기록 -> 문제 정보 변환 (중복 제거)
+        List<QuestionResponseDto> wrongQuestionList = wrongAnswers.stream()
+                .map(answer -> questionService.getQuestionById(answer.getQuestionId()))
                 .distinct() // 중복 문제 제거
                 .collect(Collectors.toList());
         

@@ -2,6 +2,7 @@ package com.problemservice.ProblemService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * ProblemService 애플리케이션의 메인 클래스
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 기능: 문제 CRUD, 학습 세션 관리, Kafka 이벤트 발행, OpenAI 통합
  */
 @SpringBootApplication
+@EnableScheduling
 public class ProblemServiceApplication {
 
 	/**

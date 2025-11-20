@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.problemservice.ProblemService.model.dto.*;
+import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
+import com.problemservice.ProblemService.service.internal.UserLearningProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -75,7 +77,7 @@ public class WordStudyService {
     private WordStudyResponseDto doGenerateWordStudyList(WordStudyRequestDto requestDto) {
         log.info("단어 학습 목록 생성 시작 - 사용자: {}, 단어 수: {}", requestDto.getUserId(), requestDto.getWordCount());
         try {
-            UserLearningProfileDto userProfile = analyzeUserLearningProfile(requestDto.getUserId());
+            UserLearningProfile userProfile = analyzeUserLearningProfile(requestDto.getUserId());
             String combinedTacticPrompt = buildCombinedTacticPrompt(userProfile, requestDto);
 
             OpenAIRequestDto openAIRequest = OpenAIRequestDto.builder()
@@ -114,10 +116,11 @@ public class WordStudyService {
     private WordStudyService thisSelf() { return self != null ? self : this; }
 
     /**
-     * 사용자의 학습 성과 데이터를 분석하여 프로필 생성
+     * 사용자의 학습 성과 데이터를 분석하여 프로필 생성 (내부용)
      * 카테고리별, 난이도별 정답률 및 약점 영역 식별
+     * 외부 API에는 analyzeUserWeakness() 사용 권장
      */
-    public UserLearningProfileDto analyzeUserLearningProfile(String userId) {
+    private UserLearningProfile analyzeUserLearningProfile(String userId) {
         log.info("사용자 학습 프로필 분석 시작 - 사용자: {}", userId);
 
         // 사용자의 모든 답안 기록 조회
@@ -156,7 +159,7 @@ public class WordStudyService {
         // 일관성 점수 계산
         Double consistencyScore = calculateConsistencyScore(userAnswers);
 
-        return UserLearningProfileDto.builder()
+        return UserLearningProfile.builder()
                 .userId(userId)
                 .categoryAccuracy(categoryAccuracy)
                 .difficultyAccuracy(difficultyAccuracy)
@@ -174,12 +177,34 @@ public class WordStudyService {
                 .consistencyScore(consistencyScore)
                 .build();
     }
+    
+    /**
+     * 사용자의 약점 영역 분석 (외부 API용)
+     * WordStudyController에서 호출하여 WeaknessSummaryDto를 반환
+     */
+    public WeaknessSummaryDto analyzeUserWeakness(String userId) {
+        UserLearningProfile profile = analyzeUserLearningProfile(userId);
+        
+        return WeaknessSummaryDto.builder()
+                .userId(profile.getUserId())
+                .weakestCategories(profile.getWeakCategories())
+                .weakestDifficulty(profile.getWeakestDifficulty())
+                .weakestDifficultyAccuracy(String.format("%.1f%%", 
+                        profile.getWeakestDifficultyAccuracy() != null ? 
+                                profile.getWeakestDifficultyAccuracy() * 100 : 0.0))
+                .weakQuestionTypes(profile.getWeakQuestionTypes())
+                .learningPattern(profile.getLearningPattern())
+                .recommendedFocus(profile.getWeakCategories().isEmpty() ? 
+                        "전반적인 실력 향상" : 
+                        profile.getWeakCategories().get(0) + " 카테고리 집중 학습")
+                .build();
+    }
 
     /**
      * Combined Tactic 2+3 전략에 따른 OpenAI 프롬프트 생성
      * 40% 약점 카테고리 + 35% 약점 카테고리 중간 난이도 + 15% 중간 카테고리 + 10% 강점 카테고리
      */
-    private String buildCombinedTacticPrompt(UserLearningProfileDto profile, WordStudyRequestDto requestDto) {
+    private String buildCombinedTacticPrompt(UserLearningProfile profile, WordStudyRequestDto requestDto) {
         StringBuilder prompt = new StringBuilder();
         prompt.append("You are an expert English vocabulary instructor for Korean learners. Create a personalized vocabulary study list based on the following user profile:\n\n");
         
@@ -238,7 +263,7 @@ public class WordStudyService {
         return prompt.toString();
     }
 
-    private String getRestOfCombinedTacticPrompt(UserLearningProfileDto profile) {
+    private String getRestOfCombinedTacticPrompt(UserLearningProfile profile) {
         return """
                 2. **Question Type Alignment:**
                    - Prioritize vocabulary that commonly appears in weak question formats
@@ -375,8 +400,8 @@ public class WordStudyService {
     }
 
     // 헬퍼 메소드들
-    private UserLearningProfileDto createDefaultUserProfile(String userId) {
-        return UserLearningProfileDto.builder()
+    private UserLearningProfile createDefaultUserProfile(String userId) {
+        return UserLearningProfile.builder()
                 .userId(userId)
                 .categoryAccuracy(Map.of("학업", 0.5, "비즈니스", 0.5, "여행", 0.5, "일상생활", 0.5))
                 .difficultyAccuracy(Map.of("A", 0.6, "B", 0.4, "C", 0.3))

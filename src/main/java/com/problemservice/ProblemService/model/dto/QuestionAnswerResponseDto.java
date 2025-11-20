@@ -18,6 +18,8 @@ public class QuestionAnswerResponseDto {
     private String questionId;
     private String sessionType;
     private String userAnswer;
+    private String userAnswerText;
+    private String correctAnswerText;
     private Boolean isCorrect;
     private Integer timeSpent;
     private LocalDateTime answeredAt;

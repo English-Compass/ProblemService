@@ -1,6 +1,5 @@
 package com.problemservice.ProblemService.controller;
 
-import com.problemservice.ProblemService.model.dto.UserLearningProfileDto;
 import com.problemservice.ProblemService.model.dto.WeaknessSummaryDto;
 import com.problemservice.ProblemService.model.dto.WordStudyRequestDto;
 import com.problemservice.ProblemService.model.dto.WordStudyResponseDto;
@@ -67,28 +66,19 @@ public class WordStudyController {
 
     /**
      * 사용자 학습 프로필 분석 조회
-     * 사용자의 카테고리별, 난이도별 성과 데이터와 약점 분석 결과 제공
+     * UserProfile 엔티티로 대체됨
+     * ProfileController의 GET /problem/profile/analysis 사용 권장
      * 
-     * @param userId 사용자 ID
-     * @return 사용자의 학습 프로필 분석 결과
+     * @deprecated Use ProfileController.getMyLearningProfile() instead
      */
+    @Deprecated
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<UserLearningProfileDto> getUserLearningProfile(@PathVariable String userId) {
+    public ResponseEntity<WeaknessSummaryDto> getUserLearningProfile(@PathVariable String userId) {
+        log.info("사용자 학습 프로필 조회 요청 (Deprecated) - 사용자: {}", userId);
+        log.warn("This endpoint is deprecated. Use GET /problem/profile/analysis instead");
         
-        log.info("사용자 학습 프로필 조회 요청 - 사용자: {}", userId);
-        
-        try {
-            UserLearningProfileDto profile = wordStudyService.analyzeUserLearningProfile(userId);
-            
-            log.info("사용자 학습 프로필 조회 성공 - 사용자: {}, 약점 카테고리: {}, 가장 약한 난이도: {}", 
-                    userId, profile.getWeakCategories(), profile.getWeakestDifficulty());
-            
-            return ResponseEntity.ok(profile);
-            
-        } catch (Exception e) {
-            log.error("사용자 학습 프로필 조회 중 예외 발생", e);
-            return ResponseEntity.internalServerError().build();
-        }
+        // WeaknessSummary로 리다이렉트
+        return getWeaknessSummary(userId);
     }
 
 
@@ -140,22 +130,8 @@ public class WordStudyController {
         log.info("약점 영역 요약 조회 요청 - 사용자: {}", userId);
         
         try {
-            UserLearningProfileDto profile = wordStudyService.analyzeUserLearningProfile(userId);
-            
-            // 약점 요약 정보를 DTO로 변환
-            WeaknessSummaryDto weaknessSummary = WeaknessSummaryDto.builder()
-                    .userId(profile.getUserId())
-                    .weakestCategories(profile.getWeakCategories())
-                    .weakestDifficulty(profile.getWeakestDifficulty())
-                    .weakestDifficultyAccuracy(String.format("%.1f%%", 
-                            profile.getWeakestDifficultyAccuracy() != null ? 
-                                    profile.getWeakestDifficultyAccuracy() * 100 : 0.0))
-                    .weakQuestionTypes(profile.getWeakQuestionTypes())
-                    .learningPattern(profile.getLearningPattern())
-                    .recommendedFocus(profile.getWeakCategories().isEmpty() ? 
-                            "전반적인 실력 향상" : 
-                            profile.getWeakCategories().get(0) + " 카테고리 집중 학습")
-                    .build();
+            // WordStudyService의 분석 메서드 호출
+            WeaknessSummaryDto weaknessSummary = wordStudyService.analyzeUserWeakness(userId);
             
             log.info("약점 영역 요약 조회 성공 - 사용자: {}, 주요 약점: {}", 
                     userId, weaknessSummary.getRecommendedFocus());

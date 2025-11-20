@@ -2,7 +2,6 @@ package com.problemservice.ProblemService.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.problemservice.ProblemService.model.dto.QuestionFilterOptions;
 import com.problemservice.ProblemService.model.dto.QuestionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +37,17 @@ public class QuestionReadingService {
      * 출력: 필터 조건에 맞는 문제 응답 DTO 목록
      * 조건: 파일 읽기 오류 시 빈 목록 반환 및 에러 로그 기록
      */
-    public List<QuestionResponseDto> findQuestionsByOptions(QuestionFilterOptions options) {
+    /**
+     * @deprecated This method uses QuestionFilterOptions which is no longer used. Use QuestionRepository methods instead.
+     */
+    @Deprecated
+    public List<QuestionResponseDto> findQuestionsByOptions(String category, String keyword, String level, String questionType) {
         // 결과를 저장할 목록 초기화
         List<QuestionResponseDto> result = new ArrayList<>();
         
         try {
             // 1단계: 필터 옵션에 기반하여 읽어야 할 JSON 파일들의 경로 리스트 생성
-            List<String> resourcePaths = buildResourcePaths(options);
+            List<String> resourcePaths = buildResourcePaths(category, keyword);
             
             // 2단계: 각 리소스 경로에 대해 반복 처리
             for (String resourcePath : resourcePaths) {
@@ -62,7 +65,7 @@ public class QuestionReadingService {
                     // 4단계: JSON 배열의 각 요소에 대해 처리
                     for (JsonNode jsonNode : jsonArray) {
                         // 5단계: 필터 조건에 맞는지 확인
-                        if (matchesFilter(jsonNode, options)) {
+                        if (matchesFilter(jsonNode, category, keyword, level, questionType)) {
                             // 6단계: 조건에 맞으면 JSON을 DTO로 변환하여 결과에 추가
                             QuestionResponseDto question = mapJsonToDto(jsonNode);
                             result.add(question);
@@ -87,7 +90,7 @@ public class QuestionReadingService {
      * 출력: 읽어야 할 JSON 파일들의 classpath 경로 목록
      * 조건: 현재는 특정 비즈니스 퀴즈 데이터만 지원
      */
-    private List<String> buildResourcePaths(QuestionFilterOptions options) {
+    private List<String> buildResourcePaths(String category, String keyword) {
         // 리소스 경로를 저장할 목록 초기화
         List<String> paths = new ArrayList<>();
         
@@ -95,9 +98,8 @@ public class QuestionReadingService {
         String basePath = "classpath:static/quiz/";
         
         // 2단계: 특정 비즈니스 관련 퀴즈 데이터에 대한 조건 체크
-        if (options.getKeyword() != null && options.getKeyword().equals("industry-global-business") &&
-            options.getCategory() != null && options.getCategory().equals("sentence") &&
-            options.getLevel() != null && options.getLevel().equals("A1")) {
+        if (keyword != null && keyword.equals("industry-global-business") &&
+            category != null && category.equals("sentence")) {
             
             // 3단계: 특정 디렉토리 경로 구성 (business/industry-global-business/sentence/A1/)
             String dirPath = basePath + "business/industry-global-business/sentence/A1/";
@@ -122,19 +124,19 @@ public class QuestionReadingService {
      * 출력: 필터 조건 만족 여부 (boolean)
      * 조건: 지정된 모든 필터 조건을 만족해야 true 반환
      */
-    private boolean matchesFilter(JsonNode jsonNode, QuestionFilterOptions options) {
+    private boolean matchesFilter(JsonNode jsonNode, String category, String keyword, String level, String questionType) {
         // 1단계: 카테고리 필터 체크 - 지정되어 있고 일치하지 않으면 false
-        if (options.getCategory() != null && !options.getCategory().equals(jsonNode.get("category").asText())) {
+        if (category != null && !category.equals(jsonNode.get("category").asText())) {
             return false;
         }
         
         // 2단계: 키워드 필터 체크 - 지정되어 있고 일치하지 않으면 false
-        if (options.getKeyword() != null && !options.getKeyword().equals(jsonNode.get("keyword").asText())) {
+        if (keyword != null && !keyword.equals(jsonNode.get("keyword").asText())) {
             return false;
         }
         
         // 3단계: 레벨 필터 체크 - 지정되어 있고 일치하지 않으면 false
-        if (options.getLevel() != null && !options.getLevel().equals(jsonNode.get("level").asText())) {
+        if (level != null && !level.equals(jsonNode.get("level").asText())) {
             return false;
         }
         

@@ -1,7 +1,8 @@
 package com.problemservice.ProblemService.exception;
 
 /**
- * Exception thrown when business logic validation fails
+ * 비즈니스 로직 예외
+ * 비즈니스 규칙 위반이나 잘못된 요청 시 발생
  */
 public class BusinessLogicException extends RuntimeException {
     
@@ -13,3 +14,4 @@ public class BusinessLogicException extends RuntimeException {
         super(message, cause);
     }
 }
+

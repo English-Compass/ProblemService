@@ -37,7 +37,7 @@ public class LearningSessionCreateDto {
     // 세션에 포함할 문제 ID 목록 (선택사항)
     private List<String> questionIds;
 
-    // 문제 선택을 위한 카테고리 목록 (1개 이상 6개 이하)
+    // 문제 선택을 위한 카테고리 목록 (선택사항, 제공 시 1개 이상 6개 이하)
     @Size(min = 1, max = 6, message = "Available categories must be between 1 and 6")
-    private List<String> categories;
+    private List<String> categories; // null 허용 (sessionMetadata에 포함된 경우 사용 안 함)
 }

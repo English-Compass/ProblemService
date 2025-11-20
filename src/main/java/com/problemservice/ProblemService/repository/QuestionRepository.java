@@ -35,6 +35,33 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     List<Question> findByMinorCategory(String minorCategory);
     
     /**
+     * 세부 카테고리와 난이도 조합 조회
+     * 입력: 세부 카테고리명과 난이도 레벨
+     * 출력: 조건을 만족하는 문제 목록
+     */
+    List<Question> findByMinorCategoryAndDifficultyLevel(String minorCategory, Integer difficultyLevel);
+    
+    /**
+     * 여러 세부 카테고리와 난이도 조합 조회 (랜덤 정렬)
+     * 입력: 세부 카테고리 목록과 난이도 레벨
+     * 출력: 세부 카테고리 목록 중 하나에 속하고 해당 난이도인 문제 목록 (랜덤 순서)
+     */
+    @Query("SELECT q FROM Question q WHERE q.minorCategory IN (:minorCategories) AND q.difficultyLevel = :difficultyLevel ORDER BY FUNCTION('RAND')")
+    List<Question> findByMinorCategoryInAndDifficultyLevel(@Param("minorCategories") List<String> minorCategories, @Param("difficultyLevel") Integer difficultyLevel);
+    
+    /**
+     * 사용자가 아직 풀지 않은 문제 조회 (세부 카테고리, 난이도 필터링, 랜덤 정렬)
+     * 입력: 사용자 ID, 세부 카테고리 목록, 난이도 레벨
+     * 출력: 사용자가 풀지 않은 문제 목록 (랜덤 순서)
+     */
+    @Query("SELECT q FROM Question q WHERE q.minorCategory IN (:minorCategories) AND q.difficultyLevel = :difficultyLevel " +
+           "AND q.questionId NOT IN (SELECT DISTINCT qa.questionId FROM QuestionAnswer qa " +
+           "WHERE qa.userId = :userId) ORDER BY FUNCTION('RAND')")
+    List<Question> findUnsolvedQuestionsByUserAndMinorCategoriesAndDifficulty(@Param("userId") String userId, 
+                                                                              @Param("minorCategories") List<String> minorCategories, 
+                                                                              @Param("difficultyLevel") Integer difficultyLevel);
+    
+    /**
      * 난이도별 문제 조회
      * 입력: 난이도 레벨 (1=초급, 2=중급, 3=고급)
      * 출력: 해당 난이도의 모든 문제 목록
@@ -76,6 +103,13 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
      * 출력: 카테고리 목록 중 하나에 속하는 모든 문제 목록
      */
     List<Question> findByMajorCategoryIn(List<String> majorCategories);
+    
+    /**
+     * 여러 세부 카테고리로 조회
+     * 입력: 세부 카테고리 목록
+     * 출력: 세부 카테고리 목록 중 하나에 속하는 모든 문제 목록
+     */
+    List<Question> findByMinorCategoryIn(List<String> minorCategories);
     
     /**
      * 주요 카테고리와 문제 유형으로 조회

@@ -4,11 +4,13 @@ import com.problemservice.ProblemService.model.dto.AddQuestionRequestDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionResponseDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionUpdateDto;
+import com.problemservice.ProblemService.model.dto.QuestionAnswerCreateDto;
 import com.problemservice.ProblemService.model.dto.SessionAnswerRequestDto;
 import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionStatus;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
 import com.problemservice.ProblemService.service.LearningSessionService;
+import com.problemservice.ProblemService.service.QuestionAnswerService;
 import com.problemservice.ProblemService.service.SessionQuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -33,6 +36,7 @@ public class LearningSessionController {
 
     private final LearningSessionService learningSessionService;
     private final SessionQuestionService sessionQuestionService;
+    private final QuestionAnswerService questionAnswerService;
 
     /**
      * 새로운 학습 세션을 생성하고 문제를 할당
@@ -64,6 +68,21 @@ public class LearningSessionController {
         }
         
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
+    }
+
+    /**
+     * 인증된 사용자의 모든 학습 세션 목록을 조회
+     * @param authentication Spring Security 인증 정보
+     * @param pageable 페이징 정보
+     * @return 200 OK - 사용자의 세션 목록 (페이징 처리됨)
+     */
+    @GetMapping
+    public ResponseEntity<Page<LearningSessionResponseDto>> getMyLearningSessions(
+            Authentication authentication,
+            Pageable pageable) {
+        String userId = (String) authentication.getPrincipal();
+        Page<LearningSessionResponseDto> sessions = learningSessionService.getAllLearningSessionsByUserId(userId, pageable);
+        return ResponseEntity.ok(sessions);
     }
 
     /**
@@ -194,23 +213,49 @@ public class LearningSessionController {
     /**
      * 세션에 답변을 제출합니다 (답변 리소스 생성)
      * 
-     * Note: 실제 답변 생성은 QuestionAnswerController에서 처리하는 것이 더 적절하지만,
-     * 세션 컨텍스트에서의 답변 제출을 위해 이 엔드포인트를 유지합니다.
+     * 1. question_answer 테이블에 답변 기록 저장
+     * 2. learning_sessions 테이블의 통계 업데이트
      * 
      * @param sessionId 답변을 제출할 학습 세션의 고유 식별자
-     * @param answerDto 답변 데이터 (questionId, isCorrect)
-     * @return 생성된 답변 정보 (201 Created) 또는 업데이트된 세션 정보 (200 OK)
+     * @param answerDto 답변 데이터 (questionId, userAnswer, isCorrect, timeSpent, solveCount)
+     * 
+     * Request Body 예시:
+     * {
+     *   "questionId": "business-customer-service-conversation-A-1",
+     *   "userAnswer": "A",
+     *   "isCorrect": true,
+     *   "timeSpent": 35,
+     *   "solveCount": 1
+     * }
+     * @return 업데이트된 세션 정보 (201 Created)
      */
     @PostMapping("/{sessionId}/answers")
     public ResponseEntity<LearningSessionResponseDto> submitAnswer(
             @PathVariable String sessionId,
             @Valid @RequestBody SessionAnswerRequestDto answerDto) {
-        // 답변 제출에 따라 세션의 진행률과 정답/오답 통계 업데이트
-        // Note: 실제 QuestionAnswer 생성은 QuestionAnswerController에서 처리해야 함
+        
+        // 1. 세션 정보 조회 (userId와 sessionType 필요)
+        LearningSessionResponseDto sessionInfo = learningSessionService.getLearningSessionById(sessionId);
+        
+        // 2. QuestionAnswer 생성 (question_answer 테이블에 저장)
+        QuestionAnswerCreateDto questionAnswerDto = QuestionAnswerCreateDto.builder()
+                .sessionId(sessionId)
+                .questionId(answerDto.getQuestionId())
+                .sessionType(sessionInfo.getSessionType().name())
+                .userAnswer(answerDto.getUserAnswer())
+                .isCorrect(answerDto.getIsCorrect())
+                .timeSpent(answerDto.getTimeSpent())
+                .solveCount(answerDto.getSolveCount() != null ? answerDto.getSolveCount() : 1)
+                .build();
+        
+        questionAnswerService.createQuestionAnswer(questionAnswerDto, sessionInfo.getUserId());
+        
+        // 3. 세션 통계 업데이트 (learning_sessions 테이블)
         LearningSessionResponseDto session = learningSessionService.updateSessionProgress(
                 sessionId, 
                 answerDto.getIsCorrect()
         );
+        
         // 답변 리소스 생성이므로 201 Created 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(session);
     }

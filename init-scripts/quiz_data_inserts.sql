@@ -4,6 +4,10 @@
 -- Total questions: 696
 -- =============================================
 
+-- 문자셋 설정 (한글 데이터 삽입을 위해 필수)
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 -- IF NOT EXISTS 구문으로 중복 삽입 방지
 -- MySQL에서는 INSERT IGNORE를 사용
 

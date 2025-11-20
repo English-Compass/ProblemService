@@ -4,6 +4,9 @@
 -- 목적: Question, QuestionAnswer, QuestionStatsView 테이블 및 관련 뷰 생성
 -- =====================================================
 
+-- 데이터베이스 문자셋 설정 (UTF-8 한글 지원)
+ALTER DATABASE problem_service_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- 기존 테이블이 있다면 삭제 (의존성 순서 고려)
 DROP VIEW IF EXISTS question_stats_view;
 DROP VIEW IF EXISTS user_learning_analytics;
@@ -112,6 +115,8 @@ CREATE TABLE question_answer (
     
     -- 답변 정보
     user_answer VARCHAR(1) NOT NULL COMMENT '사용자 답변 (A, B, C)',
+    user_answer_text VARCHAR(500) COMMENT '사용자가 선택한 답변 텍스트',
+    correct_answer_text VARCHAR(500) COMMENT '정답 선택지 텍스트',
     is_correct BIT(1) NOT NULL COMMENT '정답 여부',
     time_spent INT COMMENT '풀이 시간 (초)',
     answered_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '답변 시간',

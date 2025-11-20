@@ -17,6 +17,7 @@ import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,6 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class LearningSessionService extends BaseService {
 
@@ -49,6 +52,7 @@ public class LearningSessionService extends BaseService {
     private EventPublisherService eventPublisherService;
     private final SessionQuestionService sessionQuestionService;
     private final QuestionAnswerRepository questionAnswerRepository;
+    private final QuestionIdCacheService questionIdCacheService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -267,26 +271,27 @@ public class LearningSessionService extends BaseService {
         // Extract metadata to get categories, keywords, and user level
         SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
 
-        // Validate that categories are provided
-        if (metadata.getMajorCategories() == null || metadata.getMajorCategories().isEmpty()) {
-            throw new IllegalArgumentException("At least one category must be selected");
+        // Validate that categories or keywords are provided
+        List<String> majorCategories = metadata.getMajorCategories();
+        List<String> keywords = metadata.getKeywords();
+        
+        if ((majorCategories == null || majorCategories.isEmpty()) && 
+            (keywords == null || keywords.isEmpty())) {
+            throw new IllegalArgumentException("At least one category (major or minor) must be selected");
         }
         
-        // Normalize categories to DB format (ko → en, lower-case)
-        java.util.List<String> normalizedCategories = com.problemservice.ProblemService.util.CategoryMapper
-                .toDbCategories(metadata.getMajorCategories());
-        
-        // Use user level from metadata or default to 1 (beginner)
+        // Use user level from metadata or default to 2 (intermediate)
         Integer userLevel = mapLevelToInteger(metadata.getLevel());
         
-        // Get selected categories and keywords from metadata
-        List<String> selectedCategories = normalizedCategories;
-        List<String> keywords = metadata.getKeywords();
+        // Normalize categories to DB format (ko → en, lower-case)
+        java.util.List<String> normalizedCategories = majorCategories != null && !majorCategories.isEmpty()
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(majorCategories)
+                : new ArrayList<>();
         
         // Select questions based on user level, categories, and keywords
         List<Question> selectedQuestions = selectQuestionsForPractice(
                 createDto.getUserId(), 
-                selectedCategories, 
+                normalizedCategories, 
                 keywords,
                 userLevel,
                 metadata.getQuestionCount() != null ? metadata.getQuestionCount() : 10
@@ -294,9 +299,39 @@ public class LearningSessionService extends BaseService {
         
         // If no questions found with optimal selection, fall back to basic selection
         if (selectedQuestions.isEmpty()) {
-            List<Question> availableQuestions = getUnsolvedQuestionsByUserAndCategories(
-                    createDto.getUserId(), selectedCategories, userLevel);
-            selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+            // 대분류가 있으면 대분류로 조회
+            if (!normalizedCategories.isEmpty()) {
+                List<Question> availableQuestions = getUnsolvedQuestionsByUserAndCategories(
+                        createDto.getUserId(), normalizedCategories, userLevel);
+                selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+            }
+            
+            // 소분류만 있으면 소분류로 조회
+            if (selectedQuestions.isEmpty() && keywords != null && !keywords.isEmpty()) {
+                List<Question> availableQuestions = getUnsolvedQuestionsByUserAndMinorCategories(
+                        createDto.getUserId(), keywords, userLevel);
+                selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+            }
+            
+            // 여전히 문제가 없으면 난이도 무시하고 조회
+            if (selectedQuestions.isEmpty() && !normalizedCategories.isEmpty()) {
+                List<Question> availableQuestions = questionRepository.findByMajorCategoryIn(normalizedCategories);
+                List<String> solvedQuestionIds = getSolvedQuestionIds(createDto.getUserId());
+                availableQuestions = availableQuestions.stream()
+                        .filter(q -> !solvedQuestionIds.contains(q.getQuestionId()))
+                        .collect(Collectors.toList());
+                selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+            }
+            
+            // 소분류만 있고 여전히 문제가 없으면 소분류로 난이도 무시하고 조회
+            if (selectedQuestions.isEmpty() && keywords != null && !keywords.isEmpty()) {
+                List<Question> availableQuestions = questionRepository.findByMinorCategoryIn(keywords);
+                List<String> solvedQuestionIds = getSolvedQuestionIds(createDto.getUserId());
+                availableQuestions = availableQuestions.stream()
+                        .filter(q -> !solvedQuestionIds.contains(q.getQuestionId()))
+                        .collect(Collectors.toList());
+                selectedQuestions = selectBalancedQuestions(availableQuestions, 10);
+            }
         }
         
         // If still no questions, throw exception
@@ -328,6 +363,18 @@ public class LearningSessionService extends BaseService {
         
         // Use the optimized repository method that handles category filtering and user exclusion in a single query
         return questionRepository.findUnsolvedQuestionsByUserAndCategoriesAndDifficulty(userId, categories, userLevel);
+    }
+    
+    /**
+     * 사용자가 풀지 않은 문제들 중 선택한 소분류 카테고리와 일치하는 문제들을 추출합니다
+     */
+    private List<Question> getUnsolvedQuestionsByUserAndMinorCategories(String userId, List<String> minorCategories, Integer userLevel) {
+        if (minorCategories == null || minorCategories.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // Use the optimized repository method that handles minor category filtering and user exclusion in a single query
+        return questionRepository.findUnsolvedQuestionsByUserAndMinorCategoriesAndDifficulty(userId, minorCategories, userLevel);
     }
 
     /**
@@ -697,7 +744,7 @@ public class LearningSessionService extends BaseService {
 
     /**
      * Map frontend level string to integer
-     * Frontend sends: beginner, intermediate, advanced 또는 A, B, C
+     * Frontend sends: "1", "2", "3" 또는 "A", "B", "C" 또는 "beginner", "intermediate", "advanced"
      * Backend uses: 1 (초급), 2 (중급), 3 (상급)
      */
     private Integer mapLevelToInteger(String level) {
@@ -705,7 +752,20 @@ public class LearningSessionService extends BaseService {
             return 2; // Default to intermediate
         }
         
-        String levelUpper = level.toUpperCase().trim();
+        String levelTrimmed = level.trim();
+        
+        // 숫자 문자열을 먼저 처리
+        try {
+            int numLevel = Integer.parseInt(levelTrimmed);
+            if (numLevel >= 1 && numLevel <= 3) {
+                return numLevel;
+            }
+        } catch (NumberFormatException e) {
+            // 숫자가 아니면 문자열로 처리
+        }
+        
+        // 문자열 매핑 (대소문자 구분 없음)
+        String levelUpper = levelTrimmed.toUpperCase();
         switch (levelUpper) {
             case "A":
             case "BEGINNER":
@@ -723,25 +783,96 @@ public class LearningSessionService extends BaseService {
 
     /**
      * Select questions for practice session based on user level, categories, and keywords
+     * Redis 캐싱을 사용하여 DB 부하 최소화: ID만 캐싱하고 Java에서 셔플 후 PK 조회
+     * 
+     * 흐름:
+     * 1. Redis에서 문제 ID 목록 조회 (1ms)
+     * 2. Java에서 셔플 및 선택 (0.1ms)
+     * 3. JPA findAllById로 실제 문제 데이터 조회 (0.1ms, PK 조회이므로 초고속)
      */
     private List<Question> selectQuestionsForPractice(String userId, List<String> categories, 
                                                      List<String> keywords, Integer userLevel, 
                                                      Integer questionCount) {
         
-        // Get all questions matching user level and categories
+        List<String> questionIds = new ArrayList<>();
+        
+        // 1. Redis에서 문제 ID 목록 조회 (DB RAND() 쿼리 대신)
+        if (categories != null && !categories.isEmpty()) {
+            // 대분류 기준으로 Redis에서 ID 목록 가져오기
+            questionIds = questionIdCacheService.getQuestionIdsByMajorCategories(categories, userLevel);
+            
+            // 소분류 키워드가 있으면 실제 문제를 조회하여 필터링
+            if (keywords != null && !keywords.isEmpty() && !questionIds.isEmpty()) {
+                // 소분류로 필터링: ID 목록으로 문제를 조회한 후 소분류로 필터링
+                List<Question> questions = questionRepository.findAllById(questionIds);
+                List<Question> filtered = questions.stream()
+                        .filter(q -> keywords.contains(q.getMinorCategory()))
+                        .collect(Collectors.toList());
+                questionIds = filtered.stream()
+                        .map(Question::getQuestionId)
+                        .collect(Collectors.toList());
+            }
+        } 
+        // 대분류가 없고 소분류만 있으면 소분류 기준으로 Redis에서 조회
+        else if (keywords != null && !keywords.isEmpty()) {
+            questionIds = questionIdCacheService.getQuestionIdsByMinorCategories(keywords, userLevel);
+        }
+        
+        // Redis 캐시 미스 시 DB에서 직접 조회 (폴백)
+        if (questionIds.isEmpty()) {
+            log.warn("Redis cache miss for categories: {}, keywords: {}, level: {}. Falling back to DB query.", 
+                    categories, keywords, userLevel);
+            return selectQuestionsForPracticeFromDB(userId, categories, keywords, userLevel, questionCount);
+        }
+        
+        // 2. Java에서 셔플 및 선택 (DB RAND() 대신)
+        List<String> selectedIds = questionIdCacheService.shuffleAndSelect(questionIds, questionCount * 2); // 여유있게 선택
+        
+        // 3. 사용자가 이미 푼 문제 제외
+        List<String> solvedQuestionIds = getSolvedQuestionIds(userId);
+        List<String> unsolvedIds = selectedIds.stream()
+                .filter(id -> !solvedQuestionIds.contains(id))
+                .limit(questionCount)
+                .collect(Collectors.toList());
+        
+        // 4. JPA findAllById로 실제 문제 데이터 조회 (PK 조회, 초고속)
+        if (unsolvedIds.isEmpty()) {
+            // 여전히 문제가 없으면 폴백
+            return selectQuestionsForPracticeFromDB(userId, categories, keywords, userLevel, questionCount);
+        }
+        
+        List<Question> questions = questionRepository.findAllById(unsolvedIds);
+        
+        // 5. 문제 유형 균형 있게 분배
+        return selectBalancedQuestions(questions, questionCount);
+    }
+    
+    /**
+     * DB에서 직접 문제 조회 (Redis 캐시 미스 시 폴백)
+     */
+    private List<Question> selectQuestionsForPracticeFromDB(String userId, List<String> categories, 
+                                                             List<String> keywords, Integer userLevel, 
+                                                             Integer questionCount) {
         List<Question> categoryQuestions = new ArrayList<>();
         
-        for (String category : categories) {
-            List<Question> questionsForCategory = questionRepository.findByMajorCategoryAndDifficultyLevel(category, userLevel);
-            
-            // If keywords are specified, filter by subcategory (minor category)
-            if (keywords != null && !keywords.isEmpty()) {
-                questionsForCategory = questionsForCategory.stream()
-                    .filter(q -> keywords.contains(q.getMinorCategory()))
-                    .collect(Collectors.toList());
+        // 대분류가 있으면 대분류 기준으로 조회
+        if (categories != null && !categories.isEmpty()) {
+            for (String category : categories) {
+                List<Question> questionsForCategory = questionRepository.findByMajorCategoryAndDifficultyLevel(category, userLevel);
+                
+                // If keywords are specified, filter by subcategory (minor category)
+                if (keywords != null && !keywords.isEmpty()) {
+                    questionsForCategory = questionsForCategory.stream()
+                        .filter(q -> keywords.contains(q.getMinorCategory()))
+                        .collect(Collectors.toList());
+                }
+                
+                categoryQuestions.addAll(questionsForCategory);
             }
-            
-            categoryQuestions.addAll(questionsForCategory);
+        } 
+        // 대분류가 없고 소분류만 있으면 소분류 기준으로 조회
+        else if (keywords != null && !keywords.isEmpty()) {
+            categoryQuestions = questionRepository.findByMinorCategoryInAndDifficultyLevel(keywords, userLevel);
         }
 
         // Remove questions the user has already solved
@@ -779,6 +910,12 @@ public class LearningSessionService extends BaseService {
         private Map<String, List<String>> categories;  // 대분류 -> 소분류 리스트
         private String level;
         private Integer questionCount;
+        
+        // 대분류 목록 (한글, 영어 모두 지원)
+        private static final Set<String> MAJOR_CATEGORIES = Set.of(
+            "학업", "비즈니스", "여행", "일상생활",
+            "school", "business", "travel", "daily"
+        );
 
         public SessionMetadata() {}
 
@@ -789,16 +926,38 @@ public class LearningSessionService extends BaseService {
         
         // Helper methods
         public List<String> getMajorCategories() {
-            return categories != null ? new ArrayList<>(categories.keySet()) : new ArrayList<>();
+            if (categories == null || categories.isEmpty()) {
+                return new ArrayList<>();
+            }
+            // categories Map의 key 중에서 대분류에 해당하는 것만 반환
+            return categories.keySet().stream()
+                    .filter(key -> MAJOR_CATEGORIES.contains(key) || MAJOR_CATEGORIES.contains(key.toLowerCase()))
+                    .collect(Collectors.toList());
         }
         
         public List<String> getKeywords() {
             if (categories == null || categories.isEmpty()) {
                 return new ArrayList<>();
             }
-            return categories.values().stream()
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
+            
+            List<String> keywords = new ArrayList<>();
+            
+            for (Map.Entry<String, List<String>> entry : categories.entrySet()) {
+                String key = entry.getKey();
+                List<String> values = entry.getValue();
+                
+                // key가 대분류가 아니면, key 자체를 소분류로 간주
+                if (!MAJOR_CATEGORIES.contains(key) && !MAJOR_CATEGORIES.contains(key.toLowerCase())) {
+                    keywords.add(key);
+                }
+                
+                // values는 항상 소분류
+                if (values != null && !values.isEmpty()) {
+                    keywords.addAll(values);
+                }
+            }
+            
+            return keywords;
         }
         
         // Setter 메서드들: Jackson ObjectMapper의 JSON 역직렬화에서 내부적으로 사용

@@ -54,8 +54,11 @@ public class QuestionAnswerService {
 
         // 2단계: 사용자 답변과 정답을 비교하여 정답 여부 확인
         // 사용자 답안을 A,B,C에서 1,2,3으로 변환하여 비교
-        String normalizedUserAnswer = convertAnswerToNumber(createDto.getUserAnswer().trim());
-        boolean isCorrectAnswer = question.getCorrectAnswer().equals(normalizedUserAnswer);
+        String normalizedUserAnswer = normalizeAnswerLetter(createDto.getUserAnswer().trim());
+        String normalizedCorrectAnswer = normalizeAnswerLetter(question.getCorrectAnswer());
+        boolean isCorrectAnswer = normalizedCorrectAnswer.equals(normalizedUserAnswer);
+        String userAnswerText = resolveAnswerText(question, normalizedUserAnswer);
+        String correctAnswerText = resolveAnswerText(question, normalizedCorrectAnswer);
         
         // 3단계: 입력 DTO의 정보로 QuestionAnswer 엔티티 생성
         QuestionAnswer questionAnswer = QuestionAnswer.builder()
@@ -63,7 +66,9 @@ public class QuestionAnswerService {
                 .questionId(createDto.getQuestionId()) // 답안을 제출한 문제 ID
                 .userId(userId) // 사용자 ID 추가
                 .sessionType(createDto.getSessionType()) // 세션 유형
-                .userAnswer(createDto.getUserAnswer()) // 사용자가 선택한 답안
+                .userAnswer(normalizedUserAnswer) // 사용자가 선택한 답안 (정규화된 문자)
+                .userAnswerText(userAnswerText) // 사용자 답변 텍스트 스냅샷
+                .correctAnswerText(correctAnswerText) // 정답 텍스트 스냅샷
                 .isCorrect(isCorrectAnswer) // 실제 정답 비교 결과
                 .timeSpent(createDto.getTimeSpent()) // 문제 해결에 소요된 시간
                 .solveCount(createDto.getSolveCount()) // 이 문제를 푼 횟수
@@ -89,24 +94,38 @@ public class QuestionAnswerService {
         return convertToResponseDto(savedQuestionAnswer);
     }
     
-    /**
-     * 답안을 A, B, C에서 1, 2, 3으로 변환
-     * 프론트엔드에서 A, B, C로 전송하지만 데이터베이스에는 1, 2, 3으로 저장
-     */
-    private String convertAnswerToNumber(String letterAnswer) {
-        switch (letterAnswer.toUpperCase()) {
+    private String normalizeAnswerLetter(String answer) {
+        if (answer == null) {
+            throw new IllegalArgumentException("답안 값은 null일 수 없습니다.");
+        }
+        switch (answer.trim().toUpperCase()) {
             case "A":
-                return "1";
-            case "B":
-                return "2";
-            case "C":
-                return "3";
             case "1":
+                return "A";
+            case "B":
             case "2":
+                return "B";
+            case "C":
             case "3":
-                return letterAnswer; // 이미 숫자인 경우
+                return "C";
             default:
-                throw new IllegalArgumentException("유효하지 않은 답안 형식: " + letterAnswer + " (A, B, C 또는 1, 2, 3만 허용)");
+                throw new IllegalArgumentException("유효하지 않은 답안 형식: " + answer + " (A, B, C 또는 1, 2, 3만 허용)");
+        }
+    }
+
+    private String resolveAnswerText(Question question, String answerLetter) {
+        if (question == null || answerLetter == null) {
+            return null;
+        }
+        switch (answerLetter) {
+            case "A":
+                return question.getOptionA();
+            case "B":
+                return question.getOptionB();
+            case "C":
+                return question.getOptionC();
+            default:
+                return null;
         }
     }
 
@@ -164,6 +183,19 @@ public class QuestionAnswerService {
     }
 
     /**
+     * 특정 사용자의 모든 정답 기록을 조회합니다 (복습용)
+     * 단계: 1) 사용자 ID로 정답 기록 조회 2) 응답 DTO 변환
+     * 입력: 사용자 ID
+     * 출력: 정답 기록 응답 DTO 목록
+     */
+    public List<QuestionAnswerResponseDto> getCorrectAnswersByUserId(String userId) {
+        List<QuestionAnswer> correctAnswers = questionAnswerRepository.findByUserIdAndIsCorrect(userId, true);
+        return correctAnswers.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 특정 사용자의 모든 오답 기록을 조회합니다
      * 단계: 1) 사용자 ID로 오답 기록 조회 2) 응답 DTO 변환
      * 입력: 사용자 ID
@@ -192,6 +224,8 @@ public class QuestionAnswerService {
                 .questionId(questionAnswer.getQuestionId()) // 답안을 제출한 문제 ID
                 .sessionType(questionAnswer.getSessionType()) // 세션 유형
                 .userAnswer(questionAnswer.getUserAnswer()) // 사용자 답안
+                .userAnswerText(questionAnswer.getUserAnswerText()) // 사용자 답안 텍스트 스냅샷
+                .correctAnswerText(questionAnswer.getCorrectAnswerText()) // 정답 텍스트 스냅샷
                 .isCorrect(questionAnswer.getIsCorrect()) // 정답 여부
                 .timeSpent(questionAnswer.getTimeSpent()) // 소요 시간
                 .answeredAt(questionAnswer.getAnsweredAt()) // 답안 제출 시간

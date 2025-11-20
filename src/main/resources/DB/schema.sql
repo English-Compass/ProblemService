@@ -70,6 +70,8 @@ CREATE TABLE question_answer (
     
     -- 답변 정보
     user_answer VARCHAR(1) NOT NULL COMMENT '사용자 답변 (A, B, C)',                 -- 사용자 답변
+    user_answer_text VARCHAR(500) COMMENT '사용자가 선택한 답변 텍스트',             -- 사용자 답변 텍스트
+    correct_answer_text VARCHAR(500) COMMENT '정답 선택지 텍스트',                   -- 정답 텍스트
     is_correct BIT(1) NOT NULL COMMENT '정답 여부',                                 -- 정답 여부
     time_spent INT COMMENT '풀이 시간 (초)',                                         -- 풀이 시간
     answered_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '답변 시간', -- 답변 시간

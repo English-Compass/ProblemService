@@ -60,13 +60,13 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
     List<QuestionAnswer> findAllByUserId(String userId);
     
     /**
-     * 특정 사용자의 정답 답안들 조회 (복습용)
-     * 학습 세션을 통해 사용자 ID로 필터링하여 정답인 답안들만 조회
-     * 입력: 사용자 ID, 정답 여부 (true)
-     * 출력: 해당 사용자가 정답을 맞힌 문제들의 답안 목록
+     * 특정 사용자의 정답/오답 답안들 조회 (복습용, 오답노트용)
+     * question_answer 테이블의 user_id를 직접 사용하여 성능 최적화
+     * 입력: 사용자 ID, 정답 여부 (true/false)
+     * 출력: 해당 사용자가 정답을 맞히거나 틀린 문제들의 답안 목록
+     * 성능: idx_question_answer_user_correct 복합 인덱스 활용
      */
-    @Query("SELECT qa FROM QuestionAnswer qa JOIN LearningSession ls ON qa.sessionId = ls.sessionId WHERE ls.userId = :userId AND qa.isCorrect = :isCorrect")
-    List<QuestionAnswer> findByUserIdAndIsCorrect(@Param("userId") String userId, @Param("isCorrect") Boolean isCorrect);
+    List<QuestionAnswer> findByUserIdAndIsCorrect(String userId, Boolean isCorrect);
     
     /**
      * 특정 사용자의 정답 답안들을 카테고리별로 조회 (복습용)

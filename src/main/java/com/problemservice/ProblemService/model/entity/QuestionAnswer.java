@@ -50,6 +50,14 @@ public class QuestionAnswer {
     @NotBlank
     private String questionId;
 
+    // 사용자가 답변을 제출한 문제의 보기 텍스트 (스냅샷)
+    @Column(name = "user_answer_text", length = 500)
+    private String userAnswerText;
+
+    // 해당 문제의 정답 보기 텍스트 (스냅샷)
+    @Column(name = "correct_answer_text", length = 500)
+    private String correctAnswerText;
+
     // 답안이 제출된 세션의 유형 (연습, 복습, 오답노트)
     @Column(name = "session_type", nullable = false, length = 50)
     @NotBlank
