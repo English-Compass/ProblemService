@@ -92,4 +92,11 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
            "AND qa.isCorrect = false " +
            "ORDER BY qa.solveCount DESC, qa.answeredAt DESC")
     List<QuestionAnswer> findWrongAnswersByUserIdAndCategories(@Param("userId") String userId, @Param("categories") List<String> categories);
+    
+    /**
+     * 특정 사용자의 특정 문제에 대한 모든 답안 조회 (풀이 횟수 계산용)
+     * 입력: 사용자 ID, 문제 ID
+     * 출력: 해당 사용자가 해당 문제에 대해 제출한 모든 답안 목록
+     */
+    List<QuestionAnswer> findByUserIdAndQuestionId(String userId, String questionId);
 }

@@ -43,6 +43,12 @@ public class UserProfileService {
                 case "PROFILE_UPDATED":
                     createOrUpdateProfile(event);
                     break;
+                case "DIFFICULTY":
+                    updateDifficulty(event);
+                    break;
+                case "CATEGORIES":
+                    updateCategories(event);
+                    break;
                 case "PROFILE_DELETED":
                     deleteProfile(userId);
                     break;
@@ -65,13 +71,20 @@ public class UserProfileService {
                 .orElse(UserProfile.builder().userId(userId).build());
 
         // UserService로부터 받은 정보 업데이트
-        profile.setDifficultyLevel(event.getDifficultyLevel() != null ? 
-                event.getDifficultyLevel() : null);
+        // difficulty와 difficultyLevel 모두 지원 (하위 호환성)
+        Integer difficulty = event.getDifficulty() != null ? event.getDifficulty() : event.getDifficultyLevel();
+        profile.setDifficultyLevel(difficulty);
         
         try {
-            if (event.getSelectedCategories() != null) {
+            // categories (Map) 또는 selectedCategories (List) 모두 지원
+            if (event.getCategories() != null && !event.getCategories().isEmpty()) {
+                // Map을 JSON으로 저장
+                profile.setSelectedCategories(objectMapper.writeValueAsString(event.getCategories()));
+            } else if (event.getSelectedCategories() != null && !event.getSelectedCategories().isEmpty()) {
+                // List를 JSON으로 저장
                 profile.setSelectedCategories(objectMapper.writeValueAsString(event.getSelectedCategories()));
             }
+            
             if (event.getPreferredQuestionTypes() != null) {
                 profile.setPreferredQuestionTypes(objectMapper.writeValueAsString(event.getPreferredQuestionTypes()));
             }
@@ -84,6 +97,60 @@ public class UserProfileService {
         userProfileRepository.save(profile);
 
         log.info("User profile updated for userId: {}, version: {}", userId, profile.getProfileVersion());
+    }
+
+    /**
+     * 난이도만 업데이트 (DIFFICULTY 이벤트)
+     */
+    private void updateDifficulty(UserProfileEvent event) {
+        String userId = event.getUserId();
+        Integer difficulty = event.getDifficulty() != null ? event.getDifficulty() : event.getDifficultyLevel();
+        
+        if (difficulty == null) {
+            log.warn("Difficulty event received but difficulty is null for userId: {}", userId);
+            return;
+        }
+
+        UserProfile profile = userProfileRepository.findByUserId(userId)
+                .orElse(UserProfile.builder().userId(userId).build());
+
+        profile.setDifficultyLevel(difficulty);
+        profile.incrementVersion();
+        userProfileRepository.save(profile);
+
+        log.info("Difficulty updated for userId: {}, difficulty: {}", userId, difficulty);
+    }
+
+    /**
+     * 카테고리만 업데이트 (CATEGORIES 이벤트)
+     */
+    private void updateCategories(UserProfileEvent event) {
+        String userId = event.getUserId();
+        
+        UserProfile profile = userProfileRepository.findByUserId(userId)
+                .orElse(UserProfile.builder().userId(userId).build());
+
+        try {
+            // categories (Map) 또는 selectedCategories (List) 모두 지원
+            if (event.getCategories() != null && !event.getCategories().isEmpty()) {
+                // Map을 JSON으로 저장
+                profile.setSelectedCategories(objectMapper.writeValueAsString(event.getCategories()));
+            } else if (event.getSelectedCategories() != null && !event.getSelectedCategories().isEmpty()) {
+                // List를 JSON으로 저장
+                profile.setSelectedCategories(objectMapper.writeValueAsString(event.getSelectedCategories()));
+            } else {
+                log.warn("Categories event received but categories is null/empty for userId: {}", userId);
+                return;
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialize categories for userId: {}", userId, e);
+            throw new RuntimeException("Failed to serialize categories", e);
+        }
+
+        profile.incrementVersion();
+        userProfileRepository.save(profile);
+
+        log.info("Categories updated for userId: {}, categories: {}", userId, profile.getSelectedCategories());
     }
 
     /**

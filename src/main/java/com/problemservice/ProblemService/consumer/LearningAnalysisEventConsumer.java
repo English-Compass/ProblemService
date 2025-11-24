@@ -11,6 +11,9 @@ import com.problemservice.ProblemService.service.KafkaEventLogService;
 import com.problemservice.ProblemService.service.LearningSessionService;
 import com.problemservice.ProblemService.service.QuestionAssignmentService;
 import com.problemservice.ProblemService.service.UserProfileService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -20,6 +23,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import jakarta.annotation.PostConstruct;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,11 +44,16 @@ public class LearningAnalysisEventConsumer {
     private final KafkaEventLogService kafkaEventLogService;
     private final UserProfileService userProfileService;
     
+    @PostConstruct
+    public void init() {
+        log.info("LearningAnalysisEventConsumer initialized - ready to consume from topic: learning-analysis-completed");
+    }
+    
     /**
      * 학습 분석 완료 이벤트를 실시간으로 처리
      * 분석 결과를 바탕으로 사용자의 학습 프로필과 문제 할당 전략을 즉시 업데이트
      * 
-     * @param event 학습 분석 완료 이벤트 데이터
+     * @param message JSON 문자열 메시지
      * @param partition 파티션 번호
      * @param offset 오프셋
      * @param acknowledgment 수동 커밋을 위한 Acknowledgment
@@ -55,14 +64,20 @@ public class LearningAnalysisEventConsumer {
         containerFactory = "kafkaListenerContainerFactory"
     )
     public void processLearningAnalysisEvent(
-            @Payload CompleteLearningAnalysisEvent event,
+            @Payload String message,
             @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
             @Header(KafkaHeaders.OFFSET) long offset,
             Acknowledgment acknowledgment) {
         
         KafkaEventLog eventLog = null;
+        CompleteLearningAnalysisEvent event = null;
         
         try {
+            // JSON 문자열을 파싱
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            event = mapper.readValue(message, CompleteLearningAnalysisEvent.class);
+            
             log.info("Processing learning analysis event in real-time - userId: {}, sessionId: {}, partition: {}, offset: {}", 
                 event.getUserId(), event.getSessionId(), partition, offset);
             
@@ -112,9 +127,14 @@ public class LearningAnalysisEventConsumer {
             // 6. 메시지 처리 완료 확인
             acknowledgment.acknowledge();
             
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse learning analysis event JSON: message={}, error={}", message, e.getMessage(), e);
+            // JSON 파싱 실패 시에도 acknowledge하여 무한 재시도 방지
+            acknowledgment.acknowledge();
         } catch (Exception e) {
             log.error("Failed to process learning analysis event for user: {}, sessionId: {}", 
-                event.getUserId(), event.getSessionId(), e);
+                event != null ? event.getUserId() : "unknown", 
+                event != null ? event.getSessionId() : "unknown", e);
             
             // 이벤트 처리 실패 상태로 업데이트
             if (eventLog != null) {
@@ -154,12 +174,12 @@ public class LearningAnalysisEventConsumer {
             // 사용자의 전체 카테고리에서 기록 확인 (모든 주요 카테고리)
             List<String> allCategories = Arrays.asList("학업", "비즈니스", "여행", "일상생활");
             
-            // 정답 기록이 있으면 복습 세션 생성
+            // 정답 기록이 있으면 복습 세션 생성 (분석 데이터 포함)
             List<QuestionAnswer> correctAnswers = questionAnswerRepository
                 .findByUserIdAndCategoriesAndIsCorrect(userId, allCategories, true);
             
             if (!correctAnswers.isEmpty()) {
-                createReviewSession(userId, allCategories);
+                createReviewSession(userId, allCategories, analysisData);
             }
             
             // 오답 기록이 있으면 오답노트 세션 생성
@@ -176,19 +196,20 @@ public class LearningAnalysisEventConsumer {
     }
     
     /**
-     * 복습 세션 자동 생성
+     * 복습 세션 자동 생성 (분석 데이터 포함)
+     * 맞힌 문제 7개(최근) + 틀린 문제 3개(약한 영역)로 구성
      */
-    private void createReviewSession(String userId, List<String> categories) {
+    private void createReviewSession(String userId, List<String> categories, CompleteLearningAnalysis analysisData) {
         try {
             LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
                 .userId(userId)
                 .sessionType(SessionType.REVIEW)
                 .categories(categories)
-                .sessionMetadata("Auto-generated review session")
+                .sessionMetadata("Auto-generated review session from learning analysis")
                 .build();
                 
-            learningSessionService.createReviewSession(createDto);
-            log.info("Auto-generated review session created for user: {}", userId);
+            learningSessionService.createReviewSession(createDto, analysisData);
+            log.info("Auto-generated review session created for user: {} with analysis data", userId);
             
         } catch (Exception e) {
             log.warn("Could not auto-create review session for user: {} - {}", userId, e.getMessage());

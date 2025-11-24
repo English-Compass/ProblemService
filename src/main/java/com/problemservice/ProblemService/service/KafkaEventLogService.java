@@ -158,6 +158,16 @@ public class KafkaEventLogService {
     }
 
     /**
+     * 토픽별 최근 이벤트 조회
+     */
+    public List<KafkaEventLog> getTopicEvents(String topicName, int limit) {
+        List<KafkaEventLog> allEvents = eventLogRepository.findByTopicNameOrderByReceivedAtDesc(topicName);
+        return allEvents.stream()
+                .limit(limit)
+                .toList();
+    }
+
+    /**
      * 이벤트 타입별 통계
      */
     public Map<String, Long> getEventTypeStatistics() {
@@ -263,19 +273,27 @@ public class KafkaEventLogService {
             }
         } catch (Exception e1) {
             try {
-                // timestamp 시도
-                Object timestamp = event.getClass().getMethod("getTimestamp").invoke(event);
+                // updatedAt 시도 (UserProfileEvent 등에서 사용)
+                Object timestamp = event.getClass().getMethod("getUpdatedAt").invoke(event);
                 if (timestamp instanceof LocalDateTime) {
                     return (LocalDateTime) timestamp;
-                } else if (timestamp instanceof Long) {
-                    // Unix timestamp (milliseconds)
-                    return LocalDateTime.ofInstant(
-                        java.time.Instant.ofEpochMilli((Long) timestamp),
-                        java.time.ZoneId.systemDefault()
-                    );
                 }
             } catch (Exception e2) {
-                // 둘 다 실패하면 현재 시간 사용
+                try {
+                    // timestamp 시도
+                    Object timestamp = event.getClass().getMethod("getTimestamp").invoke(event);
+                    if (timestamp instanceof LocalDateTime) {
+                        return (LocalDateTime) timestamp;
+                    } else if (timestamp instanceof Long) {
+                        // Unix timestamp (milliseconds)
+                        return LocalDateTime.ofInstant(
+                            java.time.Instant.ofEpochMilli((Long) timestamp),
+                            java.time.ZoneId.systemDefault()
+                        );
+                    }
+                } catch (Exception e3) {
+                    // 모두 실패하면 현재 시간 사용
+                }
             }
         }
         return LocalDateTime.now();

@@ -2,10 +2,12 @@ package com.problemservice.ProblemService.service;
 
 import com.problemservice.ProblemService.exception.BusinessLogicException;
 import com.problemservice.ProblemService.exception.EntityNotFoundException;
+import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysis;
 import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionResponseDto;
 import com.problemservice.ProblemService.model.dto.LearningSessionUpdateDto;
 import com.problemservice.ProblemService.model.dto.SessionCompletedEventDto;
+import com.problemservice.ProblemService.model.enums.QuestionType;
 import com.problemservice.ProblemService.model.entity.LearningSession;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionStatus;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
@@ -415,7 +417,87 @@ public class LearningSessionService extends BaseService {
     }
 
     /**
-     * 사용자의 학습 이력을 기반으로 복습 세션 생성
+     * 사용자의 학습 이력을 기반으로 복습 세션 생성 (분석 데이터 포함)
+     * 맞힌 문제 7개(최근) + 틀린 문제 3개(약한 영역)로 구성
+     * @param createDto 세션 생성 정보 (사용자 ID, 카테고리 목록, 메타데이터)
+     * @param analysisData 학습 분석 데이터 (약한 영역 정보 포함)
+     * @return 생성된 복습 세션 정보와 할당된 문제 수
+     * @throws BusinessLogicException 정답 기록이 없어 복습 세션 생성 불가 시
+     */
+    @Transactional
+    public LearningSessionResponseDto createReviewSession(LearningSessionCreateDto createDto, CompleteLearningAnalysis analysisData) {
+        // 1단계: 기존 미시작 복습 세션 확인
+        List<LearningSession> existingSessions = learningSessionRepository
+                .findByUserIdAndSessionTypeAndStatus(createDto.getUserId(), SessionType.REVIEW, SessionStatus.STARTED);
+        
+        LearningSession session;
+        String sessionId;
+        
+        if (!existingSessions.isEmpty()) {
+            // 기존 미시작 세션이 있으면 재사용
+            session = existingSessions.get(0);
+            sessionId = session.getSessionId();
+            
+            // 2단계: 기존 세션의 문제들 제거
+            sessionQuestionService.deleteSessionQuestions(sessionId);
+            
+            // 3단계: 세션 메타데이터 업데이트
+            session.setSessionMetadata(createDto.getSessionMetadata());
+            session.setStartedAt(LocalDateTime.now());
+        } else {
+            // 새로운 세션 생성
+            sessionId = UUID.randomUUID().toString();
+            session = LearningSession.builder()
+                    .sessionId(sessionId)
+                    .userId(createDto.getUserId())
+                    .sessionType(SessionType.REVIEW)
+                    .sessionMetadata(createDto.getSessionMetadata())
+                    .status(SessionStatus.STARTED)
+                    .startedAt(LocalDateTime.now())
+                    .build();
+        }
+
+        // 4단계: 복습 문제 선택 (맞힌 문제 7개 + 틀린 문제 3개)
+        // 메타데이터에서 카테고리 추출
+        SessionMetadata metadata = extractSessionMetadata(createDto.getSessionMetadata());
+        List<String> selectedCategories = metadata.getMajorCategories() != null && !metadata.getMajorCategories().isEmpty() 
+                ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(metadata.getMajorCategories()) 
+                : (createDto.getCategories() != null ? com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(createDto.getCategories()) : new ArrayList<>());
+        
+        if (selectedCategories.isEmpty()) {
+            throw new IllegalArgumentException("At least one category must be selected");
+        }
+        
+        List<Question> selectedQuestions = selectQuestionsForReviewWithAnalysis(
+                createDto.getUserId(), 
+                selectedCategories, 
+                analysisData,
+                7,  // 맞힌 문제 7개
+                3   // 틀린 문제 3개
+        );
+        
+        // 정답 기록이 없으면 복습 세션 생성 불가
+        if (selectedQuestions.isEmpty()) {
+            throw new BusinessLogicException("No answer history found. Cannot create review session.");
+        }
+        
+        // 5단계: 세션 정보 업데이트 및 저장
+        session.setTotalQuestions(selectedQuestions.size());
+        LearningSession savedSession = learningSessionRepository.save(session);
+        
+        // 6단계: 새로운 문제들을 세션에 연결
+        if (!selectedQuestions.isEmpty()) {
+            List<String> questionIds = selectedQuestions.stream()
+                    .map(Question::getQuestionId)
+                    .collect(Collectors.toList());
+            sessionQuestionService.createSessionQuestions(sessionId, questionIds);
+        }
+
+        return convertToResponseDto(savedSession);
+    }
+
+    /**
+     * 사용자의 학습 이력을 기반으로 복습 세션 생성 (기존 메서드 - 하위 호환성 유지)
      * 이전에 정답을 맞힌 문제들 중에서 복습이 필요한 문제들을 선별하여 세션 구성
      * @param createDto 세션 생성 정보 (사용자 ID, 카테고리 목록, 메타데이터)
      * @return 생성된 복습 세션 정보와 할당된 문제 수
@@ -561,7 +643,141 @@ public class LearningSessionService extends BaseService {
     }
 
     /**
-     * 사용자의 정답 기록에서 복습이 필요한 문제들을 선별
+     * 사용자의 학습 분석 데이터를 기반으로 복습 문제 선별
+     * 맞힌 문제(최근) + 틀린 문제(약한 영역)로 구성
+     * @param userId 사용자 식별자
+     * @param categories 대상 카테고리 목록
+     * @param analysisData 학습 분석 데이터
+     * @param correctCount 맞힌 문제 개수
+     * @param wrongCount 틀린 문제 개수
+     * @return 복습 대상 문제 목록
+     */
+    private List<Question> selectQuestionsForReviewWithAnalysis(
+            String userId, 
+            List<String> categories, 
+            CompleteLearningAnalysis analysisData,
+            int correctCount,
+            int wrongCount) {
+        
+        List<Question> selectedQuestions = new ArrayList<>();
+        
+        // 1. 맞힌 문제 7개: 가장 최근에 풀었던 문제 선택
+        List<Question> correctQuestions = selectRecentCorrectQuestions(userId, categories, correctCount);
+        selectedQuestions.addAll(correctQuestions);
+        
+        // 2. 틀린 문제 3개: 약한 영역에 대한 문제 선택
+        List<Question> weakAreaQuestions = selectWeakAreaQuestions(userId, categories, analysisData, wrongCount);
+        selectedQuestions.addAll(weakAreaQuestions);
+        
+        return selectedQuestions;
+    }
+
+    /**
+     * 가장 최근에 맞힌 문제들을 선택
+     * @param userId 사용자 식별자
+     * @param categories 대상 카테고리 목록
+     * @param count 선택할 문제 수
+     * @return 최근에 맞힌 문제 목록
+     */
+    private List<Question> selectRecentCorrectQuestions(String userId, List<String> categories, int count) {
+        // 사용자가 이전에 정답을 맞힌 문제들 조회 (카테고리별, 최근 순서)
+        List<QuestionAnswer> correctAnswers = questionAnswerRepository
+            .findByUserIdAndCategoriesAndIsCorrect(userId, categories, true);
+        
+        if (correctAnswers.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // 각 문제의 가장 최근 정답 기록을 기준으로 사용
+        Map<String, QuestionAnswer> questionToLatestAnswer = correctAnswers.stream()
+            .collect(Collectors.toMap(
+                QuestionAnswer::getQuestionId,
+                qa -> qa,
+                (existing, replacement) -> 
+                    existing.getAnsweredAt().isAfter(replacement.getAnsweredAt()) ? existing : replacement
+            ));
+        
+        // 최근 순서로 정렬 (가장 최근에 맞힌 문제를 먼저)
+        return questionToLatestAnswer.values().stream()
+            .sorted((qa1, qa2) -> qa2.getAnsweredAt().compareTo(qa1.getAnsweredAt())) // 최근 순서
+            .map(qa -> questionRepository.findById(qa.getQuestionId()).orElse(null))
+            .filter(Objects::nonNull)
+            .limit(count)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 약한 영역에 대한 문제들을 선택
+     * @param userId 사용자 식별자
+     * @param categories 대상 카테고리 목록
+     * @param analysisData 학습 분석 데이터
+     * @param count 선택할 문제 수
+     * @return 약한 영역 문제 목록
+     */
+    private List<Question> selectWeakAreaQuestions(
+            String userId, 
+            List<String> categories, 
+            CompleteLearningAnalysis analysisData,
+            int count) {
+        
+        // 1. 약한 문제 유형 추출
+        List<QuestionType> weakQuestionTypes = analysisData.getWeakQuestionTypes();
+        if (weakQuestionTypes == null || weakQuestionTypes.isEmpty()) {
+            // 약한 문제 유형이 없으면 questionTypePerformances에서 찾기
+            if (analysisData.getQuestionTypePerformances() != null) {
+                weakQuestionTypes = analysisData.getQuestionTypePerformances().entrySet().stream()
+                    .filter(entry -> entry.getValue() != null && entry.getValue().isWeakArea())
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+            }
+        }
+        
+        // final 변수로 만들어서 람다에서 사용 가능하도록
+        final List<QuestionType> finalWeakQuestionTypes = weakQuestionTypes != null ? weakQuestionTypes : new ArrayList<>();
+        
+        // 2. 약한 영역 카테고리 추출 (focusAreas 활용)
+        List<String> weakCategories = analysisData.getFocusAreas();
+        if (weakCategories == null || weakCategories.isEmpty()) {
+            // focusAreas가 없으면 전체 카테고리 사용
+            weakCategories = categories;
+        } else {
+            // focusAreas를 DB 카테고리 형식으로 변환
+            weakCategories = com.problemservice.ProblemService.util.CategoryMapper.toDbCategories(weakCategories);
+        }
+        
+        // 3. 사용자가 틀린 문제들 중에서 약한 영역 문제 선택
+        List<QuestionAnswer> wrongAnswers = questionAnswerRepository
+            .findWrongAnswersByUserIdAndCategories(userId, weakCategories);
+        
+        if (wrongAnswers.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // 4. 약한 문제 유형으로 필터링 (있는 경우)
+        List<QuestionAnswer> filteredWrongAnswers = wrongAnswers;
+        if (!finalWeakQuestionTypes.isEmpty()) {
+            filteredWrongAnswers = wrongAnswers.stream()
+                .filter(qa -> {
+                    Question question = questionRepository.findById(qa.getQuestionId()).orElse(null);
+                    if (question == null) return false;
+                    // QuestionType enum을 문자열로 변환하여 비교
+                    String questionTypeStr = question.getQuestionType();
+                    return finalWeakQuestionTypes.stream()
+                        .anyMatch(weakType -> weakType.name().equals(questionTypeStr));
+                })
+                .collect(Collectors.toList());
+        }
+        
+        // 5. 틀린 횟수가 많고 최근에 틀린 문제 우선 선택
+        return filteredWrongAnswers.stream()
+            .map(qa -> questionRepository.findById(qa.getQuestionId()).orElse(null))
+            .filter(Objects::nonNull)
+            .limit(count)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 사용자의 정답 기록에서 복습이 필요한 문제들을 선별 (기존 메서드 - 하위 호환성 유지)
      * 이전에 맞힌 문제들 중 시간이 지난 문제들을 우선적으로 선택
      * @param userId 사용자 식별자
      * @param categories 대상 카테고리 목록
@@ -578,15 +794,19 @@ public class LearningSessionService extends BaseService {
         }
         
         // 2. 정답을 맞힌 문제들을 Question 엔티티로 변환 (중복 제거)
-        Map<String, Question> uniqueQuestions = correctAnswers.stream()
+        // 각 문제의 가장 오래된 정답 기록을 기준으로 사용 (오래된 문제를 우선 복습)
+        Map<String, QuestionAnswer> questionToOldestAnswer = correctAnswers.stream()
             .collect(Collectors.toMap(
                 QuestionAnswer::getQuestionId,
-                qa -> questionRepository.findById(qa.getQuestionId()).orElse(null),
-                (existing, replacement) -> existing  // 중복 시 기존 값 유지
+                qa -> qa,
+                (existing, replacement) -> 
+                    existing.getAnsweredAt().isBefore(replacement.getAnsweredAt()) ? existing : replacement
             ));
         
-        // 3. null 값 제거 및 복습 우선순위 적용 (최근 학습한 문제를 나중에 배치)
-        List<Question> reviewQuestions = uniqueQuestions.values().stream()
+        // 3. 오래된 순서로 정렬 (가장 오래 전에 맞힌 문제를 먼저 복습)
+        List<Question> reviewQuestions = questionToOldestAnswer.values().stream()
+            .sorted((qa1, qa2) -> qa1.getAnsweredAt().compareTo(qa2.getAnsweredAt())) // 오래된 순서
+            .map(qa -> questionRepository.findById(qa.getQuestionId()).orElse(null))
             .filter(Objects::nonNull)
             .limit(questionCount)
             .collect(Collectors.toList());

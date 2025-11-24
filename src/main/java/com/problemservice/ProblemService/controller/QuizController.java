@@ -51,16 +51,25 @@ public class QuizController {
      * 사용자의 복습 가능한 문제 목록 조회 (정답 맞힌 문제들)
      * 
      * @param userId 사용자 ID (Query Parameter)
-     * @return 복습 가능한 문제 목록
+     * @return 복습 가능한 문제 목록 (답안 정보 포함)
      */
     @GetMapping("/review")
     public ResponseEntity<List<QuestionResponseDto>> getReviewQuestions(@RequestParam String userId) {
         // 1. 사용자의 모든 정답 기록 조회
         List<QuestionAnswerResponseDto> correctAnswers = questionAnswerService.getCorrectAnswersByUserId(userId);
         
-        // 2. 정답 기록 -> 문제 정보 변환 (중복 제거)
+        // 2. 정답 기록 -> 문제 정보 변환 (답안 정보 포함, 중복 제거)
         List<QuestionResponseDto> reviewQuestionList = correctAnswers.stream()
-                .map(answer -> questionService.getQuestionById(answer.getQuestionId()))
+                .map(answer -> {
+                    QuestionResponseDto question = questionService.getQuestionById(answer.getQuestionId());
+                    // 답안 정보 추가
+                    question.setUserAnswer(answer.getUserAnswer());
+                    question.setUserAnswerText(answer.getUserAnswerText());
+                    question.setCorrectAnswerText(answer.getCorrectAnswerText());
+                    question.setIsCorrect(answer.getIsCorrect());
+                    question.setAnsweredAt(answer.getAnsweredAt());
+                    return question;
+                })
                 .distinct() // 중복 문제 제거
                 .collect(Collectors.toList());
         
@@ -71,16 +80,25 @@ public class QuizController {
      * 사용자의 틀린 문제 목록 조회
      * 
      * @param userId 사용자 ID
-     * @return 틀린 문제 목록
+     * @return 틀린 문제 목록 (답안 정보 포함)
      */
     @GetMapping("/users/{userId}/wrong-questions")
     public ResponseEntity<List<QuestionResponseDto>> getUserWrongQuestions(@PathVariable String userId) {
         // 1. 사용자의 모든 오답 기록 조회
         List<QuestionAnswerResponseDto> wrongAnswers = questionAnswerService.getWrongAnswersByUserId(userId);
         
-        // 2. 오답 기록 -> 문제 정보 변환 (중복 제거)
+        // 2. 오답 기록 -> 문제 정보 변환 (답안 정보 포함, 중복 제거)
         List<QuestionResponseDto> wrongQuestionList = wrongAnswers.stream()
-                .map(answer -> questionService.getQuestionById(answer.getQuestionId()))
+                .map(answer -> {
+                    QuestionResponseDto question = questionService.getQuestionById(answer.getQuestionId());
+                    // 답안 정보 추가
+                    question.setUserAnswer(answer.getUserAnswer());
+                    question.setUserAnswerText(answer.getUserAnswerText());
+                    question.setCorrectAnswerText(answer.getCorrectAnswerText());
+                    question.setIsCorrect(answer.getIsCorrect());
+                    question.setAnsweredAt(answer.getAnsweredAt());
+                    return question;
+                })
                 .distinct() // 중복 문제 제거
                 .collect(Collectors.toList());
         

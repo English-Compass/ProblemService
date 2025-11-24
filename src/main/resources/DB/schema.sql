@@ -187,7 +187,7 @@ CREATE INDEX idx_up_updated_at ON user_profiles(updated_at);
 
 -- Kafka 이벤트 로그 테이블 (Problem Service 전용)
 -- 다른 서비스와 구분되도록 problem_service_ 접두사 사용
-CREATE TABLE problem_service_event_log (
+CREATE TABLE IF NOT EXISTS problem_service_event_log (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '이벤트 로그 식별자',
     
     -- 이벤트 기본 정보

@@ -1,9 +1,11 @@
 package com.problemservice.ProblemService.service;
 
 import com.problemservice.ProblemService.model.entity.Question;
+import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
 import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
 import com.problemservice.ProblemService.model.dto.QuestionResponseDto;
+import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.repository.SessionQuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +32,8 @@ public class SessionQuestionService {
     private final SessionQuestionRepository sessionQuestionRepository;
     // 문제 존재 여부 확인을 위한 레포지토리
     private final QuestionRepository questionRepository;
+    // 답안 정보 조회를 위한 레포지토리
+    private final QuestionAnswerRepository questionAnswerRepository;
 
     /**
      * 특정 세션의 모든 문제를 순서대로 조회
@@ -137,32 +142,41 @@ public class SessionQuestionService {
     /**
      * 특정 세션의 모든 문제를 DTO 형태로 조회
      * Fetch Join을 사용하여 N+1 문제 해결
-     * 단계: 1) Question과 함께 세션 문제 조회 2) DTO로 변환
+     * 단계: 1) Question과 함께 세션 문제 조회 2) 세션의 답안 정보 조회 3) DTO로 변환 (답안 정보 포함)
      * 입력: 세션 ID
-     * 출력: SessionQuestionResponseDto 목록
+     * 출력: SessionQuestionResponseDto 목록 (답안 정보 포함)
      */
     public List<SessionQuestionResponseDto> getSessionQuestionsAsDto(String sessionId) {
         // 1단계: Fetch Join을 사용하여 Question과 함께 조회 (N+1 문제 해결)
         List<SessionQuestion> sessionQuestions = sessionQuestionRepository.findBySessionIdWithQuestionOrderByQuestionOrder(sessionId);
         
-        // 2단계: 각 SessionQuestion을 DTO로 변환
+        // 2단계: 세션의 모든 답안 정보 조회 (questionId를 키로 하는 Map 생성)
+        List<QuestionAnswer> sessionAnswers = questionAnswerRepository.findBySessionId(sessionId);
+        Map<String, QuestionAnswer> answerMap = sessionAnswers.stream()
+                .collect(Collectors.toMap(
+                    QuestionAnswer::getQuestionId,
+                    answer -> answer,
+                    (existing, replacement) -> existing  // 중복 시 첫 번째 답안 유지
+                ));
+        
+        // 3단계: 각 SessionQuestion을 DTO로 변환 (답안 정보 포함)
         return sessionQuestions.stream()
-                .map(this::convertToDtoWithQuestion)
+                .map(sq -> convertToDtoWithQuestion(sq, answerMap.get(sq.getQuestionId())))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Fetch Join으로 조회된 SessionQuestion을 DTO로 변환
+     * Fetch Join으로 조회된 SessionQuestion을 DTO로 변환 (답안 정보 포함)
      * 이미 로딩된 Question 엔티티를 활용하여 효율적으로 변환
-     * 입력: SessionQuestion 엔티티 (Question 포함)
-     * 출력: SessionQuestionResponseDto
+     * 입력: SessionQuestion 엔티티 (Question 포함), QuestionAnswer 엔티티 (선택적)
+     * 출력: SessionQuestionResponseDto (답안 정보 포함)
      */
-    private SessionQuestionResponseDto convertToDtoWithQuestion(SessionQuestion sessionQuestion) {
+    private SessionQuestionResponseDto convertToDtoWithQuestion(SessionQuestion sessionQuestion, QuestionAnswer questionAnswer) {
         // 이미 Fetch Join으로 로딩된 Question 엔티티 사용
         QuestionResponseDto questionDto = null;
         Question question = sessionQuestion.getQuestion();
         if (question != null) {
-            questionDto = buildQuestionResponseDto(question);
+            questionDto = buildQuestionResponseDto(question, questionAnswer);
         }
 
         // SessionQuestionResponseDto 생성
@@ -177,13 +191,13 @@ public class SessionQuestionService {
     }
 
     /**
-     * Question 엔티티를 QuestionResponseDto로 변환하는 헬퍼 메소드
+     * Question 엔티티를 QuestionResponseDto로 변환하는 헬퍼 메소드 (답안 정보 포함)
      * 중복 코드를 제거하고 일관성 있는 변환 로직 제공
-     * 입력: Question 엔티티
-     * 출력: QuestionResponseDto
+     * 입력: Question 엔티티, QuestionAnswer 엔티티 (선택적 - 답안이 제출된 경우)
+     * 출력: QuestionResponseDto (답안 정보 포함)
      */
-    private QuestionResponseDto buildQuestionResponseDto(Question question) {
-        return QuestionResponseDto.builder()
+    private QuestionResponseDto buildQuestionResponseDto(Question question, QuestionAnswer questionAnswer) {
+        QuestionResponseDto.QuestionResponseDtoBuilder builder = QuestionResponseDto.builder()
                 .questionId(question.getQuestionId())
                 .questionText(question.getQuestionText())
                 .optionA(question.getOptionA())
@@ -196,8 +210,18 @@ public class SessionQuestionService {
                 .explanation(question.getExplanation())
                 .difficultyLevel(question.getDifficultyLevel())
                 .createdAt(question.getCreatedAt())
-                .updatedAt(question.getUpdatedAt())
-                .build();
+                .updatedAt(question.getUpdatedAt());
+        
+        // 답안 정보가 있으면 포함
+        if (questionAnswer != null) {
+            builder.userAnswer(questionAnswer.getUserAnswer())
+                   .userAnswerText(questionAnswer.getUserAnswerText())
+                   .correctAnswerText(questionAnswer.getCorrectAnswerText())
+                   .isCorrect(questionAnswer.getIsCorrect())
+                   .answeredAt(questionAnswer.getAnsweredAt());
+        }
+        
+        return builder.build();
     }
 
     /**

@@ -9,6 +9,10 @@ import com.problemservice.ProblemService.model.dto.SessionAnswerRequestDto;
 import com.problemservice.ProblemService.model.dto.SessionQuestionResponseDto;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionStatus;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
+import com.problemservice.ProblemService.exception.EntityNotFoundException;
+import com.problemservice.ProblemService.model.entity.Question;
+import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
+import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.service.LearningSessionService;
 import com.problemservice.ProblemService.service.QuestionAnswerService;
 import com.problemservice.ProblemService.service.SessionQuestionService;
@@ -37,6 +41,8 @@ public class LearningSessionController {
     private final LearningSessionService learningSessionService;
     private final SessionQuestionService sessionQuestionService;
     private final QuestionAnswerService questionAnswerService;
+    private final QuestionRepository questionRepository;
+    private final QuestionAnswerRepository questionAnswerRepository;
 
     /**
      * 새로운 학습 세션을 생성하고 문제를 할당
@@ -213,20 +219,21 @@ public class LearningSessionController {
     /**
      * 세션에 답변을 제출합니다 (답변 리소스 생성)
      * 
-     * 1. question_answer 테이블에 답변 기록 저장
-     * 2. learning_sessions 테이블의 통계 업데이트
+     * 1. 문제의 correctAnswer와 userAnswer를 비교하여 isCorrect 계산
+     * 2. question_answer 테이블에 답변 기록 저장
+     * 3. learning_sessions 테이블의 통계 업데이트
      * 
      * @param sessionId 답변을 제출할 학습 세션의 고유 식별자
-     * @param answerDto 답변 데이터 (questionId, userAnswer, isCorrect, timeSpent, solveCount)
+     * @param answerDto 답변 데이터 (questionId, userAnswer, timeSpent, solveCount)
      * 
      * Request Body 예시:
      * {
      *   "questionId": "business-customer-service-conversation-A-1",
      *   "userAnswer": "A",
-     *   "isCorrect": true,
-     *   "timeSpent": 35,
-     *   "solveCount": 1
+     *   "timeSpent": 35
      * }
+     * 
+     * Note: isCorrect와 solveCount는 백엔드에서 자동 계산됩니다.
      * @return 업데이트된 세션 정보 (201 Created)
      */
     @PostMapping("/{sessionId}/answers")
@@ -237,27 +244,67 @@ public class LearningSessionController {
         // 1. 세션 정보 조회 (userId와 sessionType 필요)
         LearningSessionResponseDto sessionInfo = learningSessionService.getLearningSessionById(sessionId);
         
-        // 2. QuestionAnswer 생성 (question_answer 테이블에 저장)
+        // 2. 문제 정보 조회하여 correctAnswer 확인
+        Question question = questionRepository.findById(answerDto.getQuestionId())
+                .orElseThrow(() -> new EntityNotFoundException("Question", answerDto.getQuestionId()));
+        
+        // 3. userAnswer와 correctAnswer를 비교하여 isCorrect 계산
+        // A/B/C를 정규화하여 비교 (QuestionAnswerService와 동일한 로직)
+        String normalizedUserAnswer = normalizeAnswer(answerDto.getUserAnswer().trim());
+        String normalizedCorrectAnswer = normalizeAnswer(question.getCorrectAnswer());
+        boolean isCorrect = normalizedCorrectAnswer.equals(normalizedUserAnswer);
+        
+        // 4. 사용자가 이 문제를 푼 횟수 계산 (기존 답안 기록 개수 + 1)
+        int solveCount = questionAnswerRepository.findByUserIdAndQuestionId(
+                sessionInfo.getUserId(), 
+                answerDto.getQuestionId()
+        ).size() + 1;
+        
+        // 5. QuestionAnswer 생성 (question_answer 테이블에 저장)
         QuestionAnswerCreateDto questionAnswerDto = QuestionAnswerCreateDto.builder()
                 .sessionId(sessionId)
                 .questionId(answerDto.getQuestionId())
                 .sessionType(sessionInfo.getSessionType().name())
                 .userAnswer(answerDto.getUserAnswer())
-                .isCorrect(answerDto.getIsCorrect())
+                .isCorrect(isCorrect)  // 백엔드에서 계산한 값
                 .timeSpent(answerDto.getTimeSpent())
-                .solveCount(answerDto.getSolveCount() != null ? answerDto.getSolveCount() : 1)
+                .solveCount(solveCount)  // 백엔드에서 계산한 값
                 .build();
         
         questionAnswerService.createQuestionAnswer(questionAnswerDto, sessionInfo.getUserId());
         
-        // 3. 세션 통계 업데이트 (learning_sessions 테이블)
+        // 5. 세션 통계 업데이트 (learning_sessions 테이블)
         LearningSessionResponseDto session = learningSessionService.updateSessionProgress(
                 sessionId, 
-                answerDto.getIsCorrect()
+                isCorrect
         );
         
         // 답변 리소스 생성이므로 201 Created 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(session);
+    }
+    
+    /**
+     * 답안을 정규화 (A/B/C를 1/2/3으로 변환)
+     * QuestionAnswerService와 동일한 로직
+     */
+    private String normalizeAnswer(String answer) {
+        if (answer == null) {
+            return null;
+        }
+        switch (answer.toUpperCase()) {
+            case "A":
+                return "1";
+            case "B":
+                return "2";
+            case "C":
+                return "3";
+            case "1":
+            case "2":
+            case "3":
+                return answer; // 이미 숫자인 경우
+            default:
+                throw new IllegalArgumentException("유효하지 않은 답안 형식: " + answer + " (A, B, C 또는 1, 2, 3만 허용)");
+        }
     }
 
     /**

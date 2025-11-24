@@ -4,6 +4,9 @@ import com.problemservice.ProblemService.model.dto.UserProfileEvent;
 import com.problemservice.ProblemService.model.entity.KafkaEventLog;
 import com.problemservice.ProblemService.service.KafkaEventLogService;
 import com.problemservice.ProblemService.service.UserProfileService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +17,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import jakarta.annotation.PostConstruct;
 
 /**
  * UserService로부터 사용자 프로필 업데이트 이벤트를 구독하는 Kafka Consumer
@@ -29,10 +33,16 @@ public class UserProfileEventConsumer {
     private final UserProfileService userProfileService;
     private final KafkaEventLogService kafkaEventLogService;
 
+    @PostConstruct
+    public void init() {
+        log.info("UserProfileEventConsumer initialized - ready to consume from topic: user-profile-events");
+    }
+
     /**
      * user-profile-events 토픽에서 사용자 프로필 업데이트 이벤트를 구독
+     * UserService가 StringSerializer로 JSON 문자열을 보내므로, String으로 받아서 수동 파싱
      * 
-     * @param event 사용자 프로필 이벤트
+     * @param message JSON 문자열 메시지
      * @param partition Kafka 파티션 번호
      * @param offset Kafka 오프셋
      * @param acknowledgment 수동 커밋을 위한 Acknowledgment
@@ -43,14 +53,20 @@ public class UserProfileEventConsumer {
         containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeUserProfileEvent(
-            @Payload UserProfileEvent event,
+            @Payload String message,
             @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
             @Header(KafkaHeaders.OFFSET) long offset,
             Acknowledgment acknowledgment) {
 
         KafkaEventLog eventLog = null;
+        UserProfileEvent event = null;
 
         try {
+            // UserService가 StringSerializer로 보낸 JSON 문자열을 파싱
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            event = mapper.readValue(message, UserProfileEvent.class);
+            
             log.info("Received user profile event: type={}, userId={}, partition={}, offset={}", 
                     event.getEventType(), event.getUserId(), partition, offset);
 
@@ -92,9 +108,14 @@ public class UserProfileEventConsumer {
             // 5. 메시지 처리 완료 확인
             acknowledgment.acknowledge();
 
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse user profile event JSON: message={}, error={}", message, e.getMessage(), e);
+            // JSON 파싱 실패 시에도 acknowledge하여 무한 재시도 방지
+            acknowledgment.acknowledge();
         } catch (Exception e) {
             log.error("Failed to process user profile event: userId={}, type={}", 
-                    event.getUserId(), event.getEventType(), e);
+                    event != null ? event.getUserId() : "unknown", 
+                    event != null ? event.getEventType() : "unknown", e);
 
             // 이벤트 처리 실패 상태로 업데이트
             if (eventLog != null) {
