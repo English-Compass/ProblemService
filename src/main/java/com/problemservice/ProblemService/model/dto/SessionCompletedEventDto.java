@@ -30,14 +30,6 @@ public class SessionCompletedEventDto {
     private SessionType sessionType;
     // 세션 완료 시간
     private LocalDateTime completedAt;
-    // 세션에 포함된 총 문제 개수
-    private Integer totalQuestions;
-    // 사용자가 맞힌 정답 개수
-    private Integer correctAnswers;
-    // 사용자가 틀린 오답 개수
-    private Integer wrongAnswers;
-    // 세션 완료 시점의 진행률 (0.0 ~ 100.0 퍼센트)
-    private Double progressPercentage;
     // 이벤트 발생 시간 (현재 시간)
     private LocalDateTime eventTimestamp;
 }

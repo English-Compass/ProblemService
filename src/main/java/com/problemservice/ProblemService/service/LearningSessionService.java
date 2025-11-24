@@ -855,10 +855,6 @@ public class LearningSessionService extends BaseService {
                 .userId(session.getUserId())
                 .sessionType(session.getSessionType())
                 .completedAt(session.getCompletedAt())
-                .totalQuestions(session.getTotalQuestions())
-                .correctAnswers(session.getCorrectAnswers())
-                .wrongAnswers(session.getWrongAnswers())
-                .progressPercentage(session.getProgressPercentage())
                 .build();
                 
         if (eventPublisherService != null) {
