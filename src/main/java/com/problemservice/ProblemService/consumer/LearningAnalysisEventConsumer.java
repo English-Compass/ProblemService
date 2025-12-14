@@ -2,8 +2,8 @@ package com.problemservice.ProblemService.consumer;
 
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysis;
 import com.problemservice.ProblemService.model.dto.CompleteLearningAnalysisEvent;
-import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.entity.KafkaEventLog;
+import com.problemservice.ProblemService.model.dto.LearningSessionCreateDto;
 import com.problemservice.ProblemService.model.entity.LearningSession.SessionType;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
@@ -166,8 +166,10 @@ public class LearningAnalysisEventConsumer {
     
     /**
      * 사용자의 답안 기록에 따라 추천 세션을 자동 생성
+     * 기존 LearningSessionService의 세션 생성 메서드를 활용
+     * 
      * @param userId 사용자 ID
-     * @param analysisData 분석 데이터
+     * @param analysisData 학습 분석 데이터
      */
     private void createRecommendedSessions(String userId, CompleteLearningAnalysis analysisData) {
         try {
@@ -179,7 +181,15 @@ public class LearningAnalysisEventConsumer {
                 .findByUserIdAndCategoriesAndIsCorrect(userId, allCategories, true);
             
             if (!correctAnswers.isEmpty()) {
-                createReviewSession(userId, allCategories, analysisData);
+                LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
+                    .userId(userId)
+                    .sessionType(SessionType.REVIEW)
+                    .categories(allCategories)
+                    .sessionMetadata("Auto-generated review session from learning analysis")
+                    .build();
+                    
+                learningSessionService.createReviewSession(createDto, analysisData);
+                log.info("Auto-generated review session created for user: {} with analysis data", userId);
             }
             
             // 오답 기록이 있으면 오답노트 세션 생성
@@ -187,52 +197,19 @@ public class LearningAnalysisEventConsumer {
                 .findWrongAnswersByUserIdAndCategories(userId, allCategories);
             
             if (!wrongAnswers.isEmpty()) {
-                createWrongAnswerSession(userId, allCategories);
+                LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
+                    .userId(userId)
+                    .sessionType(SessionType.WRONG_ANSWER)
+                    .categories(allCategories)
+                    .sessionMetadata("Auto-generated wrong answer session")
+                    .build();
+                    
+                learningSessionService.createWrongAnswerSession(createDto);
+                log.info("Auto-generated wrong answer session created for user: {}", userId);
             }
             
         } catch (Exception e) {
             log.error("Failed to create recommended sessions for user: {}", userId, e);
-        }
-    }
-    
-    /**
-     * 복습 세션 자동 생성 (분석 데이터 포함)
-     * 맞힌 문제 7개(최근) + 틀린 문제 3개(약한 영역)로 구성
-     */
-    private void createReviewSession(String userId, List<String> categories, CompleteLearningAnalysis analysisData) {
-        try {
-            LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
-                .userId(userId)
-                .sessionType(SessionType.REVIEW)
-                .categories(categories)
-                .sessionMetadata("Auto-generated review session from learning analysis")
-                .build();
-                
-            learningSessionService.createReviewSession(createDto, analysisData);
-            log.info("Auto-generated review session created for user: {} with analysis data", userId);
-            
-        } catch (Exception e) {
-            log.warn("Could not auto-create review session for user: {} - {}", userId, e.getMessage());
-        }
-    }
-    
-    /**
-     * 오답노트 세션 자동 생성
-     */
-    private void createWrongAnswerSession(String userId, List<String> categories) {
-        try {
-            LearningSessionCreateDto createDto = LearningSessionCreateDto.builder()
-                .userId(userId)
-                .sessionType(SessionType.WRONG_ANSWER)
-                .categories(categories)
-                .sessionMetadata("Auto-generated wrong answer session")
-                .build();
-                
-            learningSessionService.createWrongAnswerSession(createDto);
-            log.info("Auto-generated wrong answer session created for user: {}", userId);
-            
-        } catch (Exception e) {
-            log.warn("Could not auto-create wrong answer session for user: {} - {}", userId, e.getMessage());
         }
     }
 }
