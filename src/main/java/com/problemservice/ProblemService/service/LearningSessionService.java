@@ -14,6 +14,7 @@ import com.problemservice.ProblemService.model.entity.LearningSession.SessionTyp
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
+import com.problemservice.ProblemService.model.entity.UserProfile;
 import com.problemservice.ProblemService.repository.LearningSessionRepository;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
@@ -55,6 +56,7 @@ public class LearningSessionService extends BaseService {
     private final SessionQuestionService sessionQuestionService;
     private final QuestionAnswerRepository questionAnswerRepository;
     private final QuestionIdCacheService questionIdCacheService;
+    private final UserProfileService userProfileService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -277,13 +279,34 @@ public class LearningSessionService extends BaseService {
         List<String> majorCategories = metadata.getMajorCategories();
         List<String> keywords = metadata.getKeywords();
         
+        // Fallback to UserProfile DB if metadata doesn't have categories
         if ((majorCategories == null || majorCategories.isEmpty()) && 
             (keywords == null || keywords.isEmpty())) {
-            throw new IllegalArgumentException("At least one category (major or minor) must be selected");
+            UserProfile userProfile = userProfileService.getUserProfile(createDto.getUserId());
+            if (userProfile != null && userProfile.getSelectedCategories() != null) {
+                // Use categories from DB
+                log.info("Using categories from UserProfile DB for user: {}", createDto.getUserId());
+                majorCategories = userProfileService.getSelectedCategories(createDto.getUserId());
+            }
+            
+            if ((majorCategories == null || majorCategories.isEmpty()) && 
+                (keywords == null || keywords.isEmpty())) {
+                throw new IllegalArgumentException("At least one category (major or minor) must be selected");
+            }
         }
         
-        // Use user level from metadata or default to 2 (intermediate)
+        // Use user level from metadata, or fallback to UserProfile DB, or default to 2 (intermediate)
         Integer userLevel = mapLevelToInteger(metadata.getLevel());
+        if (userLevel == null || userLevel == 2) {  // 2 is default, might need DB value
+            UserProfile userProfile = userProfileService.getUserProfile(createDto.getUserId());
+            if (userProfile != null && userProfile.getDifficultyLevel() != null) {
+                userLevel = userProfile.getDifficultyLevel();
+                log.info("Using difficulty level from UserProfile DB for user: {}, level: {}", 
+                        createDto.getUserId(), userLevel);
+            } else if (userLevel == null) {
+                userLevel = 2;  // Final fallback
+            }
+        }
         
         // Normalize categories to DB format (ko → en, lower-case)
         java.util.List<String> normalizedCategories = majorCategories != null && !majorCategories.isEmpty()
