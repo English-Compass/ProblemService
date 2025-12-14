@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 학습 분석 서비스에서 사용할 내부 세션 조회 API.
  */
 @RestController
-@RequestMapping("/problem/internal/sessions")
+@RequestMapping("/api/problem/internal/sessions")
 @RequiredArgsConstructor
 @Validated
 public class InternalSessionController {
