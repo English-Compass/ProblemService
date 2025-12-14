@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 사용자 프로필 관리 서비스
@@ -222,24 +224,42 @@ public class UserProfileService {
     }
 
     /**
-     * 사용자의 선택된 카테고리 조회 (JSON 파싱)
+     * 사용자의 선택된 카테고리 조회 (JSON 파싱) - Map 형식
      * @param userId 사용자 ID
-     * @return 카테고리 리스트
+     * @return 카테고리 Map (예: {"TRAVEL": ["BACKPACKING"], "STUDY": ["CLASS_LISTENING"]})
      */
     @Transactional(readOnly = true)
-    public List<String> getSelectedCategories(String userId) {
+    public Map<String, List<String>> getSelectedCategoriesMap(String userId) {
         UserProfile profile = getUserProfile(userId);
         if (profile == null || profile.getSelectedCategories() == null) {
-            return List.of();
+            return Map.of();
         }
 
         try {
             return objectMapper.readValue(profile.getSelectedCategories(), 
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+                    objectMapper.getTypeFactory().constructMapType(java.util.HashMap.class, 
+                            objectMapper.getTypeFactory().constructType(String.class),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, String.class)));
         } catch (JsonProcessingException e) {
-            log.error("Failed to parse selected categories for userId: {}", userId, e);
+            log.error("Failed to parse selected categories map for userId: {}", userId, e);
+            return Map.of();
+        }
+    }
+
+    /**
+     * 사용자의 선택된 카테고리 조회 (JSON 파싱) - 대분류만 추출
+     * @param userId 사용자 ID
+     * @return 대분류 카테고리 리스트 (예: ["TRAVEL", "STUDY"])
+     */
+    @Transactional(readOnly = true)
+    public List<String> getSelectedCategories(String userId) {
+        Map<String, List<String>> categoriesMap = getSelectedCategoriesMap(userId);
+        if (categoriesMap.isEmpty()) {
             return List.of();
         }
+        
+        // Map의 key들(대분류)을 리스트로 반환
+        return new ArrayList<>(categoriesMap.keySet());
     }
 
     /**
