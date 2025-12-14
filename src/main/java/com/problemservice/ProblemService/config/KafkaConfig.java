@@ -100,6 +100,9 @@ public class KafkaConfig {
         factory.getContainerProperties().setAckMode(org.springframework.kafka.listener.ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         factory.getContainerProperties().setPollTimeout(3000L);
         factory.setCommonErrorHandler(kafkaErrorHandler());
+        
+        log.info("KafkaListenerContainerFactory configured - groupId: {}, bootstrapServers: {}", groupId, bootstrapServers);
+        
         return factory;
     }
     
@@ -122,20 +125,6 @@ public class KafkaConfig {
         return errorHandler;
     }
 
-    /**
-     * Kafka 토픽 구성
-     */
-    @Bean
-    @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-    public NewTopic learningSessionStartedTopic() {
-        return TopicBuilder.name("learning-session-started")
-                .partitions(3)
-                .replicas(1)
-                .config("retention.ms", "604800000") // 7 days
-                .config("compression.type", "lz4")
-                .build();
-    }
-
     @Bean
     @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
     public NewTopic learningSessionCompletedTopic() {
@@ -143,17 +132,6 @@ public class KafkaConfig {
                 .partitions(3)
                 .replicas(1)
                 .config("retention.ms", "2592000000") // 30 days
-                .config("compression.type", "lz4")
-                .build();
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-    public NewTopic learningQuestionAnsweredTopic() {
-        return TopicBuilder.name("learning-question-answered")
-                .partitions(6)
-                .replicas(1)
-                .config("retention.ms", "604800000") // 7 days
                 .config("compression.type", "lz4")
                 .build();
     }
