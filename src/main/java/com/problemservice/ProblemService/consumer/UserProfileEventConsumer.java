@@ -3,6 +3,7 @@ package com.problemservice.ProblemService.consumer;
 import com.problemservice.ProblemService.model.dto.UserProfileEvent;
 import com.problemservice.ProblemService.model.entity.KafkaEventLog;
 import com.problemservice.ProblemService.service.KafkaEventLogService;
+import com.problemservice.ProblemService.service.QuestionAssignmentService;
 import com.problemservice.ProblemService.service.UserProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,6 +20,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * UserService로부터 사용자 프로필 업데이트 이벤트를 구독하는 Kafka Consumer
  * 사용자가 프로필을 업데이트할 때마다 해당 정보를 받아 ProblemService의 UserProfile에 반영
@@ -32,10 +36,12 @@ public class UserProfileEventConsumer {
 
     private final UserProfileService userProfileService;
     private final KafkaEventLogService kafkaEventLogService;
+    private final QuestionAssignmentService questionAssignmentService;
 
     @PostConstruct
     public void init() {
         log.info("UserProfileEventConsumer initialized - ready to consume from topic: user-profile-events");
+        log.info("Consumer configuration - groupId: problem-service-group, containerFactory: kafkaListenerContainerFactory");
     }
 
     /**
@@ -58,6 +64,9 @@ public class UserProfileEventConsumer {
             @Header(KafkaHeaders.OFFSET) long offset,
             Acknowledgment acknowledgment) {
 
+        log.debug("Kafka listener invoked - partition: {}, offset: {}, message length: {}", 
+                partition, offset, message != null ? message.length() : 0);
+        
         KafkaEventLog eventLog = null;
         UserProfileEvent event = null;
 
@@ -67,7 +76,7 @@ public class UserProfileEventConsumer {
             mapper.registerModule(new JavaTimeModule());
             event = mapper.readValue(message, UserProfileEvent.class);
             
-            log.info("Received user profile event: type={}, userId={}, partition={}, offset={}", 
+            log.info("✅ Received user profile event: type={}, userId={}, partition={}, offset={}", 
                     event.getEventType(), event.getUserId(), partition, offset);
 
             // 0. 이벤트를 데이터베이스에 저장 (감사 로그 및 추적용)
@@ -93,10 +102,13 @@ public class UserProfileEventConsumer {
                 eventLog.markAsProcessing();
             }
 
-            // 2. 프로필 이벤트 처리
+            // 2. 프로필 이벤트 처리 (DB 저장)
             userProfileService.handleUserProfileEvent(event);
 
-            // 3. 처리 완료 로그
+            // 3. 메모리 캐시 업데이트 (QuestionAssignmentService)
+            updateMemoryCache(event);
+
+            // 4. 처리 완료 로그
             log.info("User profile event processed successfully: userId={}, type={}", 
                     event.getUserId(), event.getEventType());
 
@@ -152,14 +164,66 @@ public class UserProfileEventConsumer {
         }
 
         // PROFILE_CREATED, PROFILE_UPDATED의 경우 필수 필드 검증
+        // difficulty/difficultyLevel과 categories/selectedCategories 모두 지원
         if ("PROFILE_CREATED".equals(eventType) || "PROFILE_UPDATED".equals(eventType)) {
-            if (event.getDifficultyLevel() == null || event.getSelectedCategories() == null) {
-                log.warn("User profile event is missing required fields: difficultyLevel or selectedCategories");
+            Integer difficulty = event.getDifficulty() != null ? event.getDifficulty() : event.getDifficultyLevel();
+            boolean hasCategories = (event.getCategories() != null && !event.getCategories().isEmpty()) 
+                || (event.getSelectedCategories() != null && !event.getSelectedCategories().isEmpty());
+            
+            if (difficulty == null || !hasCategories) {
+                log.warn("User profile event is missing required fields: difficulty={}, hasCategories={}", 
+                        difficulty, hasCategories);
+                return false;
+            }
+        }
+        
+        // DIFFICULTY 이벤트의 경우 difficulty 필드 필수
+        if ("DIFFICULTY".equals(eventType)) {
+            Integer difficulty = event.getDifficulty() != null ? event.getDifficulty() : event.getDifficultyLevel();
+            if (difficulty == null) {
+                log.warn("DIFFICULTY event is missing difficulty field");
+                return false;
+            }
+        }
+        
+        // CATEGORIES 이벤트의 경우 categories 필드 필수
+        if ("CATEGORIES".equals(eventType)) {
+            boolean hasCategories = (event.getCategories() != null && !event.getCategories().isEmpty()) 
+                || (event.getSelectedCategories() != null && !event.getSelectedCategories().isEmpty());
+            if (!hasCategories) {
+                log.warn("CATEGORIES event is missing categories field");
                 return false;
             }
         }
 
         return true;
+    }
+    
+    /**
+     * 메모리 캐시 업데이트 (QuestionAssignmentService)
+     * @param event 사용자 프로필 이벤트
+     */
+    private void updateMemoryCache(UserProfileEvent event) {
+        try {
+            Integer difficulty = event.getDifficulty() != null ? event.getDifficulty() : event.getDifficultyLevel();
+            List<String> categories = null;
+            
+            // categories Map에서 대분류 키 추출
+            if (event.getCategories() != null && !event.getCategories().isEmpty()) {
+                categories = new ArrayList<>(event.getCategories().keySet());
+            } else if (event.getSelectedCategories() != null && !event.getSelectedCategories().isEmpty()) {
+                categories = event.getSelectedCategories();
+            }
+            
+            // 메모리 캐시 업데이트
+            questionAssignmentService.updateUserBasicProfile(event.getUserId(), difficulty, categories);
+            
+            log.info("Memory cache updated for user: {}, difficulty: {}, categories: {}", 
+                    event.getUserId(), difficulty, categories);
+        } catch (Exception e) {
+            log.error("Failed to update memory cache for user: {}", event.getUserId(), e);
+            // 캐시 업데이트 실패는 치명적이지 않으므로 예외를 던지지 않음
+        }
     }
 }
 
