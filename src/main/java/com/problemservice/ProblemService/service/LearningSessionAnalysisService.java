@@ -47,7 +47,8 @@ public class LearningSessionAnalysisService {
             throw new EntityNotFoundException("Learning Session", sessionId);
         }
 
-        List<QuestionAnswer> answers = questionAnswerRepository.findBySessionId(sessionId);
+        // N+1 문제를 방지하기 위해 Question과 함께 조회하고, answeredAt 기준 오름차순 정렬
+        List<QuestionAnswer> answers = questionAnswerRepository.findBySessionIdWithQuestion(sessionId);
         List<KafkaEventLog> events = kafkaEventLogService.getSessionEvents(sessionId);
 
         return SessionAnalysisResponseDto.builder()
@@ -78,8 +79,13 @@ public class LearningSessionAnalysisService {
     }
 
     private SessionAnalysisResponseDto.QuestionRecord buildQuestionRecord(QuestionAnswer answer) {
+        // Question은 이미 JOIN FETCH로 로드되어 있음
         Question question = answer.getQuestion();
+        
+        // Question이 null인 경우 fallback (예외 상황)
         if (question == null) {
+            log.warn("Question not found for answer - questionId: {}, sessionId: {}", 
+                    answer.getQuestionId(), answer.getSessionId());
             question = questionRepository.findById(answer.getQuestionId()).orElse(null);
         }
 
