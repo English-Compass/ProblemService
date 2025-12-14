@@ -43,6 +43,9 @@ public class QuestionAssignmentService {
      */
     public void updateUserLearningProfile(String userId, CompleteLearningAnalysis analysisData) {
         try {
+            // 기존 프로필이 있으면 가져오고, 없으면 새로 생성
+            UserLearningProfile existingProfile = userProfiles.get(userId);
+            
             UserLearningProfile profile = UserLearningProfile.builder()
                 .userId(userId)
                 .learningPattern(analysisData.getOverallLearningPattern())
@@ -52,6 +55,9 @@ public class QuestionAssignmentService {
                 .wrongQuestionIds(new HashSet<>(analysisData.getWrongQuestionIds()))
                 .recommendedReviewQuestionIds(new HashSet<>(analysisData.getRecommendedReviewQuestions())) // 향후 개인화된 복습 문제 추천에 사용 예정
                 .focusAreas(new HashSet<>(analysisData.getFocusAreas()))
+                // 기존 프로필의 difficulty와 categories 유지
+                .difficultyLevel(existingProfile != null ? existingProfile.getDifficultyLevel() : null)
+                .selectedCategories(existingProfile != null ? existingProfile.getSelectedCategories() : null)
                 .lastUpdated(System.currentTimeMillis())
                 .build();
             
@@ -62,6 +68,54 @@ public class QuestionAssignmentService {
                 
         } catch (Exception e) {
             log.error("Failed to update learning profile for user: {}", userId, e);
+        }
+    }
+    
+    /**
+     * UserService로부터 받은 사용자 기본 프로필 정보를 메모리 캐시에 업데이트
+     * @param userId 사용자 ID
+     * @param difficultyLevel 난이도 (1, 2, 3)
+     * @param selectedCategories 선택된 카테고리 (대분류 리스트)
+     */
+    public void updateUserBasicProfile(String userId, Integer difficultyLevel, List<String> selectedCategories) {
+        try {
+            // 기존 프로필이 있으면 가져오고, 없으면 새로 생성
+            UserLearningProfile existingProfile = userProfiles.get(userId);
+            
+            UserLearningProfile profile;
+            if (existingProfile != null) {
+                // 기존 프로필 업데이트 (학습 분석 데이터 유지)
+                profile = UserLearningProfile.builder()
+                    .userId(userId)
+                    .difficultyLevel(difficultyLevel)
+                    .selectedCategories(selectedCategories != null ? new HashSet<>(selectedCategories) : null)
+                    // 기존 학습 분석 데이터 유지
+                    .learningPattern(existingProfile.getLearningPattern())
+                    .consistencyScore(existingProfile.getConsistencyScore())
+                    .averageTimePerQuestion(existingProfile.getAverageTimePerQuestion())
+                    .weakQuestionTypes(existingProfile.getWeakQuestionTypes())
+                    .wrongQuestionIds(existingProfile.getWrongQuestionIds())
+                    .recommendedReviewQuestionIds(existingProfile.getRecommendedReviewQuestionIds())
+                    .focusAreas(existingProfile.getFocusAreas())
+                    .lastUpdated(System.currentTimeMillis())
+                    .build();
+            } else {
+                // 새 프로필 생성 (기본 프로필만)
+                profile = UserLearningProfile.builder()
+                    .userId(userId)
+                    .difficultyLevel(difficultyLevel)
+                    .selectedCategories(selectedCategories != null ? new HashSet<>(selectedCategories) : null)
+                    .lastUpdated(System.currentTimeMillis())
+                    .build();
+            }
+            
+            userProfiles.put(userId, profile);
+            
+            log.info("Updated basic profile for user: {}, difficulty: {}, categories: {}", 
+                userId, difficultyLevel, selectedCategories);
+                
+        } catch (Exception e) {
+            log.error("Failed to update basic profile for user: {}", userId, e);
         }
     }
     
@@ -284,6 +338,10 @@ public class QuestionAssignmentService {
     @lombok.NoArgsConstructor
     private static class UserLearningProfile {
         private String userId;
+        // UserService로부터 받는 기본 프로필 정보
+        private Integer difficultyLevel;  // 난이도 (1, 2, 3)
+        private Set<String> selectedCategories;  // 선택된 카테고리 (대분류)
+        // LearningAnalysisService로부터 받는 학습 분석 정보
         private LearningPattern learningPattern;
         private double consistencyScore;
         private double averageTimePerQuestion;
