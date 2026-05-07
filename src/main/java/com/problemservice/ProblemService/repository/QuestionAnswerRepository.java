@@ -25,15 +25,6 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
     List<QuestionAnswer> findBySessionId(String sessionId);
     
     /**
-     * 특정 세션의 모든 답안을 Question과 함께 조회 (N+1 문제 해결)
-     * answeredAt 기준 오름차순 정렬
-     * 입력: 세션 ID
-     * 출력: Question이 포함된 답안 목록 (시간 순서대로)
-     */
-    @Query("SELECT qa FROM QuestionAnswer qa LEFT JOIN FETCH qa.question WHERE qa.sessionId = :sessionId ORDER BY qa.answeredAt ASC")
-    List<QuestionAnswer> findBySessionIdWithQuestion(@Param("sessionId") String sessionId);
-    
-    /**
      * 특정 문제에 대한 모든 답안 조회
      * 입력: 문제 ID
      * 출력: 해당 문제에 대해 제출된 모든 답안 목록 (모든 세션 포함)

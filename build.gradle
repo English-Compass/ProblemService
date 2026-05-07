@@ -49,6 +49,9 @@ dependencies {
 	
 	// MySQL JDBC Driver
 	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
+	// H2 (로컬 개발용 인메모리 DB)
+	runtimeOnly 'com.h2database:h2'
 	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

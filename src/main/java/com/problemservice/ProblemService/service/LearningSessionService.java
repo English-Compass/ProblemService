@@ -15,10 +15,13 @@ import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.entity.QuestionAnswer;
 import com.problemservice.ProblemService.model.entity.SessionQuestion;
 import com.problemservice.ProblemService.model.entity.UserProfile;
+import com.problemservice.ProblemService.model.dto.SessionAnalysisResponseDto;
+import com.problemservice.ProblemService.model.entity.KafkaEventLog;
 import com.problemservice.ProblemService.repository.LearningSessionRepository;
 import com.problemservice.ProblemService.repository.QuestionAnswerRepository;
 import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.service.base.BaseService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +62,7 @@ public class LearningSessionService extends BaseService {
     private final QuestionAnswerRepository questionAnswerRepository;
     private final QuestionIdCacheService questionIdCacheService;
     private final UserProfileService userProfileService;
+    private final KafkaEventLogService kafkaEventLogService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -873,13 +879,43 @@ public class LearningSessionService extends BaseService {
     }
 
     private void publishSessionCompletedEvent(LearningSession session) {
+        List<QuestionAnswer> answers = questionAnswerRepository.findBySessionId(session.getSessionId());
+
+        List<SessionCompletedEventDto.QuestionAnswerEventDto> answerDtos = answers.stream()
+                .map(qa -> {
+                    Question q = qa.getQuestion();
+                    if (q == null) {
+                        q = questionRepository.findById(qa.getQuestionId()).orElse(null);
+                    }
+                    final Question fq = q;
+                    return SessionCompletedEventDto.QuestionAnswerEventDto.builder()
+                            .questionId(qa.getQuestionId())
+                            .questionType(fq != null ? fq.getQuestionType() : null)
+                            .majorCategory(fq != null ? fq.getMajorCategory() : null)
+                            .minorCategory(fq != null ? fq.getMinorCategory() : null)
+                            .difficultyLevel(fq != null ? fq.getDifficultyLevel() : null)
+                            .userAnswer(qa.getUserAnswer())
+                            .isCorrect(qa.getIsCorrect())
+                            .timeSpent(qa.getTimeSpent())
+                            .answeredAt(qa.getAnsweredAt())
+                            .solveCount(qa.getSolveCount())
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        int correct = (int) answers.stream().filter(qa -> Boolean.TRUE.equals(qa.getIsCorrect())).count();
+
         SessionCompletedEventDto event = SessionCompletedEventDto.builder()
                 .sessionId(session.getSessionId())
                 .userId(session.getUserId())
                 .sessionType(session.getSessionType())
                 .completedAt(session.getCompletedAt())
+                .totalQuestions(answers.size())
+                .correctAnswers(correct)
+                .wrongAnswers(answers.size() - correct)
+                .answers(answerDtos)
                 .build();
-                
+
         if (eventPublisherService != null) {
             eventPublisherService.publishSessionCompletedEvent(event);
         }
@@ -1204,5 +1240,109 @@ public class LearningSessionService extends BaseService {
         public void setCategories(Map<String, List<String>> categories) { this.categories = categories; }
         public void setLevel(String level) { this.level = level; }
         public void setQuestionCount(Integer questionCount) { this.questionCount = questionCount; }
+    }
+
+    // ── LearningService 내부 API용 세션 분석 데이터 조회 ──────────────────────────
+
+    @Transactional(readOnly = true)
+    public SessionAnalysisResponseDto getSessionAnalysisData(String sessionId, String userId) {
+        LearningSession session = learningSessionRepository.findById(sessionId)
+                .orElseThrow(() -> new EntityNotFoundException("Learning Session", sessionId));
+
+        if (!session.getUserId().equals(userId)) {
+            log.warn("Session user mismatch - requested userId: {}, session userId: {}", userId, session.getUserId());
+            throw new EntityNotFoundException("Learning Session", sessionId);
+        }
+
+        List<QuestionAnswer> answers = questionAnswerRepository.findBySessionId(sessionId);
+        List<KafkaEventLog> events = kafkaEventLogService.getSessionEvents(sessionId);
+
+        return SessionAnalysisResponseDto.builder()
+                .session(convertSessionInfo(session))
+                .questions(convertQuestionRecords(answers))
+                .events(convertEventRecords(events, session))
+                .build();
+    }
+
+    private SessionAnalysisResponseDto.SessionInfo convertSessionInfo(LearningSession session) {
+        return SessionAnalysisResponseDto.SessionInfo.builder()
+                .sessionId(session.getSessionId())
+                .userId(session.getUserId())
+                .sessionType(session.getSessionType())
+                .status(session.getStatus())
+                .startedAt(session.getStartedAt())
+                .completedAt(session.getCompletedAt())
+                .createdAt(session.getCreatedAt())
+                .updatedAt(session.getUpdatedAt())
+                .metadata(parseJsonToMap(session.getSessionMetadata()))
+                .build();
+    }
+
+    private List<SessionAnalysisResponseDto.QuestionRecord> convertQuestionRecords(List<QuestionAnswer> answers) {
+        return answers.stream()
+                .map(this::buildQuestionRecord)
+                .collect(Collectors.toList());
+    }
+
+    private SessionAnalysisResponseDto.QuestionRecord buildQuestionRecord(QuestionAnswer answer) {
+        Question question = answer.getQuestion();
+        if (question == null) {
+            question = questionRepository.findById(answer.getQuestionId()).orElse(null);
+        }
+        final Question q = question;
+        return SessionAnalysisResponseDto.QuestionRecord.builder()
+                .questionId(answer.getQuestionId())
+                .questionType(q != null ? q.getQuestionType() : null)
+                .majorCategory(q != null ? q.getMajorCategory() : null)
+                .minorCategory(q != null ? q.getMinorCategory() : null)
+                .difficultyLevel(q != null ? q.getDifficultyLevel() : null)
+                .userAnswer(answer.getUserAnswer())
+                .isCorrect(answer.getIsCorrect())
+                .timeSpent(answer.getTimeSpent())
+                .answeredAt(answer.getAnsweredAt())
+                .solveCount(answer.getSolveCount())
+                .metadata(buildQuestionMetadata(q))
+                .build();
+    }
+
+    private Map<String, Object> buildQuestionMetadata(Question question) {
+        if (question == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, Object> metadata = new LinkedHashMap<>();
+        metadata.put("questionText", question.getQuestionText());
+        metadata.put("optionA", question.getOptionA());
+        metadata.put("optionB", question.getOptionB());
+        metadata.put("optionC", question.getOptionC());
+        metadata.put("explanation", question.getExplanation());
+        return metadata;
+    }
+
+    private List<SessionAnalysisResponseDto.EventRecord> convertEventRecords(List<KafkaEventLog> events,
+                                                                              LearningSession session) {
+        return events.stream()
+                .map(event -> SessionAnalysisResponseDto.EventRecord.builder()
+                        .eventId(event.getEventId())
+                        .eventType(event.getEventType())
+                        .sessionId(event.getSessionId())
+                        .userId(event.getUserId())
+                        .sessionType(session.getSessionType().name())
+                        .createdAt(event.getEventTimestamp() != null
+                                ? event.getEventTimestamp() : event.getReceivedAt())
+                        .metadata(parseJsonToMap(event.getEventPayload()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Object> parseJsonToMap(String json) {
+        if (json == null || json.trim().isEmpty()) {
+            return Collections.emptyMap();
+        }
+        try {
+            return objectMapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+        } catch (IOException e) {
+            log.warn("Failed to parse JSON metadata: {}", e.getMessage());
+            return Collections.emptyMap();
+        }
     }
 }

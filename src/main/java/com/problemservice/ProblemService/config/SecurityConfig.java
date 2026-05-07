@@ -27,8 +27,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // CORS preflight 요청 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Actuator 엔드포인트 허용
                         .requestMatchers("/actuator/**").permitAll()
+                        // 테스트 엔드포인트 허용
                         .requestMatchers("/test/**").permitAll()
+                        // 내부 API (서비스 간 통신) 허용 - 앞에 뭐가 붙든 internal이 포함되면 다 허용
+                        // API Gateway 경유 시: /api/problem/internal/** 또는 직접 호출 시: /problem/internal/**
+                        .requestMatchers("/problem/internal/**", "/api/problem/internal/**").permitAll()
                         // 실제 컨트롤러 경로 (/problem/**) 허용
                         // API Gateway에서 이미 인증을 완료했으므로 permitAll로 설정
                         .requestMatchers("/problem/**").permitAll()
