@@ -88,6 +88,9 @@ public class OpenAIService {
         Map<String, Object> generationConfig = new HashMap<>();
         generationConfig.put("temperature", temperature);
         generationConfig.put("maxOutputTokens", maxTokens);
+        // gemini-2.5-flash는 Thinking 모드가 기본 활성화 → 토큰 대부분을 추론에 소모
+        // 문제/단어 생성 용도에는 불필요하므로 비활성화
+        generationConfig.put("thinkingConfig", Map.of("thinkingBudget", 0));
 
         Map<String, Object> safetySettings = new HashMap<>();
         // 학습 콘텐츠 생성이므로 안전 필터 완화

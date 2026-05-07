@@ -51,8 +51,8 @@ public class QuestionGenerationService {
         List<GeneratedQuestionDto> generatedQuestions = new ArrayList<>();
         List<String> errorMessages = new ArrayList<>();
 
-        // 한 번에 너무 많으면 토큰 초과·RPM 위험 → 최대 3개씩
-        int batchSize = Math.min(count, 3);
+        // gemini-2.5-flash thinking 모드 비활성화 후에도 안정성을 위해 2개씩 배치
+        int batchSize = Math.min(count, 2);
         int batches = (int) Math.ceil((double) count / batchSize);
 
         try {
@@ -521,22 +521,57 @@ public class QuestionGenerationService {
     // ── Bulk 생성 핵심 메서드 ───────────────────────────────────────────────
 
     /**
-     * N개 문제를 한 번에 JSON 배열로 요청하는 프롬프트 생성
+     * 원래 타입별 요구사항을 유지하면서 N개를 JSON 배열로 한 번에 요청하는 프롬프트
      */
     private String buildBulkPrompt(QuestionGenerationRequestDto request, int count) {
         String difficulty = getDifficultyDescription(request.getDifficulty());
         String topics = request.getTopics() != null && !request.getTopics().isEmpty()
             ? String.join(", ", request.getTopics()) : request.getMajorCategory();
-        String typeDesc = getTypeDescription(request.getQuestionType());
+        String context = request.getAdditionalContext() != null ? request.getAdditionalContext() : "없음";
+
+        String typeRequirements;
+        switch (request.getQuestionType()) {
+            case WORD:
+                typeRequirements =
+                    "【문제 유형】: 빈칸 채우기 (WORD)\n" +
+                    "【요구사항】:\n" +
+                    "1. 문장에서 중요한 단어 하나를 빈칸(_______)으로 만드세요\n" +
+                    "2. 빈칸에 들어갈 정답과 비슷하지만 틀린 선택지 2개를 포함하세요\n" +
+                    "3. 선택지는 모두 같은 품사여야 합니다\n" +
+                    "4. 문제는 실용적이고 자연스러운 상황이어야 합니다\n" +
+                    "5. 각 문제마다 서로 다른 단어/상황을 사용하세요";
+                break;
+            case SENTENCE:
+                typeRequirements =
+                    "【문제 유형】: 동의어 선택 (SENTENCE)\n" +
+                    "【요구사항】:\n" +
+                    "1. 문장에서 한 단어나 구를 굵게 표시(**단어**)하세요\n" +
+                    "2. 굵게 표시된 부분과 같은 의미의 동의어를 정답으로 하세요\n" +
+                    "3. 비슷하지만 의미가 다른 단어 2개를 오답으로 포함하세요\n" +
+                    "4. 문맥상 자연스럽고 의미가 명확한 문장을 만드세요\n" +
+                    "5. 각 문제마다 서로 다른 단어/표현을 사용하세요";
+                break;
+            case CONVERSATION:
+                typeRequirements =
+                    "【문제 유형】: 대화 응답 (CONVERSATION)\n" +
+                    "【요구사항】:\n" +
+                    "1. 일상적인 대화 상황을 제시하세요\n" +
+                    "2. 상대방의 말에 가장 적절한 응답을 정답으로 하세요\n" +
+                    "3. 문법적으로는 맞지만 상황에 부적절한 응답 2개를 오답으로 포함하세요\n" +
+                    "4. 실제 대화에서 자주 사용되는 자연스러운 표현을 사용하세요\n" +
+                    "5. 각 문제마다 서로 다른 대화 상황을 사용하세요";
+                break;
+            default:
+                typeRequirements = "【문제 유형】: 빈칸 채우기 (WORD)";
+        }
 
         return String.format(
-            "영어 학습 문제 %d개를 아래 조건으로 생성하고, 반드시 JSON 배열 형식으로만 응답하세요.\n\n" +
-            "【조건】\n" +
-            "- 문제 유형: %s\n" +
-            "- 난이도: %s\n" +
-            "- 주제: %s\n" +
-            "- 각 문제는 서로 다른 상황/단어를 사용할 것\n\n" +
-            "【응답 형식 — 이 JSON 배열만 출력, 다른 텍스트 없음】\n" +
+            "다음 조건으로 영어 학습 문제 %d개를 생성하고, 반드시 JSON 배열 형식으로만 응답하세요.\n\n" +
+            "%s\n" +
+            "【난이도】: %s\n" +
+            "【주제/카테고리】: %s\n" +
+            "【추가 컨텍스트】: %s\n\n" +
+            "【응답 형식 — JSON 배열만 출력, 다른 텍스트 없음】\n" +
             "[\n" +
             "  {\n" +
             "    \"questionText\": \"(문제 문장)\",\n" +
@@ -544,21 +579,12 @@ public class QuestionGenerationService {
             "    \"optionB\": \"(선택지 B)\",\n" +
             "    \"optionC\": \"(선택지 C)\",\n" +
             "    \"correctAnswer\": \"A 또는 B 또는 C\",\n" +
-            "    \"explanation\": \"(한국어 해설)\"\n" +
+            "    \"explanation\": \"(정답 설명 - 한국어)\"\n" +
             "  }\n" +
             "]\n\n" +
-            "지금 %d개 문제를 JSON 배열로 생성하세요.",
-            count, typeDesc, difficulty, topics, count
+            "지금 %d개 문제를 위 JSON 배열로 생성하세요.",
+            count, typeRequirements, difficulty, topics, context, count
         );
-    }
-
-    private String getTypeDescription(com.problemservice.ProblemService.model.enums.QuestionType type) {
-        switch (type) {
-            case WORD: return "빈칸 채우기 (문장에서 단어 하나를 빈칸으로, 3개 선택지 중 정답 선택)";
-            case SENTENCE: return "동의어 선택 (굵게 표시된 단어/구와 같은 의미의 선택지 고르기)";
-            case CONVERSATION: return "대화 완성 (상황에 가장 적절한 응답 선택)";
-            default: return "빈칸 채우기";
-        }
     }
 
     /**
@@ -567,14 +593,16 @@ public class QuestionGenerationService {
     private List<GeneratedQuestionDto> parseBulkResponse(String raw, QuestionGenerationRequestDto request) {
         List<GeneratedQuestionDto> result = new ArrayList<>();
         try {
-            // JSON 배열 추출 (마크다운 코드블록 등 제거)
-            int start = raw.indexOf('[');
-            int end = raw.lastIndexOf(']') + 1;
+            // 마크다운 코드블록 펜스 제거 (```json ... ``` 또는 ``` ... ```)
+            String cleaned = raw.replaceAll("(?s)```[a-zA-Z]*\\s*", "").trim();
+
+            int start = cleaned.indexOf('[');
+            int end = cleaned.lastIndexOf(']') + 1;
             if (start < 0 || end <= start) {
-                log.warn("JSON 배열을 찾지 못함. 응답: {}", raw.substring(0, Math.min(200, raw.length())));
+                log.warn("JSON 배열을 찾지 못함. 원본 앞 300자: {}", raw.substring(0, Math.min(300, raw.length())));
                 return result;
             }
-            String json = raw.substring(start, end);
+            String json = cleaned.substring(start, end);
 
             JsonNode array = objectMapper.readTree(json);
             if (!array.isArray()) return result;
