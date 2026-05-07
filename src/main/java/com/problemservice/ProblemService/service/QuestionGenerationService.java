@@ -1,5 +1,8 @@
 package com.problemservice.ProblemService.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.problemservice.ProblemService.model.dto.*;
 import com.problemservice.ProblemService.model.entity.Question;
 import com.problemservice.ProblemService.model.enums.Difficulty;
@@ -28,66 +31,75 @@ public class QuestionGenerationService {
     
     private final OpenAIService openAIService;
     private final QuestionRepository questionRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     
     /**
      * 요청에 따라 문제를 생성하고 응답 DTO를 반환
      * @param request 문제 생성 요청 정보
      * @return 생성된 문제들과 메타데이터를 포함한 응답
      */
+    /**
+     * N개 문제를 API 1번 호출로 한 번에 생성 (기존: N번 호출)
+     */
     public QuestionGenerationResponseDto generateQuestions(QuestionGenerationRequestDto request) {
         long startTime = System.currentTimeMillis();
-        
-        log.info("문제 생성 시작 - 유형: {}, 난이도: {}, 개수: {}, 카테고리: {}", 
-            request.getQuestionType(), request.getDifficulty(), 
-            request.getQuestionCount(), request.getMajorCategory());
-        
+        int count = request.getQuestionCount();
+
+        log.info("문제 bulk 생성 시작 - 유형: {}, 난이도: {}, 개수: {}, API 호출: 1회",
+            request.getQuestionType(), request.getDifficulty(), count);
+
         List<GeneratedQuestionDto> generatedQuestions = new ArrayList<>();
         List<String> errorMessages = new ArrayList<>();
-        int totalTokensUsed = 0;
-        
-        // 중복 방지를 위한 다양한 프롬프트 변형 준비
-        List<String> usedPromptVariations = new ArrayList<>();
-        
-        // 요청된 개수만큼 문제 생성
-        for (int i = 0; i < request.getQuestionCount(); i++) {
-            try {
-                GeneratedQuestionDto question = generateSingleQuestionWithVariation(request, i, usedPromptVariations);
-                if (question.isValid()) {
-                    // 중복 체크
-                    if (!isDuplicateQuestion(question, generatedQuestions)) {
-                        generatedQuestions.add(question);
-                    } else {
-                        log.warn("중복 문제 감지, 재생성 시도: {}", i + 1);
-                        // 재시도
-                        question = generateSingleQuestionWithVariation(request, i + 10, usedPromptVariations);
-                        if (question.isValid() && !isDuplicateQuestion(question, generatedQuestions)) {
-                            generatedQuestions.add(question);
-                        } else {
-                            errorMessages.add("문제 " + (i + 1) + " 중복으로 인한 생성 실패");
-                        }
-                    }
-                } else {
-                    errorMessages.add("문제 " + (i + 1) + " 생성 실패: " + question.getErrorMessage());
-                }
-            } catch (Exception e) {
-                log.error("문제 생성 중 오류 발생", e);
-                errorMessages.add("문제 " + (i + 1) + " 생성 중 오류: " + e.getMessage());
+
+        // 한 번에 너무 많으면 토큰 초과·RPM 위험 → 최대 3개씩
+        int batchSize = Math.min(count, 3);
+        int batches = (int) Math.ceil((double) count / batchSize);
+
+        try {
+            for (int b = 0; b < batches && generatedQuestions.size() < count; b++) {
+                int remaining = count - generatedQuestions.size();
+                int thisCount = Math.min(batchSize, remaining);
+
+                String prompt = buildBulkPrompt(request, thisCount);
+
+                OpenAIRequestDto aiRequest = OpenAIRequestDto.builder()
+                    .prompt(prompt)
+                    .model("gemini-2.0-flash")
+                    .maxTokens(thisCount * 400)
+                    .temperature(0.8)
+                    .build();
+
+            OpenAIResponseDto response = openAIService.generateResponse(aiRequest);
+
+            if (!response.isSuccess()) {
+                errorMessages.add("Gemini API 오류: " + response.getErrorMessage());
+                break;
             }
+            generatedQuestions.addAll(parseBulkResponse(response.getResponse(), request));
+            log.info("배치 {}/{} 완료: {}개 누적", b + 1, batches, generatedQuestions.size());
+            }
+
+            if (generatedQuestions.isEmpty() && errorMessages.isEmpty()) {
+                errorMessages.add("응답 파싱 실패 - JSON 배열 추출 불가");
+            }
+
+        } catch (Exception e) {
+            log.error("bulk 문제 생성 오류", e);
+            errorMessages.add("생성 중 오류: " + e.getMessage());
         }
-        
+
         long processingTime = System.currentTimeMillis() - startTime;
-        
-        log.info("문제 생성 완료 - 성공: {}/{}, 소요시간: {}ms", 
-            generatedQuestions.size(), request.getQuestionCount(), processingTime);
-        
+        log.info("문제 bulk 생성 완료 - 성공: {}/{}, 소요시간: {}ms",
+            generatedQuestions.size(), count, processingTime);
+
         return QuestionGenerationResponseDto.builder()
             .questions(generatedQuestions)
-            .requestedCount(request.getQuestionCount())
+            .requestedCount(count)
             .successfullyGenerated(generatedQuestions.size())
-            .failedCount(request.getQuestionCount() - generatedQuestions.size())
-            .success(generatedQuestions.size() > 0)
+            .failedCount(count - generatedQuestions.size())
+            .success(!generatedQuestions.isEmpty())
             .errorMessages(errorMessages)
-            .totalTokensUsed(totalTokensUsed)
+            .totalTokensUsed(0)
             .generatedAt(LocalDateTime.now())
             .processingTimeMs(processingTime)
             .build();
@@ -506,6 +518,104 @@ public class QuestionGenerationService {
                "\n\n【다양성 요구】: 이전 문제와 다른 새로운 대화 상황과 표현을 사용해주세요.";
     }
     
+    // ── Bulk 생성 핵심 메서드 ───────────────────────────────────────────────
+
+    /**
+     * N개 문제를 한 번에 JSON 배열로 요청하는 프롬프트 생성
+     */
+    private String buildBulkPrompt(QuestionGenerationRequestDto request, int count) {
+        String difficulty = getDifficultyDescription(request.getDifficulty());
+        String topics = request.getTopics() != null && !request.getTopics().isEmpty()
+            ? String.join(", ", request.getTopics()) : request.getMajorCategory();
+        String typeDesc = getTypeDescription(request.getQuestionType());
+
+        return String.format(
+            "영어 학습 문제 %d개를 아래 조건으로 생성하고, 반드시 JSON 배열 형식으로만 응답하세요.\n\n" +
+            "【조건】\n" +
+            "- 문제 유형: %s\n" +
+            "- 난이도: %s\n" +
+            "- 주제: %s\n" +
+            "- 각 문제는 서로 다른 상황/단어를 사용할 것\n\n" +
+            "【응답 형식 — 이 JSON 배열만 출력, 다른 텍스트 없음】\n" +
+            "[\n" +
+            "  {\n" +
+            "    \"questionText\": \"(문제 문장)\",\n" +
+            "    \"optionA\": \"(선택지 A)\",\n" +
+            "    \"optionB\": \"(선택지 B)\",\n" +
+            "    \"optionC\": \"(선택지 C)\",\n" +
+            "    \"correctAnswer\": \"A 또는 B 또는 C\",\n" +
+            "    \"explanation\": \"(한국어 해설)\"\n" +
+            "  }\n" +
+            "]\n\n" +
+            "지금 %d개 문제를 JSON 배열로 생성하세요.",
+            count, typeDesc, difficulty, topics, count
+        );
+    }
+
+    private String getTypeDescription(com.problemservice.ProblemService.model.enums.QuestionType type) {
+        switch (type) {
+            case WORD: return "빈칸 채우기 (문장에서 단어 하나를 빈칸으로, 3개 선택지 중 정답 선택)";
+            case SENTENCE: return "동의어 선택 (굵게 표시된 단어/구와 같은 의미의 선택지 고르기)";
+            case CONVERSATION: return "대화 완성 (상황에 가장 적절한 응답 선택)";
+            default: return "빈칸 채우기";
+        }
+    }
+
+    /**
+     * Gemini의 JSON 배열 응답을 GeneratedQuestionDto 리스트로 파싱
+     */
+    private List<GeneratedQuestionDto> parseBulkResponse(String raw, QuestionGenerationRequestDto request) {
+        List<GeneratedQuestionDto> result = new ArrayList<>();
+        try {
+            // JSON 배열 추출 (마크다운 코드블록 등 제거)
+            int start = raw.indexOf('[');
+            int end = raw.lastIndexOf(']') + 1;
+            if (start < 0 || end <= start) {
+                log.warn("JSON 배열을 찾지 못함. 응답: {}", raw.substring(0, Math.min(200, raw.length())));
+                return result;
+            }
+            String json = raw.substring(start, end);
+
+            JsonNode array = objectMapper.readTree(json);
+            if (!array.isArray()) return result;
+
+            for (JsonNode node : array) {
+                try {
+                    String questionText = node.path("questionText").asText();
+                    String optionA = node.path("optionA").asText();
+                    String optionB = node.path("optionB").asText();
+                    String optionC = node.path("optionC").asText();
+                    String correctAnswer = node.path("correctAnswer").asText().trim().toUpperCase();
+                    String explanation = node.path("explanation").asText("");
+
+                    if (questionText.isBlank() || optionA.isBlank() || correctAnswer.isEmpty()) continue;
+                    if (!List.of("A","B","C").contains(correctAnswer)) continue;
+
+                    result.add(GeneratedQuestionDto.builder()
+                        .questionText(questionText)
+                        .optionA(optionA)
+                        .optionB(optionB)
+                        .optionC(optionC)
+                        .correctAnswer(correctAnswer)
+                        .explanation(explanation)
+                        .questionType(request.getQuestionType())
+                        .difficulty(request.getDifficulty())
+                        .majorCategory(request.getMajorCategory())
+                        .minorCategory(request.getMinorCategory() != null ? request.getMinorCategory() : request.getMajorCategory())
+                        .isValid(true)
+                        .generatedAt(LocalDateTime.now())
+                        .build());
+                } catch (Exception e) {
+                    log.warn("개별 문제 파싱 실패: {}", e.getMessage());
+                }
+            }
+            log.info("bulk 파싱 완료: {}개", result.size());
+        } catch (Exception e) {
+            log.error("bulk JSON 파싱 오류", e);
+        }
+        return result;
+    }
+
     /**
      * 생성된 문제를 데이터베이스에 저장
      * @param generatedQuestion 생성된 문제 DTO
