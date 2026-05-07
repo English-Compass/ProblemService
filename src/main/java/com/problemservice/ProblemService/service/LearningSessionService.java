@@ -909,6 +909,7 @@ public class LearningSessionService extends BaseService {
                 .sessionId(session.getSessionId())
                 .userId(session.getUserId())
                 .sessionType(session.getSessionType())
+                .startedAt(session.getStartedAt())
                 .completedAt(session.getCompletedAt())
                 .totalQuestions(answers.size())
                 .correctAnswers(correct)

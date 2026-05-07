@@ -19,6 +19,7 @@ public class SessionCompletedEventDto {
     private String sessionId;
     private String userId;
     private SessionType sessionType;
+    private LocalDateTime startedAt;
     private LocalDateTime completedAt;
     private LocalDateTime eventTimestamp;
 
