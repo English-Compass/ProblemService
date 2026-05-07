@@ -25,12 +25,9 @@ services:
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_DATABASE=${REDIS_DATABASE:-0}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      # 외부 API 키
-      - KAKAO_API_KEY=${KAKAO_API_KEY}
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # Gemini API (문제 생성, 단어 학습)
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.0-flash}
     # 공용 인프라 네트워크에 연결 (필수!)
     networks:
       - english-compass-network
