@@ -23,8 +23,9 @@ import com.problemservice.ProblemService.repository.QuestionRepository;
 import com.problemservice.ProblemService.service.base.BaseService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
+import com.problemservice.ProblemService.model.event.SessionCompletedApplicationEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,7 @@ public class LearningSessionService extends BaseService {
 
     private final LearningSessionRepository learningSessionRepository;
     private final QuestionRepository questionRepository;
-    @Autowired(required = false)
-    private EventPublisherService eventPublisherService;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final SessionQuestionService sessionQuestionService;
     private final QuestionAnswerRepository questionAnswerRepository;
     private final QuestionIdCacheService questionIdCacheService;
@@ -505,9 +505,14 @@ public class LearningSessionService extends BaseService {
                 3   // 틀린 문제 3개
         );
         
-        // 정답 기록이 없으면 복습 세션 생성 불가
+        // 정답 기록이 없으면 연습 문제로 폴백
         if (selectedQuestions.isEmpty()) {
-            throw new BusinessLogicException("No answer history found. Cannot create review session.");
+            log.info("복습할 답변 기록 없음 - 연습 문제로 폴백. userId={}", createDto.getUserId());
+            selectedQuestions = selectQuestionsForPractice(createDto.getUserId(), selectedCategories, null, 2, 5);
+        }
+
+        if (selectedQuestions.isEmpty()) {
+            throw new BusinessLogicException("No questions available for the selected categories.");
         }
         
         // 5단계: 세션 정보 업데이트 및 저장
@@ -577,10 +582,15 @@ public class LearningSessionService extends BaseService {
         }
         
         List<Question> selectedQuestions = selectQuestionsForReview(createDto.getUserId(), selectedCategories, 5);
-        
-        // 정답 기록이 없으면 복습 세션 생성 불가
+
+        // 정답 기록이 없으면 연습 문제로 폴백
         if (selectedQuestions.isEmpty()) {
-            throw new BusinessLogicException("No correct answer history found. Cannot create review session.");
+            log.info("복습할 정답 기록 없음 - 연습 문제로 폴백. userId={}", createDto.getUserId());
+            selectedQuestions = selectQuestionsForPractice(createDto.getUserId(), selectedCategories, null, 2, 5);
+        }
+
+        if (selectedQuestions.isEmpty()) {
+            throw new BusinessLogicException("No questions available for the selected categories.");
         }
         
         // 5단계: 세션 정보 업데이트 및 저장
@@ -650,10 +660,15 @@ public class LearningSessionService extends BaseService {
         }
         
         List<Question> selectedQuestions = selectQuestionsForWrongAnswer(createDto.getUserId(), selectedCategories, 5);
-        
-        // 오답 기록이 없으면 오답노트 세션 생성 불가
+
+        // 오답 기록이 없으면 연습 문제로 폴백
         if (selectedQuestions.isEmpty()) {
-            throw new BusinessLogicException("No wrong answer history found. Cannot create wrong answer session.");
+            log.info("오답 기록 없음 - 연습 문제로 폴백. userId={}", createDto.getUserId());
+            selectedQuestions = selectQuestionsForPractice(createDto.getUserId(), selectedCategories, null, 2, 5);
+        }
+
+        if (selectedQuestions.isEmpty()) {
+            throw new BusinessLogicException("No questions available for the selected categories.");
         }
         
         // 5단계: 세션 정보 업데이트 및 저장
@@ -917,9 +932,8 @@ public class LearningSessionService extends BaseService {
                 .answers(answerDtos)
                 .build();
 
-        if (eventPublisherService != null) {
-            eventPublisherService.publishSessionCompletedEvent(event);
-        }
+        // DB 커밋 이후에만 Kafka 발행되도록 Spring Application Event로 위임
+        applicationEventPublisher.publishEvent(new SessionCompletedApplicationEvent(this, event));
     }
     
     private void validateCreateDto(LearningSessionCreateDto createDto) {
